@@ -1,5 +1,3 @@
-'use strict'
-
 let shuffle = true;
 let dataArray = [];
 let question = [];
@@ -8,6 +6,8 @@ let answer = false;
 let finish = false;
 let id = 0;
 let len = 0;
+
+
 
 const fileContent = localStorage.getItem('fileContent');
 const fileName = localStorage.getItem('fileName');
@@ -141,3 +141,29 @@ function shuffleArray(array) {
 function updateProgressBar(progress) {
     document.getElementById('progressBar').style.width = progress + '%';
 }
+
+document.getElementById('downloadButton').addEventListener('click', function() {
+    console.log("A");
+    const zip = new JSZip();
+    
+    // ダウンロードしたいファイルのパスと内容（仮のデータ）
+    // フォルダ内のファイルのリストをここで定義する
+    const files = [
+        { name: 'folder/file1.txt', content: 'ファイル1の内容' },
+        { name: 'folder/file2.txt', content: 'ファイル2の内容' },
+        { name: 'folder/file3.txt', content: 'ファイル3の内容' }
+    ];
+    
+    // ファイルをZIPに追加
+    files.forEach(file => {
+        zip.file(file.name, file.content);
+    });
+
+    // ZIPファイルを生成してダウンロード
+    zip.generateAsync({ type: 'blob' }).then(function(content) {
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(content);
+        link.download = 'folder.zip';
+        link.click();
+    });
+});
