@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>フォルダ選択</title>
+    <link rel="stylesheet" href="menu.css">
+</head>
+<body>
+    <div class="container">
+        <h1>テスト対策</h1>
+        <form id="folderForm">
+            <input type="file" id="folderInput" webkitdirectory directory />
+            <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
+        </form>
+
+        <div id="folderStructure" class="folder-structure"></div>
+    </div>
+    <button id="downloadButton">サンプルのフォルダをダウンロード</button>
+    <strong>
+        <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
+        <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
+    </strong>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.9.1/dist/jszip.min.js"></script>
+    <script src="menu.js"></script>
+</body>
+</html>

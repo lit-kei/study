@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>テスト対策</title>
+    <link rel="stylesheet" href="test.css">
+</head>
+<body>
+        <h1>テスト対策</h1>
+        <form id="myForm">
+            <!-- ファイル選択のカスタムボタン -->
+            <input type="file" id="fileInput" />
+            <label for="fileInput" id="fileInputLabel">ファイルを選択</label>
+            <span id="fileName"></span> <!-- 選択したファイル名を表示 -->
+        </form>
+
+        <div id="que" class="que">
+            <h2 id="qu">問題:</h2>
+            <strong><p id="question" class="a">&#x00A0</p></strong>
+            <img id="myImage"/>
+        </div>
+        <div id="ans" class="ans">
+            <h2 id="an">答え:</h2>
+            <strong><p id="answer" class="a">&#x00A0</p></strong>
+        </div>
+        <button id="button" type="submit">スタート</button>
+        <div id="progressContainer">
+            <div id="progressBar"></div>
+        </div>
+        <div id="progressLabel">進捗状況</div>
+    <div class="table-container">
+        <table id="resultTable">
+            <thead>
+                <tr>
+                    <th class="id">ID</th>
+                    <th>問題</th>
+                    <th>答え</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    <a href="index.html">前のウィンドウに戻る</a>
+    <script src="test.js"></script>
+</body>
+</html>

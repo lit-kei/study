@@ -1,0 +1,130 @@
+/* 基本的なリセット */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* ボディ全体 */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    padding: 20px;
+}
+
+/* 見出し */
+h1 {
+    font-size: 35px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left; /* 左寄せ */
+}
+
+/* フォルダ選択フォーム */
+#folderForm {
+    text-align: left;
+    margin-bottom: 20px;
+}
+
+#folderInput {
+    display: none; /* デフォルトのファイル入力を非表示にする */
+}
+
+#folderInputLabel {
+    text-align: center;
+    width: 200px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#downloadButton {
+    text-align: center;
+    margin-top: 10px;
+    width: 400px;
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#folderInputLabel:hover, #downloadButton:hover {
+    background-color: #45a049;
+    transform: translateY(-2px);
+}
+
+#folderInputLabel:active, #downloadButton:active {
+    background-color: #388e3c;
+    transform: translateY(0); /* 押した感覚を出す */
+}
+
+/* フォルダ構造を表示 */
+.folder-structure {
+    margin-top: 20px;
+}
+
+
+li.folder {
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+li.file {
+    color: #333;
+    cursor: pointer;
+}
+
+li.file:hover {
+    background-color: #f1f1f1;
+}
+
+.nested {
+    margin-left: 20px;
+}
+
+
+
+.nested::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -10px;
+    width: 2px;
+    height: 100%;
+    background-color: #000;
+}
+ul {
+    list-style-type: none;
+    padding-left: 0;
+    position: relative;
+}
+li {
+    position: relative;
+    padding-left: 20px;
+}
+li::before {
+    content: '';
+    position: absolute;
+    top: 10px;
+    left: -10px;
+    width: 10px;
+    height: 2px;
+    background-color: #000;
+}
+.folder-structure .folder:first-child::before {
+    content: none;
+}
+.folder-structure .folder:first-child {
+    padding-left: 0px;
+}
