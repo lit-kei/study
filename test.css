@@ -1,28 +1,3 @@
-/* 基本的なリセット */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-/* ボディ全体 */
-body {
-    font-family: Arial, sans-serif, bold;
-    line-height: 1.6;
-    background-color: #f4f4f9;
-    padding: 20px;
-}
-
-/* 見出し */
-h1 {
-    font-size: 35px;
-    color: #333;
-}
-h2 {
-    font-size: 25px;
-    color: #333;
-}
-
 /* フォーム */
 #myForm {
     margin-bottom: 20px;
@@ -45,7 +20,7 @@ h2 {
 }
 
 #que h2, #ans h2 {
-    /*font-size: 18px;*/
+    font-size: 25px;
     color: #555;
 }
 

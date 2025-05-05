@@ -5,10 +5,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>フォルダ選択</title>
     <link rel="stylesheet" href="menu.css">
+    <link rel="stylesheet" href="header.css">
 </head>
 <body>
+    <header>
+        <div class="header-inner">
+            <h1 onclick="window.location.href = 'index.html'" style="cursor: pointer;">テスト対策</h1>
+            <div class="other-site">
+                <h2>息抜き</h2>
+                <strong><a href="https://lit-kei.github.io/tsumukichi/">つむ基地！</a></strong>
+            </div>
+        </div>
+    </header>
+    <main>
     <div class="container">
-        <h1>テスト対策</h1>
         <form id="folderForm">
             <input type="file" id="folderInput" webkitdirectory directory />
             <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
@@ -21,6 +31,7 @@
         <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
         <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
     </strong>
+    </main>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.9.1/dist/jszip.min.js"></script>
     <script src="menu.js"></script>
 </body>
