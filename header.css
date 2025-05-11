@@ -26,18 +26,22 @@ header {
     color: white;
 }
 .header-inner h1 {
-    margin-left: 20px;
+    margin: 0 30px;
 }
 .other-site a {
     margin-left: 40px;
+    text-decoration: none;
+}
+.other-site a:hover {
+    text-decoration: underline;
 }
 .other-site {
-    height: 90%;
-    padding: 15px;
-    margin-left: 50px;
+    height: 100%;
+    padding: 30px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
+    border-left: 2px solid white;
 }
 
 main {
