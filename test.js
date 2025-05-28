@@ -16,7 +16,15 @@ const fileName = localStorage.getItem('fileName');
 document.getElementById('fileName').textContent = fileName;
 try {
     setArray();
-    question = [...dataArray];
+    if (dataArray.shuffle != undefined) {
+        question = {
+            contents: [...dataArray.contents],
+            shuffle: dataArray.shuffle
+        };
+    } else {
+        question = [...dataArray];
+    }
+    
     shuffleArray(question);
     init();
 } catch (error) {
@@ -71,7 +79,6 @@ document.getElementById('fileInput').addEventListener('change', function(event) 
                 dataArray = JSON.parse(fileContent);
                 question = JSON.parse(fileContent);
                 shuffleArray(question);
-                console.log(dataArray);
                 init();
             } catch (error) {
                 console.error('ファイルの内容がJSONとしてパースできません:', error);

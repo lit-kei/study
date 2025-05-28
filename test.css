@@ -31,8 +31,11 @@
     margin-top: 10px;
 }
 
-#myImage {
+.imageContainer {
     max-height: 100px;
+}
+#myImage {
+    max-height: 100%;
 }
 
 .table-container {
