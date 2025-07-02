@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>みんなで問題作り</title>
+    <link rel="stylesheet" href="assets/css/make.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+</head>
+<body>
+    <header>
+        <div class="header-inner">
+            <h1 onclick="window.location.href = 'index.html'" style="cursor: pointer;">テスト対策</h1>
+            <strong><a href="/test.html">ファイル選択</a></strong>
+        </div>
+    </header>
+    <main>
+        <div class="title">
+            <label for="title">タイトルを入力</label>
+            <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off">
+        </div>
+        <table>
+            <tr>
+                <th>問題番号</th>
+                <th>問題</th>
+                <th>答え</th>
+            </tr>
+            <tr>
+                <td>1</td>
+                <td class="input"><textarea></textarea></td>
+                <td class="input"><textarea></textarea></td>
+            </tr>
+        </table>
+    </main>
+    <script src="assets/js/make.js" type="module"></script>
+</body>
+</html>

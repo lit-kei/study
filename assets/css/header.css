@@ -28,10 +28,12 @@ header {
 .header-inner h1 {
     margin: 0 30px;
 }
+.header-inner a,
 .other-site a {
     margin-left: 40px;
     text-decoration: none;
 }
+.header-inner a:hover,
 .other-site a:hover {
     text-decoration: underline;
 }

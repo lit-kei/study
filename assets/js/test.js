@@ -1,3 +1,27 @@
+import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { 
+    getFirestore, 
+    doc,
+    getDoc,
+    collection, 
+    getDocs,
+    limit,
+    query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCC4HW_rNFZHhhH1OzovE9coc_TRlKYJ4I",
+  authDomain: "study-1105a.firebaseapp.com",
+  projectId: "study-1105a",
+  storageBucket: "study-1105a.firebasestorage.app",
+  messagingSenderId: "356676590589",
+  appId: "1:356676590589:web:cd449cd5ac74e6db449794",
+  measurementId: "G-P84CG30Z7N"
+};
+
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
+
+
 let shuffle = true;
 let dataArray = [];
 let question = [];
@@ -14,7 +38,7 @@ const fileContent = localStorage.getItem("fileContent");
 const fileName = localStorage.getItem("fileName");
 document.getElementById("fileName").textContent = fileName;
 try {
-  setArray();
+  await setArray();
   if (dataArray.shuffle != undefined) {
     question = {
       contents: [...dataArray.contents],
@@ -23,14 +47,13 @@ try {
   } else {
     question = [...dataArray];
   }
-
   shuffleArray(question);
   init();
 } catch (error) {
   console.error("ファイルの内容がJSONとしてパースできません:", error);
 }
 
-function setArray() {
+async function setArray() {
   switch (params.get("f")) {
     case "pp":
       dataArray = [
@@ -386,6 +409,19 @@ function setArray() {
       document.getElementById("fileName").textContent = "語呂合わせ";
       break;
 
+    case "user":
+      await getDoc(doc(db, "posts", params.get("id"))).then(doc => {
+        if (doc.exists()) {
+          for (let i = 0; i < doc.data().contents.question.length; i++) {
+            dataArray.push([doc.data().contents.question[i], doc.data().contents.answer[i]]);
+          }
+          document.getElementById("fileName").textContent = doc.data().title;
+        } else {
+          console.log("そのようなIDのドキュメントは存在しません。")
+        }
+      });
+
+    break;
     default:
       dataArray = JSON.parse(fileContent);
       break;

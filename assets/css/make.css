@@ -1,0 +1,20 @@
+table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+  th, td {
+    border: 1px solid #aaa;
+    padding: 8px;
+    text-align: left;
+  }
+  td.input {
+    padding: 0;
+  }
+  td textarea {
+    height: 40px;
+    width: 100%;
+    font-size: 23px;
+  }
+  th {
+    background-color: #f2f2f2;
+  }
