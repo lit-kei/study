@@ -174,3 +174,13 @@ button:hover {
     font-size: 24px;
     margin-top: 5px;
 }
+
+.checkbox {
+    margin-top: 20px;
+}
+.checkbox *:hover {
+    cursor: pointer;
+    user-select: none; /* モダンブラウザ用 */
+    -webkit-user-select: none; /* Safari, Chrome 旧バージョン */
+    -ms-user-select: none; /* IE10+ */
+}
