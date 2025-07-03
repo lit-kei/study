@@ -19,3 +19,138 @@ const firebaseConfig = {
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
+
+const modal = document.getElementById('modal');
+
+let index = 0;
+
+function addRow(i = -1) {
+  index++;
+  const table = document.getElementById("mainTable");
+  
+  const newRow = table.querySelector("tbody").insertRow(i); // -1 は最後に挿入
+
+  const idCell = newRow.insertCell(0);
+  const queCell = newRow.insertCell(1);
+  const ansCell = newRow.insertCell(2);
+  const btnCell = newRow.insertCell(3);
+
+  idCell.className = 'id';
+
+  queCell.classList.add('que');
+  ansCell.classList.add('ans');
+
+  const que = document.createElement('textarea');
+  const ans = document.createElement('textarea');
+
+  que.required = true;
+  ans.required = true;
+  que.className = 'question';
+  ans.className = 'answer';
+  que.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+  ans.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+      e.preventDefault();
+    }
+  });
+  queCell.appendChild(que);
+  ansCell.appendChild(ans);
+  const dropBtn = document.createElement('button');
+  dropBtn.type = 'button';
+  dropBtn.className = 'dropBtn';
+  dropBtn.innerHTML = '&#x22ee;';
+  btnCell.className = 'last';
+  btnCell.appendChild(dropBtn);
+  idCell.textContent = String(index);
+
+  const drop = document.createElement('div');
+  drop.className = 'menu';
+  const insertBtn = document.createElement('button');
+  const deleteBtn = document.createElement('button');
+  insertBtn.textContent = '上に行を挿入';
+  deleteBtn.textContent = 'この行を削除';
+  insertBtn.type = 'button';
+  deleteBtn.type = 'button';
+  insertBtn.className = 'insert';
+  deleteBtn.className = 'delete';
+  insertBtn.addEventListener('click', () => {
+    const tbody = newRow.parentElement;
+    const i = Array.from(tbody.rows).indexOf(newRow); // tbody内のインデックス（0始まり）
+    addRow(i);
+    reset();
+  });
+  deleteBtn.addEventListener('click', () => {
+    newRow.remove();
+    index--;
+    reset();
+  });
+  drop.appendChild(insertBtn);
+  drop.appendChild(deleteBtn);
+
+  btnCell.appendChild(drop);
+}
+function reset() {
+  const tds = document.getElementsByClassName('id');
+  for (let i = 0; i < tds.length; i++) {
+    const e = tds[i];
+    const origin = e.textContent;
+    if (i + 1 != origin) {
+      e.textContent = String(i + 1);
+      e.style.color = '#f60';
+      setTimeout(() => e.style.color = '', 300);
+    }
+  }
+}
+
+document.addEventListener("click", function (e) {
+    const allMenus = document.querySelectorAll(".menu");
+    const isDropBtn = e.target.classList.contains("dropBtn");
+
+    // メニューを一旦全部閉じる
+    allMenus.forEach(menu => menu.classList.remove("show"));
+
+    if (isDropBtn) {
+        const menu = e.target.nextElementSibling;
+        menu.classList.toggle("show");
+        e.stopPropagation(); // 他のクリックイベントを止める
+    }
+});
+
+document.getElementById('mainForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  const title = document.getElementById('title').value;
+  const trs = document.querySelectorAll('tbody tr');
+  let question = [];
+  let answer = [];
+  for (let i = 0; i < trs.length; i++) {
+    const e = trs[i];
+    question.push(e.getElementsByClassName('question')[0].value);
+    answer.push(e.getElementsByClassName('answer')[0].value);
+  }
+  modal.style.display = flex;
+  await addDoc(collection(db, "posts"), {
+    title: title,
+    contents: {
+      question: question,
+      answer: answer
+    }
+  }).then(() => {
+    
+  });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+  addRow();
+});
+
+window.addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    addRow();
+  }
+});
+
+window.addRow = addRow;

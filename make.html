@@ -17,23 +17,52 @@
         </div>
     </header>
     <main>
-        <div class="title">
-            <label for="title">タイトルを入力</label>
-            <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off">
-        </div>
-        <table>
-            <tr>
-                <th>問題番号</th>
-                <th>問題</th>
-                <th>答え</th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td class="input"><textarea class="text" id="que1"></textarea></td>
-                <td class="input"><textarea class="text" id="ans1"></textarea></td>
-            </tr>
-        </table>
+        <form id="mainForm">
+            <div class="title">
+                <label for="title">問題集のタイトル</label>
+                <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off" required>
+            </div>
+            <table id="mainTable">
+                <thead>
+                    <tr>
+                        <th>問題番号</th>
+                        <th>問題</th>
+                        <th>答え</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    
+                    <!--<tr>
+                        <td class="id">1</td>
+                        <td class="que"><textarea class="question" required></textarea></td>
+                        <td class="ans"><textarea class="answer" required></textarea></td>
+                        <td class="last">
+                            <button type="button" class="dropBtn">&#x22ee;</button>
+                            <div class="menu">
+                                <button type="button" class="insert">上に行を挿入</button>
+                                <button type="button" class="delete">この行を削除</button>
+                            </div>
+                        </td>
+                    </tr>-->
+                </tbody>
+            </table>
+            <button id="addRowBtn" type="button" onclick="addRow()">+</button>
+            <button id="submit" type="submit">この問題集を投稿する</button>
+            
+        </form>
     </main>
+    <div id="modal" class="modal">
+        <div class="spinner" id="spinner"></div>
+        <div class="modal-content">
+          <p id="label">投稿しています。少々お待ちください。</p>
+          <strong id="idLabel">#f2sE0Jih5KJPmUfX7vZc</strong>
+          <div class="buttons">
+            <button type="button" onclick="back()">戻る</button>
+            <button type="button" onclick="run()">試す</button>
+          </div>
+        </div>
+    </div>
     <script src="assets/js/make.js" type="module"></script>
 </body>
 </html>
