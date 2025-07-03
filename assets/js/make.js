@@ -132,7 +132,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
     question.push(e.getElementsByClassName('question')[0].value);
     answer.push(e.getElementsByClassName('answer')[0].value);
   }
-  modal.style.display = 'flex';
+  modal.display = 'flex';
   document.getElementById('spinner').display = 'block';
   document.getElementById('label').textContent = '投稿しています。少々お待ちください。';
   document.getElementById('buttons').display = 'none';
