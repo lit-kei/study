@@ -127,10 +127,19 @@ td {
   overflow: hidden;          /* はみ出した部分を非表示 */
   text-overflow: ellipsis;   /* 省略記号「…」を表示 */
 }
+td.last {
+  position: relative;
+  padding-right: 40px; /* ← 余白を作ることで、"など" が重ならないように */
+}
 td.last::after {
   content: "など";
-  margin-left: 10px;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
   font-size: 13px;
+  color: black;
+  padding-left: 5px;
 }
 .id {
   position: absolute;
