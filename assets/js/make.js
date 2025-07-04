@@ -123,36 +123,39 @@ document.addEventListener("click", function (e) {
 
 document.getElementById('mainForm').addEventListener('submit', async e => {
   e.preventDefault();
-  const title = document.getElementById('title').value;
-  const trs = document.querySelectorAll('tbody tr');
-  let question = [];
-  let answer = [];
-  for (let i = 0; i < trs.length; i++) {
-    const e = trs[i];
-    question.push(e.getElementsByClassName('question')[0].value);
-    answer.push(e.getElementsByClassName('answer')[0].value);
-  }
-  modal.style.display = 'flex';
-  document.getElementById('spinner').style.display = 'block';
-  document.getElementById('label').textContent = '投稿しています。少々お待ちください。';
-  document.getElementById('buttons').style.display = 'none';
-  document.getElementById('idLabel').style.display = 'none';
-  document.getElementById('idLabel').textContent = '';
-  await addDoc(collection(db, "posts"), {
-    title: title,
-    contents: {
-      question: question,
-      answer: answer
+  if (index == 0) {
+    alert('1つ以上の問題と答えをセットしてください。')
+  } else {
+    const title = document.getElementById('title').value;
+    const trs = document.querySelectorAll('tbody tr');
+    let question = [];
+    let answer = [];
+    for (let i = 0; i < trs.length; i++) {
+      const e = trs[i];
+      question.push(e.getElementsByClassName('question')[0].value);
+      answer.push(e.getElementsByClassName('answer')[0].value);
     }
-  }).then(ref => {
-      document.getElementById('spinner').style.display = 'none';
-      document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
-      document.getElementById('buttons').style.display = 'flex';
-      document.getElementById('idLabel').style.display = 'block';
-      id = ref.id;
-      document.getElementById('idLabel').textContent = `#${id}`;
-  });
-
+    modal.style.display = 'flex';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('label').textContent = '投稿しています。少々お待ちください。';
+    document.getElementById('buttons').style.display = 'none';
+    document.getElementById('idLabel').style.display = 'none';
+    document.getElementById('idLabel').textContent = '';
+    await addDoc(collection(db, "posts"), {
+      title: title,
+      contents: {
+        question: question,
+        answer: answer
+      }
+    }).then(ref => {
+        document.getElementById('spinner').style.display = 'none';
+        document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
+        document.getElementById('buttons').style.display = 'flex';
+        document.getElementById('idLabel').style.display = 'block';
+        id = ref.id;
+        document.getElementById('idLabel').textContent = `#${id}`;
+    });
+  }
 });
 
 document.addEventListener('DOMContentLoaded', function () {
