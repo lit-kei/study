@@ -142,9 +142,11 @@ th {
   cursor: pointer;
   border-radius: 25px;
   transition: all 0.3s ease;
+  transform: scale(1);
 }
 #submit:hover {
   background-color: #404040;
+  transform: scale(1.1);
 }
 .modal {
   position: fixed;

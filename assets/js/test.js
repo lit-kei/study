@@ -417,7 +417,8 @@ async function setArray() {
           }
           document.getElementById("fileName").textContent = doc.data().title;
         } else {
-          console.log("そのようなIDのドキュメントは存在しません。")
+          console.log("そのようなIDのドキュメントは存在しません。");
+          dataArray = JSON.parse(fileContent);
         }
       });
 
