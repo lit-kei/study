@@ -93,6 +93,7 @@ function addRow(i = -1) {
   drop.appendChild(deleteBtn);
 
   btnCell.appendChild(drop);
+  newRow.getElementsByTagName('textarea')[0].focus();
 }
 function reset() {
   const tds = document.getElementsByClassName('id');
