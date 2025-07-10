@@ -1,5 +1,6 @@
 body {
   position: relative;
+  margin-bottom: 50vh;
 }
 .title, .subject {
   display: flex;
