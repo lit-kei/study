@@ -19,8 +19,20 @@
     <main>
         <form id="mainForm">
             <div class="title">
-                <label for="title">問題集のタイトル</label>
+                <label for="title">問題集のタイトル：</label>
                 <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off" required>
+            </div>
+            <div class="subject">
+                <label for="subject">教科を選択：</label>
+                <select name="subject" id="subject" required>
+                    <option value="" disabled selected>選んでください</option>
+                    <option value="0" class="kokugo">国語</option>
+                    <option value="1" class="sugaku">数学</option>
+                    <option value="2" class="rika">理科</option>
+                    <option value="3" class="shakai">社会</option>
+                    <option value="4" class="eigo">英語</option>
+                    <option value="5" class="others">その他</option>
+                </select>
             </div>
             <table id="mainTable">
                 <thead>

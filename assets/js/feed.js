@@ -20,41 +20,36 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
-const Posts = [];
-/*await addDoc(collection(db, "posts"), {
-  contents: {
-    question: ["私は誰でしょう"],
-    answer: ["卑弥呼"]
-  },
-  title: "歴史（簡単）"
-});*/
+const subjects = [
+  {name: "国語", color: "#E57373"},
+  {name: "数学", color: "#64B5F6"},
+  {name: "理科", color: "#4DB6AC"},
+  {name: "社会", color: "#FBC02D"},
+  {name: "英語", color: "#FF67AD"},
+  {name: "その他", color: "#BA68C8"}];
+
+const Posts = []; 
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
-  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents});
+  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject});
   createContainer(doc.data(), doc.id);
 });
 
 function createContainer(docSnap, id) {
   const container = document.createElement('div');
+  container.addEventListener('click', () => window.location.href = `test.html?f=user&id=${id}`);
   container.id = id;
   container.classList.add('container');
-  container.addEventListener('click', () => window.location.href = `test.html?f=user&id=${id}`);
-  const title = document.createElement('h2');
-  title.classList.add('title');
-  title.innerText = docSnap.title;
-  container.appendChild(title);
-  const table = document.createElement('table');
-  table.classList.add('contents');
-  table.appendChild(document.createElement('tbody'));
-  container.appendChild(table);
-  const total = document.createElement('p');
-  total.classList.add('total');
-  container.appendChild(total);
-  const identifier = document.createElement('p');
-  identifier.textContent = '#' + id;
-  identifier.classList.add('id');
-  container.appendChild(identifier);
+  container.innerHTML = `
+  <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 5].color};">${subjects[docSnap.subject ?? 5].name}</p>
+  <h2 class="title">${docSnap.title}</h2>
+  <table class="contents">
+    <tbody></tbody>
+  </table>
+  <p class="total"></p>
+  <p class="id">#${id}</p>
+  `;
 
   main.appendChild(container);
 

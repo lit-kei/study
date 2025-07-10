@@ -1,20 +1,59 @@
 body {
   position: relative;
 }
-.title {
+.title, .subject {
   display: flex;
   align-items: center;
   height: 40px;
+  width: 440px;
+  justify-content: space-between;
+  margin: 0 0 10px 0;
 }
 input#title {
   height: 80%;
   margin: 10px;
   padding: 6px;
+  width: 190px;
 }
 label {
   font-size: 25px;
 }
-
+.kokugo {
+  color: #E57373;
+}
+.sugaku {
+  color: #64B5F6;
+}
+.rika {
+  color: #4DB6AC;
+}
+.shakai {
+  color: #FBC02D;
+}
+.eigo {
+  color: #ff4b9f;
+}
+.others {
+  color: #BA68C8;
+}
+select {
+  width: 190px;
+  margin: 10px;
+  appearance: none; /* デフォルトの矢印を非表示 */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  background-color: #fff;
+  border: 2px solid #ccc;
+  border-radius: 8px;
+  padding: 5px 40px 5px 15px;
+  font-size: 16px;
+  cursor: pointer;
+  background-image: url('data:image/svg+xml;utf8,<svg fill="%23333" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/></svg>');
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 16px;
+  transition: border-color 0.3s ease;
+}
 table {
     border-collapse: collapse;
     width: 100%;

@@ -20,6 +20,8 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
+const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo", "others"];
+
 const modal = document.getElementById('modal');
 
 let index = 0;
@@ -122,12 +124,18 @@ document.addEventListener("click", function (e) {
     }
 });
 
+document.getElementById('subject').addEventListener('change', () => {
+  const val = isNaN(Number(document.getElementById('subject').value)) ? 5 : Number(document.getElementById('subject').value);
+  document.getElementById('subject').className = subjects[val];
+});
+
 document.getElementById('mainForm').addEventListener('submit', async e => {
   e.preventDefault();
   if (index == 0) {
     alert('1つ以上の問題と答えをセットしてください。')
   } else {
     const title = document.getElementById('title').value;
+    const subject = isNaN(Number(document.getElementById('subject').value)) ? 5 : Number(document.getElementById('subject').value);
     const trs = document.querySelectorAll('tbody tr');
     let question = [];
     let answer = [];
@@ -144,6 +152,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
     document.getElementById('idLabel').textContent = '';
     await addDoc(collection(db, "posts"), {
       title: title,
+      subject: subject,
       contents: {
         question: question,
         answer: answer
