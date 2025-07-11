@@ -21,13 +21,15 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
 const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo", "others"];
+const params = new URLSearchParams(window.location.search);
 
 const modal = document.getElementById('modal');
 
 let index = 0;
 let id = '';
+let history = [];
 
-function addRow(i = -1) {
+function addRow({ i = -1, q = "", a = "" } = {}) {
   index++;
   const table = document.getElementById("mainTable");
   
@@ -50,6 +52,10 @@ function addRow(i = -1) {
   ans.required = true;
   que.className = 'question';
   ans.className = 'answer';
+  que.name = "question";
+  ans.name = "answer";
+  que.value = q;
+  ans.value = a;
   que.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
       e.preventDefault();
@@ -83,7 +89,7 @@ function addRow(i = -1) {
   insertBtn.addEventListener('click', () => {
     const tbody = newRow.parentElement;
     const i = Array.from(tbody.rows).indexOf(newRow); // tbody内のインデックス（0始まり）
-    addRow(i);
+    addRow({i: i});
     reset();
   });
   deleteBtn.addEventListener('click', () => {
@@ -156,7 +162,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
       contents: {
         question: question,
         answer: answer
-      }
+      },
+      history: history
     }).then(ref => {
         document.getElementById('spinner').style.display = 'none';
         document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
@@ -169,7 +176,22 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  addRow();
+  switch (params.get('c')) {
+    case "edit":
+      const data = JSON.parse(localStorage.getItem('edit'));
+      document.getElementById('title').value = data.title;
+      document.getElementById('subject').value = data.subject;
+      document.getElementById('subject').className = subjects[data.subject];
+      for (let i = 0; i < data.contents.length; i++) {
+        addRow({q: data.contents[i][0], a: data.contents[i][1]});
+      }
+      history = [...data.history];
+      break;
+  
+    default:
+      addRow();
+      break;
+  }
 });
 
 window.addEventListener('keydown', e => {
@@ -181,7 +203,7 @@ window.addEventListener('keydown', e => {
 window.addRow = addRow;
 
 function back() {
-  modal.style.display = 'none';
+  window.location.href = 'feed.html';
 }
 
 function run() {

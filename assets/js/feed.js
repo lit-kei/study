@@ -3,7 +3,9 @@ import {
     getFirestore, 
     collection, 
     addDoc,
+    doc,
     getDocs,
+    getDoc,
     limit,
     query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
@@ -28,11 +30,14 @@ const subjects = [
   {name: "英語", color: "#FF67AD"},
   {name: "その他", color: "#BA68C8"}];
 
+const hisTbody = document.getElementById('his-tbody');
+const modal = document.getElementById('modal');
 const Posts = []; 
+let fin = false;
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
-  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject});
+  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history});
   createContainer(doc.data(), doc.id);
 });
 
@@ -44,18 +49,104 @@ function createContainer(docSnap, id) {
   container.innerHTML = `
   <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 5].color};">${subjects[docSnap.subject ?? 5].name}</p>
   <h2 class="title">${docSnap.title}</h2>
+  <button type="button" id="edit-${id}" class="edit">
+    <img src="assets/images/edit.svg" alt="編集のアイコン" class="image">
+  </button>
   <table class="contents">
     <tbody></tbody>
   </table>
   <p class="total"></p>
+  <button type="button" id="history-${id}" class="history">
+    <img src="assets/images/history.svg" alt="履歴のアイコン" class="image">
+  </button>
   <p class="id">#${id}</p>
   `;
 
   main.appendChild(container);
-
+  const editBtn = document.getElementById(`edit-${id}`);
+  editBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    let contents = [];
+    for (let i = 0; i < docSnap.contents.question.length; i++) {
+      contents.push([docSnap.contents.question[i], docSnap.contents.answer[i]]);
+    }
+    localStorage.setItem('edit', JSON.stringify({
+      contents: contents,
+      title: docSnap.title,
+      id: id,
+      subject: docSnap.subject,
+      history: [id, ...(docSnap.history || [])]
+    }));
+    window.location.href = `make.html?c=edit`;
+  });
+  if (docSnap.history != undefined && docSnap.history.length != 0) {
+    const btn = document.getElementById(`history-${id}`);
+    btn.style.display = 'block';
+    btn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      hisTbody.innerHTML = '';
+      modal.style.display = 'flex';
+      await Promise.all(docSnap.history.map(async item => {
+        const i = Posts.findIndex(post => post.id == item);
+        const newRow = hisTbody.insertRow(-1);
+        const subCell = newRow.insertCell(0);
+        const titleCell = newRow.insertCell(1);
+        const idCell = newRow.insertCell(2);
+        subCell.className = 'table-sub';
+        titleCell.className = 'table-title';
+        idCell.className = 'table-id';
+        let subject = {};
+        let title = "";
+        let exist = true;
+        subCell.style.width = '60px';
+        if (i != -1) {
+          subject = subjects[Posts[i].subject];
+          title = Posts[i].title;
+        } else {
+          if (fin == false) {
+            const itemDoc = await getDoc(doc(db, "posts", item));
+            exist = itemDoc.exists();
+            if (exist) {
+              title = itemDoc.data().title;
+              subject = subjects[itemDoc.data().subject];
+            } else {
+              newRow.className = 'not-available';
+              subCell.innerHTML = `
+              <p class="table-subject" style="background-color: #555;">不明</p>
+              `;
+              idCell.textContent = "既に削除されています。";
+              titleCell.textContent = "この問題集は存在しません。";
+            }
+          } else {
+            exist = false;
+            newRow.className = 'not-available';
+              subCell.innerHTML = `
+                <p class="table-subject" style="background-color: #555;">不明</p>
+              `;
+            idCell.textContent = "既に削除されています。";
+            titleCell.textContent = "この問題集は存在しません。";
+          }
+        }
+        if (exist) {
+          newRow.className = 'available';
+          subCell.innerHTML = `
+            <p class="table-subject" style="background-color: ${subject.color};">
+              ${subject.name}
+            </p>
+          `;
+          idCell.textContent = "#" + item;
+          titleCell.textContent = title;
+          newRow.addEventListener('click', () => {
+            window.location.href = `test.html?f=user&id=${item}`;
+          });
+        }
+      }));
+    });
+  }
   
   insertRows(docSnap.contents, id);
 }
+fin = true;
 function insertRows(contents, targetID) {
   const target = document.getElementById(targetID);
   const tbody = target.getElementsByTagName('tbody')[0];
