@@ -167,16 +167,12 @@ th {
     transform: scale(1.1);
 }
 
-#submit {
-
+#submit, #save {
   position: fixed;
-  width: 350px;
   height: 50px;
-  bottom: 60px;
-  left: 80px;
+  width: 350px;
   font-size: large;
   color: white;
-  background-color: #404040d0;
   border: none;
   outline: none;
   cursor: pointer;
@@ -184,8 +180,22 @@ th {
   transition: all 0.3s ease;
   transform: scale(1);
 }
+#submit {
+  bottom: 60px;
+  left: 80px;
+  background-color: #404040d0;
+}
 #submit:hover {
   background-color: #404040;
+  transform: scale(1.1);
+}
+#save {
+  bottom: 60px;
+  right: 80px;
+  background-color: #8B1E3Fd0;
+}
+#save:hover {
+  background-color: #8B1E3F;
   transform: scale(1.1);
 }
 .modal {
@@ -255,6 +265,29 @@ th {
     left: 50%;
     z-index: 100;
 }
+#saveToast {
+  position: fixed;
+  bottom: 50px;
+  width: 200px;
+  height: 50px;
+  text-align: center;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4caf4f;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  font-size: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 9999;
+}
+
+#saveToast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(-10px);
+}
 @keyframes spin {
   0% {
     transform: translate(-50%, -50%) rotate(0deg);
@@ -273,5 +306,9 @@ th {
   }
   #idLabel {
     font-size: 24px;
+  }
+  #save {
+    bottom: 140px;
+    left: 25px;
   }
 }

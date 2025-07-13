@@ -27,7 +27,7 @@ const modal = document.getElementById('modal');
 
 let index = 0;
 let id = '';
-let history = [];
+let histories = [];
 
 function addRow({ i = -1, q = "", a = "" } = {}) {
   index++;
@@ -163,7 +163,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         question: question,
         answer: answer
       },
-      history: history
+      history: histories
     }).then(ref => {
         document.getElementById('spinner').style.display = 'none';
         document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
@@ -185,13 +185,32 @@ document.addEventListener('DOMContentLoaded', function () {
       for (let i = 0; i < data.contents.length; i++) {
         addRow({q: data.contents[i][0], a: data.contents[i][1]});
       }
-      history = [...data.history];
+      histories = [...data.history];
       break;
   
     default:
+      const saveData = JSON.parse(localStorage.getItem('save'));
+      if (saveData != null) {
+        const result = confirm("保存したデータを読み込みますか？");
+        if (result) {
+            document.getElementById('title').value = saveData.title;
+            document.getElementById('subject').value = saveData.subject;
+            document.getElementById('subject').className = subjects[saveData.subject];
+            for (let i = 0; i < saveData.contents.length; i++) {
+              addRow({q: saveData.contents[i][0], a: saveData.contents[i][1]});
+            }
+            histories = [...saveData.history];
+          break;
+        }
+      }
+
       addRow();
       break;
   }
+  window.addRow = addRow;
+  window.back = back;
+  window.run = run;
+  document.getElementById('save').addEventListener('click', save);
 });
 
 window.addEventListener('keydown', e => {
@@ -200,7 +219,28 @@ window.addEventListener('keydown', e => {
   }
 });
 
-window.addRow = addRow;
+
+function save() {
+  let saveContents = [];
+  const trs = document.querySelectorAll('tbody tr');
+  for (let i = 0; i < trs.length; i++) {
+    const e = trs[i];
+    saveContents.push([e.getElementsByClassName('question')[0].value, e.getElementsByClassName('answer')[0].value]);
+  }
+  localStorage.setItem('save', JSON.stringify({
+    title: document.getElementById('title').value,
+    subject: document.getElementById('subject').value,
+    modification: params.get('c') == "edit",
+    contents: saveContents,
+    history: histories
+  }));
+  const toast = document.getElementById('saveToast');
+  toast.classList.add('show');
+
+  setTimeout(() => {
+    toast.classList.remove('show');
+  }, 1000);
+}
 
 function back() {
   window.location.href = 'feed.html';
@@ -210,5 +250,3 @@ function run() {
   window.location.href = `test.html?f=user&id=${id}`;
 }
 
-window.back = back;
-window.run = run;

@@ -73,7 +73,6 @@ function createContainer(docSnap, id) {
     localStorage.setItem('edit', JSON.stringify({
       contents: contents,
       title: docSnap.title,
-      id: id,
       subject: docSnap.subject,
       history: [id, ...(docSnap.history || [])]
     }));
