@@ -166,7 +166,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         question: question,
         answer: answer
       },
-      history: histories
+      history: histories,
+      good: 0
     }).then(ref => {
         document.getElementById('spinner').style.display = 'none';
         document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
@@ -258,8 +259,7 @@ function save() {
     subject: document.getElementById('subject').value,
     modification: params.get('c') == "edit",
     contents: saveContents,
-    history: histories,
-    good: 0
+    history: histories
   }));
   document.getElementById('delete').style.display = 'block';
 
