@@ -24,10 +24,12 @@ const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo","ongaku", "kateik
 const params = new URLSearchParams(window.location.search);
 
 const modal = document.getElementById('modal');
+const toast = document.getElementById('saveToast');
 
 let index = 0;
 let id = '';
 let histories = [];
+let timeoutId;
 
 function addRow({ i = -1, q = "", a = "" } = {}) {
   index++;
@@ -102,6 +104,7 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
 
   btnCell.appendChild(drop);
   newRow.getElementsByTagName('textarea')[0].focus();
+  window.scrollBy(0, 62);
 }
 function reset() {
   const tds = document.getElementsByClassName('id');
@@ -192,6 +195,7 @@ document.addEventListener('DOMContentLoaded', function () {
       const saveData = JSON.parse(localStorage.getItem('save'));
       if (saveData != null) {
         const result = confirm("保存したデータを読み込みますか？");
+        document.getElementById('delete').style.display = 'block';
         if (result) {
             document.getElementById('title').value = saveData.title;
             document.getElementById('subject').value = saveData.subject;
@@ -211,6 +215,28 @@ document.addEventListener('DOMContentLoaded', function () {
   window.back = back;
   window.run = run;
   document.getElementById('save').addEventListener('click', save);
+  document.getElementById('delete').addEventListener('click', () => {
+    const check = confirm('本当に削除しますか？');
+    if (check) {
+      localStorage.removeItem("save");
+      document.getElementById('delete').style.display = 'none';
+      toast.textContent = '削除しました！';
+      toast.style.backgroundColor = '#e23a3aff';
+      toast.classList.add('show');
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1000);
+    } else {
+      toast.textContent = '削除に失敗しました';
+      toast.style.backgroundColor = '#a2af2bff';
+      toast.classList.add('show');
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1000);
+    }
+  });
 });
 
 window.addEventListener('keydown', e => {
@@ -234,10 +260,13 @@ function save() {
     contents: saveContents,
     history: histories
   }));
-  const toast = document.getElementById('saveToast');
+  document.getElementById('delete').style.display = 'block';
+
+  toast.textContent = '保存しました！';
+  toast.style.backgroundColor = '#4caf4f';
   toast.classList.add('show');
 
-  setTimeout(() => {
+  timeoutId = setTimeout(() => {
     toast.classList.remove('show');
   }, 1000);
 }
