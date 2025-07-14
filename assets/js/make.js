@@ -20,7 +20,7 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
-const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo", "others"];
+const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo","ongaku", "kateika", "gijutsu", "bijutsu", "hotai", "others"];
 const params = new URLSearchParams(window.location.search);
 
 const modal = document.getElementById('modal');
@@ -131,7 +131,7 @@ document.addEventListener("click", function (e) {
 });
 
 document.getElementById('subject').addEventListener('change', () => {
-  const val = isNaN(Number(document.getElementById('subject').value)) ? 5 : Number(document.getElementById('subject').value);
+  const val = isNaN(Number(document.getElementById('subject').value)) ? 10 : Number(document.getElementById('subject').value);
   document.getElementById('subject').className = subjects[val];
 });
 
@@ -141,7 +141,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
     alert('1つ以上の問題と答えをセットしてください。')
   } else {
     const title = document.getElementById('title').value;
-    const subject = isNaN(Number(document.getElementById('subject').value)) ? 5 : Number(document.getElementById('subject').value);
+    const subject = isNaN(Number(document.getElementById('subject').value)) ? 10 : Number(document.getElementById('subject').value);
     const trs = document.querySelectorAll('tbody tr');
     let question = [];
     let answer = [];

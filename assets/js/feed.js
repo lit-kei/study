@@ -28,7 +28,14 @@ const subjects = [
   {name: "理科", color: "#4DB6AC"},
   {name: "社会", color: "#FBC02D"},
   {name: "英語", color: "#FF67AD"},
-  {name: "その他", color: "#BA68C8"}];
+
+  {name: "音楽", color: "#d1a648ff"},
+  {name: "家庭科", color: "#A1887F"},
+  {name: "技術", color: "#689F8F"},
+  {name: "美術", color: "#b64587"},
+  {name: "保体", color: "#c93333ff"},
+  {name: "その他", color: "#BA68C8"}
+];
 
 const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
@@ -47,7 +54,7 @@ function createContainer(docSnap, id) {
   container.id = id;
   container.classList.add('container');
   container.innerHTML = `
-  <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 5].color};">${subjects[docSnap.subject ?? 5].name}</p>
+  <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 10].color};">${subjects[docSnap.subject ?? 10].name}</p>
   <h2 class="title">${docSnap.title}</h2>
   <button type="button" id="edit-${id}" class="edit">
     <img src="assets/images/edit.svg" alt="編集のアイコン" class="image">

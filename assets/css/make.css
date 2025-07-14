@@ -34,6 +34,21 @@ label {
 .eigo {
   color: #ff4b9f;
 }
+.ongaku {
+  color: #d1a648;
+}
+.kateika {
+  color: #a1887f;
+}
+.gijutsu {
+  color: #689f8f;
+}
+.bijutsu {
+  color: #b64587;
+}
+.hotai {
+  color: #c93333;
+}
 .others {
   color: #BA68C8;
 }
