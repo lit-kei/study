@@ -2,11 +2,13 @@ import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebase
 import { 
     getFirestore, 
     collection, 
-    addDoc,
+    updateDoc,
     doc,
     getDocs,
     getDoc,
+    increment,
     limit,
+    orderBy,
     query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -40,11 +42,43 @@ const subjects = [
 const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
 const Posts = []; 
+let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false];
+let currentBoxes = [];
+const btns = ["favorite-fil", "good-fil", "subject-fil"];
 let fin = false;
+let isProcessing = false;
+let favorites = JSON.parse(localStorage.getItem('favorites'));
+if (favorites === null) { 
+  favorites = [];
+  localStorage.setItem('favorites', JSON.stringify([]));
+}
+
+
+
+for (let i = 0; i < 3; i++) {
+  document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
+  document.getElementById(btns[i]).addEventListener('click', () => {
+    if (filterBtns[i]) {
+      document.getElementById(btns[i]).classList.remove('focus');
+    } else {
+      document.getElementById(btns[i]).classList.add('focus');
+      if (i === 1 && filterBtns[2]) {
+        document.getElementById(btns[2]).classList.remove('focus');
+        filterBtns[2] = false;
+      } else if (i === 2 && filterBtns[1]) {
+        document.getElementById(btns[1]).classList.remove('focus');
+        filterBtns[1] = false;
+      }
+    }
+    filterBtns[i] = !filterBtns[i];
+    localStorage.setItem('setting', JSON.stringify(filterBtns));
+    setContainers(judgeBtns(currentBoxes), true);
+  });
+}
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
-  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history});
+  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good});
   createContainer(doc.data(), doc.id);
 });
 
@@ -71,12 +105,49 @@ function createContainer(docSnap, id) {
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 star">
       <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z" />
     </svg>
-    <p class="goodLabel">${docSnap.good ?? 0}</p>
+    <p class="goodLabel">${docSnap.good}</p>
   </div>
   <p class="id">#${id}</p>
   `;
-
   main.appendChild(container);
+  const star = container.getElementsByClassName('star')[0];
+  const gLabel = container.getElementsByClassName('goodLabel')[0];
+  if (favorites.includes(id)) {
+    star.classList.add('filled');
+  }
+  star.addEventListener('click', async (e) => {
+    e.stopPropagation();
+    if (isProcessing) return;
+    isProcessing = true;
+    const i = Posts.findIndex(i => i.id == id);
+    if (favorites.includes(id)) {
+      try {
+        await updateDoc(doc(db, "posts", id), {
+          good: increment(-1)
+        });
+        star.classList.remove('filled');
+        Posts[i].good--;
+        gLabel.textContent = String(Posts[i].good);
+        favorites = favorites.filter(e => e != id);
+      } catch(e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await updateDoc(doc(db, "posts", id), {
+          good: increment(1)
+        });
+        star.classList.add('filled');
+        Posts[i].good++;
+        gLabel.textContent = String(Posts[i].good);
+        favorites.push(id);
+      } catch(e) {
+        console.error(e);
+      }
+    }
+    isProcessing = false;
+    localStorage.setItem('favorites', JSON.stringify(favorites));
+  });
   const editBtn = document.getElementById(`edit-${id}`);
   editBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -160,6 +231,8 @@ function createContainer(docSnap, id) {
   insertRows(docSnap.contents, id);
 }
 fin = true;
+currentBoxes = [...Posts];
+setContainers(judgeBtns(currentBoxes), true);
 function insertRows(contents, targetID) {
   const target = document.getElementById(targetID);
   const tbody = target.getElementsByTagName('tbody')[0];
@@ -179,28 +252,27 @@ function insertRows(contents, targetID) {
 
 
 
-function setContainers(users = false) {
+function setContainers(users = false, keep = false) {
   const unfixedContainers = document.querySelectorAll('div.container:not(.fixed)');
   let displayed = [];
   for (const d of unfixedContainers) {
-    if (users !== false && users.includes(d.id))  {
+    if (users !== false && users.includes(d.id) && !keep)  {
       displayed.push(d.id);
       continue;
     }
     main.removeChild(d);
   }
-
   if (users === false) {
     for (const element of Posts) {
       //usersがfalseのときは、全削除からの全追加
       createContainer(element, element.id);
     }
-  } else {
-    for (const element of users) {
-      if (displayed.includes(element)) continue;
-      const createBox = Posts.filter((box) => box.id == element)[0];
-      createContainer(createBox, createBox.id);
-    }
+    return;
+  }
+  for (const element of users) {
+    if (displayed.includes(element)) continue;
+    const createBox = Posts.filter((box) => box.id == element)[0];
+    createContainer(createBox, createBox.id);
   }
 }
 
@@ -214,10 +286,26 @@ input.addEventListener('input', async () => {
     // valueにデータがある
     // titleから検索
     const titleHit = Posts
-      .filter(box => box.title.toLowerCase().includes(value.toLowerCase()))
-      .map(box => box.id);
-    setContainers(titleHit);
+      .filter(box => box.title.toLowerCase().includes(value.toLowerCase()));
+    currentBoxes = [...titleHit];
+    setContainers(judgeBtns(titleHit), true);
   } else {
-    setContainers();
+    currentBoxes = [...Posts];
+    setContainers(judgeBtns(currentBoxes), true);
   }
 });
+
+function judgeBtns(arr = Posts) {
+  let data = [...arr];
+  if (filterBtns[0]) {
+    data = [...arr.filter(e => favorites.includes(e.id))];
+  }
+  if (filterBtns[1]) {
+    data.sort((a, b) => b.good - a.good);
+  } else if (filterBtns[2]) {
+    data.sort((a, b) => a.subject - b.subject);
+  } else if (!filterBtns[0]) {
+    return arr.map(e => e.id);
+  }
+  return data.map(e => e.id);
+}

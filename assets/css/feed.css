@@ -1,4 +1,6 @@
-
+main {
+  margin-bottom: 50vh;
+}
 .main {
     width: 100%;
     padding: 40px;
@@ -11,9 +13,9 @@
     width: 100%;
     margin: 15px 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
+    gap: 130px;
     padding: 10px;
-    gap: 60px;
     align-items: center;
     border-bottom: 2px solid #aaa;
 }
@@ -21,16 +23,41 @@ input {
     height: 40px;
     border-radius: 20px;
     border: 2px solid black;
-    width: 400px;
+    width: 380px;
     font-size: 18px;
     padding-left: 15px;
 }
 .form h2 {
     cursor: pointer;
     text-decoration: none; 
+    margin-right: 400px;
 }
 .form h2:hover {
     text-decoration: underline; 
+}
+.form .filter {
+  display: flex;
+  align-items: center;
+  margin-left: 100px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.form .filter button {
+  border: 1px solid black;
+  outline: none;
+  border-radius: 5px;
+  padding: 5px 0;
+  font-size: 16px;
+  width: 120px;
+  height: 40px;
+  background-color: white;
+  color: black;
+  cursor: pointer;
+  transition: all 0.5s ease;
+}
+.form .filter button.focus {
+  background-color: black;
+  color: white;
 }
 .container {
     background-color: #fff;
@@ -41,7 +68,7 @@ input {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
     box-sizing: border-box;
-    cursor: pointer;
+    cursor: default;
     position: relative;
     transition: background-color 0.3s ease;
 }
@@ -162,7 +189,7 @@ td.last::after {
 .history,
 .edit {
   position: absolute;
-  cursor: help;
+  cursor: pointer;
   border: none;
   outline: none;
   align-items: end;
@@ -184,7 +211,7 @@ td.last::after {
   height: 28px;
 }
 .good {
-  display: none;
+  display: flex;
   position: absolute;
   align-items: end;
   left: 15px;
@@ -194,12 +221,13 @@ td.last::after {
 .star {
   width: 30px;
   height: 30px;
-  cursor: help;
+  cursor: pointer;
   transition: fill 0.2s;
 }
 .star.filled path {
-  fill: yellow;
-  stroke: yellow;
+  stroke-width: 1px;
+  fill: #FFD700;
+  stroke: #555555;
 }
 .star:not(.filled) path {
   stroke-width: 1px;
@@ -324,6 +352,7 @@ td.last::after {
   }
   .form {
     gap: 10px;
+    flex-wrap: wrap;
   }
   input {
     width: 225px;
