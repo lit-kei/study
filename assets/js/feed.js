@@ -78,7 +78,7 @@ for (let i = 0; i < 3; i++) {
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
-  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good});
+  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0});
   createContainer(doc.data(), doc.id);
 });
 
