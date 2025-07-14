@@ -165,6 +165,7 @@ td.last::after {
   cursor: help;
   border: none;
   outline: none;
+  align-items: end;
   background-color: rgba(0,0,0,0);
 }
 .history {
@@ -173,6 +174,7 @@ td.last::after {
   display: none;
 }
 .edit {
+  display: flex;
   right: 15px;
   top: 10px;
 
@@ -181,10 +183,37 @@ td.last::after {
   width: 28px;
   height: 28px;
 }
+.good {
+  display: none;
+  position: absolute;
+  align-items: end;
+  left: 15px;
+  bottom: 40px;
+  width: 192px;
+}
+.star {
+  width: 30px;
+  height: 30px;
+  cursor: help;
+  transition: fill 0.2s;
+}
+.star.filled path {
+  fill: yellow;
+  stroke: yellow;
+}
+.star:not(.filled) path {
+  stroke-width: 1px;
+  fill: none;
+  stroke: #444;
+}
+.goodLabel {
+  margin: 0 0 3px 3px;
+}
 .edit .image {
   width: 25px;
   height: 25px;
 }
+
 .id {
   position: absolute;
   margin: 0;

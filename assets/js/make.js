@@ -258,7 +258,8 @@ function save() {
     subject: document.getElementById('subject').value,
     modification: params.get('c') == "edit",
     contents: saveContents,
-    history: histories
+    history: histories,
+    good: 0
   }));
   document.getElementById('delete').style.display = 'block';
 
