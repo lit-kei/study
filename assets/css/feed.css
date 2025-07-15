@@ -13,8 +13,7 @@ main {
     width: 100%;
     margin: 15px 0;
     display: flex;
-    justify-content: space-around;
-    gap: 130px;
+    justify-content: space-evenly;
     padding: 10px;
     align-items: center;
     border-bottom: 2px solid #aaa;
@@ -30,7 +29,6 @@ input {
 .form h2 {
     cursor: pointer;
     text-decoration: none; 
-    margin-right: 400px;
 }
 .form h2:hover {
     text-decoration: underline; 
@@ -38,17 +36,15 @@ input {
 .form .filter {
   display: flex;
   align-items: center;
-  margin-left: 100px;
-  gap: 20px;
-  flex-wrap: wrap;
+  gap: 10px;
 }
 .form .filter button {
   border: 1px solid black;
   outline: none;
   border-radius: 5px;
   padding: 5px 0;
-  font-size: 16px;
-  width: 120px;
+  font-size: 14px;
+  width: 100px;
   height: 40px;
   background-color: white;
   color: black;
