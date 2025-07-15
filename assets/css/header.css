@@ -33,7 +33,7 @@ header {
 }
 .header-inner a,
 .other-site a {
-    margin-left: 40px;
+    margin: 30px;
     text-decoration: none;
 }
 .header-inner a:hover,
