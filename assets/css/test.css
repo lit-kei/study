@@ -73,8 +73,17 @@ tr:hover {
 
 /* ID列 */
 .id {
-    width: 60px;
+    width: 80px;
     text-align: center;
+}
+
+.rem {
+    width: 80px;
+    text-align: center;
+}
+.check {
+    width: 50px;
+    height: 50px;
 }
 
 p {
@@ -183,4 +192,66 @@ button:hover {
     user-select: none; /* モダンブラウザ用 */
     -webkit-user-select: none; /* Safari, Chrome 旧バージョン */
     -ms-user-select: none; /* IE10+ */
+}
+td.check-td {
+  text-align: center;       /* 横方向中央揃え */
+  vertical-align: middle;   /* 縦方向中央揃え */
+}
+.custom-checkbox-input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+  margin: 0;
+}
+
+/* ラベル全体の見た目調整 */
+.custom-checkbox-label {
+  position: relative;
+  display: inline-block;
+  padding-left: 28px; /* チェックマークの分だけ左に余白 */
+  cursor: pointer;
+  user-select: none;
+  vertical-align: middle;
+  height: 20px;
+  line-height: 20px;
+}
+
+/* チェックマークのボックス */
+.custom-checkbox-span {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: white;
+  border: 2px solid #999;
+  border-radius: 4px;
+  box-sizing: border-box;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* チェックされた時のスタイル */
+.custom-checkbox-input:checked + .custom-checkbox-span {
+  background-color: #007bff;
+  border-color: #007bff;
+}
+
+/* チェックマークのデザイン */
+.custom-checkbox-span::after {
+  content: "";
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* チェックされるとチェックマークを表示 */
+.custom-checkbox-input:checked + .custom-checkbox-span::after {
+  display: block;
 }

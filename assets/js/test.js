@@ -29,22 +29,29 @@ let problem = [];
 let answer = false;
 let finish = false;
 let id = 0;
+let uuid = "";
 let len = 0;
+let checks = [];
 
 // 現在のURLのクエリパラメータを取得する場合
 const params = new URLSearchParams(window.location.search);
 
 const fileContent = localStorage.getItem("fileContent");
 const fileName = localStorage.getItem("fileName");
-document.getElementById("fileName").textContent = fileName;
 try {
   await setArray();
   if (dataArray.shuffle != undefined) {
+    for (let i = 0; i < dataArray.length; i++) {
+      dataArray.contents[i].id = crypto.randomUUID();
+    }
     question = {
       contents: [...dataArray.contents],
       shuffle: dataArray.shuffle,
     };
   } else {
+    for (let i = 0; i < dataArray.length; i++) {
+      dataArray[i].id = crypto.randomUUID();
+    }
     question = [...dataArray];
   }
   shuffleArray(question);
@@ -425,6 +432,7 @@ async function setArray() {
     break;
     default:
       dataArray = JSON.parse(fileContent);
+      document.getElementById("fileName").textContent = fileName;
       break;
   }
 }
@@ -444,11 +452,49 @@ function init() {
   answer = false;
   finish = false;
   if (question.contents != undefined) {
-    problem = question.contents.slice(0);
-    len = question.contents.length;
+    problem = question.contents.filter(e => !checks.includes(e.id));
+    len = problem.length;
   } else {
-    problem = question.slice(0);
-    len = question.length;
+    problem = question.filter(e => !checks.includes(e.id));
+    len = problem.length;
+  }
+  const checked = question.filter(e => checks.includes(e.id));
+  for (let i = 0; i < checked.length; i++) {
+    const e = checked[i];
+    const newRow = table.insertRow(0); // 新しい行を追加
+    newRow.insertCell(0).textContent = "覚えた";
+    newRow.insertCell(1).innerHTML = e[0];
+    newRow.insertCell(2).innerHTML = e[1];
+    const check = newRow.insertCell(3);
+    check.className = 'check-td';
+    // ラベルを作ってinputとカスタム見た目spanを入れる
+    const label = document.createElement('label');
+    label.className = 'custom-checkbox-label';
+    const box = document.createElement('input');
+    box.type = 'checkbox';
+    box.className = 'custom-checkbox-input';
+    box.checked = true;
+    box.dataset.id = uuid;
+
+    // カスタム見た目用のspan
+    const customSpan = document.createElement('span');
+    customSpan.className = 'custom-checkbox-span';
+
+    // ラベルにinputとspanを追加
+    label.appendChild(box);
+    label.appendChild(customSpan);
+
+    // セルにラベルを追加
+    check.appendChild(label);
+    // イベントリスナーはinputに付ける（変わらず）
+    box.addEventListener('change', () => {
+      const uid = box.dataset.id;
+      if (box.checked) {
+        checks.push(uid);
+      } else {
+        checks = checks.filter(e => e != uid);
+      }
+    });
   }
 }
 
@@ -491,6 +537,7 @@ function next(a) {
   if (!finish) {
     if (!answer) {
       id++;
+      uuid = problem[0].id;
       document.querySelector("#myImage").src = "";
       document.getElementById("progressLabel").innerText =
         "進捗: " + String(id) + " / " + String(len);
@@ -511,10 +558,42 @@ function next(a) {
       const table = document
         .getElementById("resultTable")
         .getElementsByTagName("tbody")[0];
-      const newRow = table.insertRow(); // 新しい行を追加
+      const newRow = table.insertRow(0); // 新しい行を追加
       newRow.insertCell(0).textContent = id;
       newRow.insertCell(1).innerHTML = problem[0][0];
       newRow.insertCell(2).innerHTML = problem[0][1];
+      const check = newRow.insertCell(3);
+      check.className = 'check-td';
+      // ラベルを作ってinputとカスタム見た目spanを入れる
+      const label = document.createElement('label');
+      label.className = 'custom-checkbox-label';
+
+      const box = document.createElement('input');
+      box.type = 'checkbox';
+      box.className = 'custom-checkbox-input';
+      box.checked = checks.includes(uuid);
+      box.dataset.id = uuid;
+
+      // カスタム見た目用のspan
+      const customSpan = document.createElement('span');
+      customSpan.className = 'custom-checkbox-span';
+
+      // ラベルにinputとspanを追加
+      label.appendChild(box);
+      label.appendChild(customSpan);
+
+      // セルにラベルを追加
+      check.appendChild(label);
+
+      // イベントリスナーはinputに付ける（変わらず）
+      box.addEventListener('change', () => {
+        const uid = box.dataset.id;
+        if (box.checked) {
+          checks.push(uid);
+        } else {
+          checks = checks.filter(e => e != uid);
+        }
+      });
       problem.shift();
       updateProgressBar(Math.floor((id / len) * 100));
       if (problem.length == 0) {
