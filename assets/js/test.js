@@ -32,7 +32,6 @@ let id = 0;
 let uuid = "";
 let len = 0;
 let checks = [];
-
 // 現在のURLのクエリパラメータを取得する場合
 const params = new URLSearchParams(window.location.search);
 
@@ -457,6 +456,10 @@ function init() {
   } else {
     problem = question.filter(e => !checks.includes(e.id));
     len = problem.length;
+  }
+  if (len == 0) {
+    finish = true;
+    return;
   }
   const checked = question.filter(e => checks.includes(e.id));
   for (let i = 0; i < checked.length; i++) {
