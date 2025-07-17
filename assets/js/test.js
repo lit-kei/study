@@ -473,6 +473,7 @@ function init() {
     const box = document.createElement('input');
     box.type = 'checkbox';
     box.className = 'custom-checkbox-input';
+    box.name = 'checkbox';
     box.checked = true;
     box.dataset.id = uuid;
 
@@ -577,6 +578,7 @@ function next(a) {
       box.className = 'custom-checkbox-input';
       box.checked = checks.includes(uuid);
       box.dataset.id = uuid;
+      box.name = 'checkbox';
 
       // カスタム見た目用のspan
       const customSpan = document.createElement('span');
