@@ -457,10 +457,7 @@ function init() {
     problem = question.filter(e => !checks.includes(e.id));
     len = problem.length;
   }
-  if (len == 0) {
-    finish = true;
-    return;
-  }
+  
   const checked = question.filter(e => checks.includes(e.id));
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
@@ -498,6 +495,10 @@ function init() {
         checks = checks.filter(e => e != uid);
       }
     });
+  }
+  if (len == 0) {
+    finish = true;
+    return;
   }
 }
 
