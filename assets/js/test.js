@@ -457,10 +457,10 @@ function init() {
     problem = question.filter(e => !checks.includes(e.id));
     len = problem.length;
   }
-  
   const checked = question.filter(e => checks.includes(e.id));
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
+    uuid = checked[i].id;
     const newRow = table.insertRow(0); // 新しい行を追加
     newRow.insertCell(0).textContent = "覚えた";
     newRow.insertCell(1).innerHTML = e[0];
@@ -497,6 +497,8 @@ function init() {
       }
     });
   }
+  
+  
   if (len == 0) {
     finish = true;
     return;
