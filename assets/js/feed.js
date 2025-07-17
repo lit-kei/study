@@ -46,6 +46,7 @@ const modal = document.getElementById('modal');
 let Posts = []; 
 let Fixed = [];
 let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false];
+let fixedFil = true;
 let currentBoxes = [];
 const btns = ["favorite-fil", "good-fil", "subject-fil"];
 let fin = false;
@@ -56,6 +57,86 @@ if (favorites === null) {
   localStorage.setItem('favorites', JSON.stringify([]));
 }
 
+
+await setDoc(doc(db, "posts", "morusushingowooboeyo"), {
+  title: "モールス信号",
+  subject: 7,
+  display: "fixed",
+  contents: {
+  question: ["A",
+"B",
+"C",
+"D",
+"E",
+"F",
+"G",
+"H",
+"I",
+"J",
+"K",
+"L",
+"M",
+"N",
+"O",
+"P",
+"Q",
+"R",
+"S",
+"T",
+"U",
+"V",
+"W",
+"X",
+"Y",
+"Z",
+"0",
+"1",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9"],
+answer: ["・ー",
+"ー・・・",
+"ー・－・",
+"ー・・",
+"・",
+"・・ー・",
+"ーー・",
+"・・・・",
+"・・",
+"・ーーー",
+"ー・ー",
+"・ー・・",
+"ーー",
+"ー・",
+"ーーー",
+"・ーー・",
+"ーー・ー",
+"・ー・",
+"・・・",
+"ー",
+"・・ー",
+"・・・ー",
+"・ーー",
+"ー・・ー",
+"ー・ーー",
+"ーー・・",
+"ーーーーー",
+"・ーーーー",
+"・・ーーー",
+"・・・ーー",
+"・・・・ー",
+"・・・・・",
+"ー・・・・",
+"ーー・・・",
+"ーーー・・",
+"ーーーー・"]
+}
+});
 
 
 for (let i = 0; i < 3; i++) {
@@ -78,6 +159,15 @@ for (let i = 0; i < 3; i++) {
     setContainers(judgeBtns(currentBoxes));
   });
 }
+document.getElementById('fixed-fil').addEventListener('click', () => {
+  fixedFil = !fixedFil;
+  if (fixedFil) {
+    document.getElementById('fixed-fil').classList.add('focus');
+  } else {
+    document.getElementById('fixed-fil').classList.remove('focus');
+  }
+  setContainers(judgeBtns(currentBoxes));
+});
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
@@ -305,12 +395,23 @@ input.addEventListener('input', async () => {
     setContainers(judgeBtns(titleHit));
   } else {
     currentBoxes = [...Posts];
-    console.log(currentBoxes, Posts);
     setContainers(judgeBtns(currentBoxes));
   }
 });
 
 function judgeBtns(arr = Posts) {
+  for (const element of Fixed) {
+    const fixedElem = document.getElementById(element.id);
+    if (fixedFil) {
+      if (!fixedElem) {
+        createContainer(element, element.id);
+      }
+    } else {
+      if (fixedElem) {
+        main.removeChild(fixedElem);
+      }
+    }
+  }
   let data = [...arr];
   if (filterBtns[0]) {
     data = [...arr.filter(e => favorites.includes(e.id))];
@@ -322,5 +423,6 @@ function judgeBtns(arr = Posts) {
   } else if (!filterBtns[0]) {
     return arr.map(e => e.id);
   }
+
   return data.map(e => e.id);
 }
