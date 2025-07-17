@@ -7,6 +7,7 @@ import {
     getDocs,
     getDoc,
     increment,
+    setDoc,
     limit,
     orderBy,
     query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
@@ -23,6 +24,7 @@ const firebaseConfig = {
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
+
 
 const subjects = [
   {name: "国語", color: "#E57373"},
@@ -41,7 +43,8 @@ const subjects = [
 
 const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
-const Posts = []; 
+let Posts = []; 
+let Fixed = [];
 let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false];
 let currentBoxes = [];
 const btns = ["favorite-fil", "good-fil", "subject-fil"];
@@ -72,14 +75,18 @@ for (let i = 0; i < 3; i++) {
     }
     filterBtns[i] = !filterBtns[i];
     localStorage.setItem('setting', JSON.stringify(filterBtns));
-    setContainers(judgeBtns(currentBoxes), true);
+    setContainers(judgeBtns(currentBoxes));
   });
 }
 // やばくなったら"ページネーション"
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
-  Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0});
-  createContainer(doc.data(), doc.id);
+  if (doc.data().display == 'fixed') {
+    Fixed.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: 'fixed'});
+    createContainer(doc.data(), doc.id);
+  } else {
+    Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: doc.data().display ?? 'normal'});
+  }
 });
 
 function createContainer(docSnap, id) {
@@ -87,7 +94,17 @@ function createContainer(docSnap, id) {
   container.addEventListener('click', () => window.location.href = `test.html?f=user&id=${id}`);
   container.id = id;
   container.classList.add('container');
-  container.innerHTML = `
+  container.innerHTML = docSnap.display == 'fixed' ? `
+  <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 10].color};">${subjects[docSnap.subject ?? 10].name}</p>
+  <h2 class="title">${docSnap.title}</h2>
+  <table class="contents">
+    <tbody></tbody>
+  </table>
+  <p class="total"></p>
+  
+  </div>
+  <p class="id">#${id}</p>
+  ` : `
   <p class="subject" style="background-color: ${subjects[docSnap.subject ?? 10].color};">${subjects[docSnap.subject ?? 10].name}</p>
   <h2 class="title">${docSnap.title}</h2>
   <button type="button" id="edit-${id}" class="edit">
@@ -115,124 +132,127 @@ function createContainer(docSnap, id) {
   if (favorites.includes(id)) {
     star.classList.add('filled');
   }
-  star.addEventListener('click', async (e) => {
-    e.stopPropagation();
-    if (isProcessing) return;
-    isProcessing = true;
-    const i = Posts.findIndex(i => i.id == id);
-    if (favorites.includes(id)) {
-      try {
-        await updateDoc(doc(db, "posts", id), {
-          good: increment(-1)
-        });
-        star.classList.remove('filled');
-        Posts[i].good--;
-        gLabel.textContent = String(Posts[i].good);
-        favorites = favorites.filter(e => e != id);
-      } catch(e) {
-        console.error(e);
-      }
-    } else {
-      try {
-        await updateDoc(doc(db, "posts", id), {
-          good: increment(1)
-        });
-        star.classList.add('filled');
-        Posts[i].good++;
-        gLabel.textContent = String(Posts[i].good);
-        favorites.push(id);
-      } catch(e) {
-        console.error(e);
-      }
-    }
-    isProcessing = false;
-    localStorage.setItem('favorites', JSON.stringify(favorites));
-  });
-  const editBtn = document.getElementById(`edit-${id}`);
-  editBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    let contents = [];
-    for (let i = 0; i < docSnap.contents.question.length; i++) {
-      contents.push([docSnap.contents.question[i], docSnap.contents.answer[i]]);
-    }
-    localStorage.setItem('edit', JSON.stringify({
-      contents: contents,
-      title: docSnap.title,
-      subject: docSnap.subject,
-      history: [id, ...(docSnap.history || [])]
-    }));
-    window.location.href = `make.html?c=edit`;
-  });
-  if (docSnap.history != undefined && docSnap.history.length != 0) {
-    const btn = document.getElementById(`history-${id}`);
-    btn.style.display = 'flex';
-    btn.addEventListener('click', async (e) => {
+
+  if (docSnap.display == 'fixed') container.classList.add('fixed');
+  else {
+    star.addEventListener('click', async (e) => {
       e.stopPropagation();
-      hisTbody.innerHTML = '';
-      modal.style.display = 'flex';
-      await Promise.all(docSnap.history.map(async item => {
-        const i = Posts.findIndex(post => post.id == item);
-        const newRow = hisTbody.insertRow(-1);
-        const subCell = newRow.insertCell(0);
-        const titleCell = newRow.insertCell(1);
-        const idCell = newRow.insertCell(2);
-        subCell.className = 'table-sub';
-        titleCell.className = 'table-title';
-        idCell.className = 'table-id';
-        let subject = {};
-        let title = "";
-        let exist = true;
-        subCell.style.width = '60px';
-        if (i != -1) {
-          subject = subjects[Posts[i].subject];
-          title = Posts[i].title;
-        } else {
-          if (fin == false) {
-            const itemDoc = await getDoc(doc(db, "posts", item));
-            exist = itemDoc.exists();
-            if (exist) {
-              title = itemDoc.data().title;
-              subject = subjects[itemDoc.data().subject];
+      if (isProcessing) return;
+      isProcessing = true;
+      const i = Posts.findIndex(i => i.id == id);
+      if (favorites.includes(id)) {
+        try {
+          await updateDoc(doc(db, "posts", id), {
+            good: increment(-1)
+          });
+          star.classList.remove('filled');
+          Posts[i].good--;
+          gLabel.textContent = String(Posts[i].good);
+          favorites = favorites.filter(e => e != id);
+        } catch(e) {
+          console.error(e);
+        }
+      } else {
+        try {
+          await updateDoc(doc(db, "posts", id), {
+            good: increment(1)
+          });
+          star.classList.add('filled');
+          Posts[i].good++;
+          gLabel.textContent = String(Posts[i].good);
+          favorites.push(id);
+        } catch(e) {
+          console.error(e);
+        }
+      }
+      isProcessing = false;
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+    });
+    const editBtn = document.getElementById(`edit-${id}`);
+    editBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      let contents = [];
+      for (let i = 0; i < docSnap.contents.question.length; i++) {
+        contents.push([docSnap.contents.question[i], docSnap.contents.answer[i]]);
+      }
+      localStorage.setItem('edit', JSON.stringify({
+        contents: contents,
+        title: docSnap.title,
+        subject: docSnap.subject,
+        history: [id, ...(docSnap.history || [])]
+      }));
+      window.location.href = `make.html?c=edit`;
+    });
+    if (docSnap.history != undefined && docSnap.history.length != 0) {
+      const btn = document.getElementById(`history-${id}`);
+      btn.style.display = 'flex';
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        hisTbody.innerHTML = '';
+        modal.style.display = 'flex';
+        await Promise.all(docSnap.history.map(async item => {
+          const i = Posts.findIndex(post => post.id == item);
+          const newRow = hisTbody.insertRow(-1);
+          const subCell = newRow.insertCell(0);
+          const titleCell = newRow.insertCell(1);
+          const idCell = newRow.insertCell(2);
+          subCell.className = 'table-sub';
+          titleCell.className = 'table-title';
+          idCell.className = 'table-id';
+          let subject = {};
+          let title = "";
+          let exist = true;
+          subCell.style.width = '60px';
+          if (i != -1) {
+            subject = subjects[Posts[i].subject];
+            title = Posts[i].title;
+          } else {
+            if (fin == false) {
+              const itemDoc = await getDoc(doc(db, "posts", item));
+              exist = itemDoc.exists();
+              if (exist) {
+                title = itemDoc.data().title;
+                subject = subjects[itemDoc.data().subject];
+              } else {
+                newRow.className = 'not-available';
+                subCell.innerHTML = `
+                <p class="table-subject" style="background-color: #555;">不明</p>
+                `;
+                idCell.textContent = "既に削除されています。";
+                titleCell.textContent = "この問題集は存在しません。";
+              }
             } else {
+              exist = false;
               newRow.className = 'not-available';
-              subCell.innerHTML = `
-              <p class="table-subject" style="background-color: #555;">不明</p>
-              `;
+                subCell.innerHTML = `
+                  <p class="table-subject" style="background-color: #555;">不明</p>
+                `;
               idCell.textContent = "既に削除されています。";
               titleCell.textContent = "この問題集は存在しません。";
             }
-          } else {
-            exist = false;
-            newRow.className = 'not-available';
-              subCell.innerHTML = `
-                <p class="table-subject" style="background-color: #555;">不明</p>
-              `;
-            idCell.textContent = "既に削除されています。";
-            titleCell.textContent = "この問題集は存在しません。";
           }
-        }
-        if (exist) {
-          newRow.className = 'available';
-          subCell.innerHTML = `
-            <p class="table-subject" style="background-color: ${subject.color};">
-              ${subject.name}
-            </p>
-          `;
-          idCell.textContent = "#" + item;
-          titleCell.textContent = title;
-          newRow.addEventListener('click', () => {
-            window.location.href = `test.html?f=user&id=${item}`;
-          });
-        }
-      }));
-    });
+          if (exist) {
+            newRow.className = 'available';
+            subCell.innerHTML = `
+              <p class="table-subject" style="background-color: ${subject.color};">
+                ${subject.name}
+              </p>
+            `;
+            idCell.textContent = "#" + item;
+            titleCell.textContent = title;
+            newRow.addEventListener('click', () => {
+              window.location.href = `test.html?f=user&id=${item}`;
+            });
+          }
+        }));
+      });
+    }
   }
-  
   insertRows(docSnap.contents, id);
 }
 fin = true;
 currentBoxes = [...Posts];
-setContainers(judgeBtns(currentBoxes), true);
+setContainers(judgeBtns(currentBoxes));
 function insertRows(contents, targetID) {
   const target = document.getElementById(targetID);
   const tbody = target.getElementsByTagName('tbody')[0];
@@ -252,14 +272,9 @@ function insertRows(contents, targetID) {
 
 
 
-function setContainers(users = false, keep = false) {
+function setContainers(users = false) {
   const unfixedContainers = document.querySelectorAll('div.container:not(.fixed)');
-  let displayed = [];
   for (const d of unfixedContainers) {
-    if (users !== false && users.includes(d.id) && !keep)  {
-      displayed.push(d.id);
-      continue;
-    }
     main.removeChild(d);
   }
   if (users === false) {
@@ -270,7 +285,6 @@ function setContainers(users = false, keep = false) {
     return;
   }
   for (const element of users) {
-    if (displayed.includes(element)) continue;
     const createBox = Posts.filter((box) => box.id == element)[0];
     createContainer(createBox, createBox.id);
   }
@@ -288,10 +302,11 @@ input.addEventListener('input', async () => {
     const titleHit = Posts
       .filter(box => box.title.toLowerCase().includes(value.toLowerCase()));
     currentBoxes = [...titleHit];
-    setContainers(judgeBtns(titleHit), true);
+    setContainers(judgeBtns(titleHit));
   } else {
     currentBoxes = [...Posts];
-    setContainers(judgeBtns(currentBoxes), true);
+    console.log(currentBoxes, Posts);
+    setContainers(judgeBtns(currentBoxes));
   }
 });
 

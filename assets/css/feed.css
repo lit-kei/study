@@ -102,37 +102,41 @@ input {
 .container:not(.fixed) .title:hover ~ button image{
     opacity: 0.7;
 }
-.fixed::before,
-.fixed::after,
-.fixed .corner {
+.fixed {
+  border: 2px solid #ff7043;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(255,112,67,0.3);
+  background-color: white;
+  transition: all 0.3s ease;
+  position: relative;
+}
+.fixed::before {
   content: "";
   position: absolute;
-  width: 12px;
-  height: 12px;
-  background-color: #777;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(
+    circle at 30% 30%,
+    #ff5252,     /* ハイライト */
+    #e53935 40%, /* 基本色 */
+    #b71c1c 75%, /* 影 */
+    #4e0e0e 80% /* 濃い影 */
+  );
   border-radius: 50%;
-  box-sizing: border-box;
+  box-shadow:
+    inset -2px -2px 4px rgba(0, 0, 0, 0.4),  /* 内側の陰影 */
+    0 4px 6px rgba(0, 0, 0, 0.3);           /* 外側の影 */
+  z-index: 10;
 }
 
-.fixed::before {
-  top: 7px;
-  left: 7px;
+
+.fixed:hover {
+  box-shadow: 0 6px 14px rgba(255,112,67,0.6);
 }
 
-.fixed::after {
-  top: 7px;
-  right: 7px;
-}
-
-.fixed .left-bottom {
-  bottom: 7px;
-  left: 7px;
-}
-
-.fixed .right-bottom {
-  bottom: 7px;
-  right: 7px;
-}
 .NA {
   position: absolute;
   display: none;
