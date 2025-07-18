@@ -56,8 +56,20 @@ if (favorites === null) {
   favorites = [];
   localStorage.setItem('favorites', JSON.stringify([]));
 }
-
-
+/*
+await getDoc(doc(db, "posts", "gSCwhgTA5RWuieGWqFM7")).then(async docS => {
+  const data = docS.data();
+  await setDoc(doc(db, "posts", "1SCwhgTA5RWuieGWqFM7"), {
+    title: data.title,
+    subject: 1,
+    good: 1,
+    history: [],
+    contents: {
+      question: data.contents.question,
+      answer: data.contents.answer
+    }
+  });
+});*/
 /*await setDoc(doc(db, "posts", "morusushingowooboeyo"), {
   title: "モールス信号",
   subject: 7,
@@ -136,37 +148,6 @@ answer: ["・ー",
 "ーーー・・",
 "ーーーー・"]
 }
-});
-KlkETf3OcZASwrmrsYk4
-*/
-/*
-await setDoc(doc(db, "posts", "KlkETf3OcZASwrmrsYk4"), {
-  title: "原始関数集（ただしCは積分定数とする、ただしlogは自然対数とする）",
-  subject: 1,
-  good: 0,
-  history: [],
-  contents: {
-    question: [
-      "\\(\\int \\cos x\\, dx \\)",
-      "\\(\\int \\sin x\\, dx\\)",
-      "\\(\\int \\tan x\\, dx\\)",
-      "\\(\\int \\frac{1}{x}\\, dx\\)",
-      "\\(\\int \\arcsin x\\, dx\\)",
-      "\\(\\int \\arccos x\\, dx\\)",
-      "\\(\\int \\arctan x\\, dx\\)",
-      "\\(\\int \\log x\\,dx\\)"
-    ],
-    answer: [
-      "\\(\\sin x + C\\)",
-      "\\(- \\cos x + C\\)",
-      "\\(- \\log \\left| \\cos x \\right| + C\\)",
-      "\\(\\log \\left| x \\right| + C\\)",
-      "\\(x \\arcsin x + \\sqrt{1 - x^2} + C\\)",
-      "\\(x \\arccos x - \\sqrt{1 - x^2} + C\\)",
-      "\\(x \\arctan x - \\frac{1}{2}\\log(x^2 + 1) + C\\)",
-      "\\(x \\log x - x + C\\)"
-    ]
-  }
 });
 */
 for (let i = 0; i < 3; i++) {
@@ -369,6 +350,7 @@ function createContainer(docSnap, id) {
     }
   }
   insertRows(docSnap.contents, id);
+  container.style.animationDelay = `${Math.random() * 0.4}s`;
 }
 fin = true;
 currentBoxes = [...Posts];
