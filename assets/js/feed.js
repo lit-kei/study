@@ -58,7 +58,7 @@ if (favorites === null) {
 }
 
 
-await setDoc(doc(db, "posts", "morusushingowooboeyo"), {
+/*await setDoc(doc(db, "posts", "morusushingowooboeyo"), {
   title: "モールス信号",
   subject: 7,
   display: "fixed",
@@ -137,7 +137,7 @@ answer: ["・ー",
 "ーーーー・"]
 }
 });
-
+*/
 
 for (let i = 0; i < 3; i++) {
   document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';

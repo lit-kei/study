@@ -460,7 +460,6 @@ function init() {
   const checked = question.filter(e => checks.includes(e.id));
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
-    uuid = checked[i].id;
     const newRow = table.insertRow(0); // 新しい行を追加
     newRow.insertCell(0).textContent = "覚えた";
     newRow.insertCell(1).innerHTML = e[0];
@@ -550,6 +549,7 @@ function next(a) {
         "進捗: " + String(id) + " / " + String(len);
       document.getElementById("answer").innerHTML = "&#x00A0;";
       document.getElementById("question").innerHTML = problem[0][0];
+      MathJax.typeset();
       document.getElementById("button").textContent = "答えを見る";
       try {
         if (problem[0][2] != undefined) {
@@ -561,6 +561,7 @@ function next(a) {
       }
     } else {
       document.getElementById("answer").innerHTML = problem[0][1];
+      MathJax.typeset();
       document.getElementById("button").textContent = "次の問題へ";
       const table = document
         .getElementById("resultTable")
