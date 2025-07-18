@@ -137,8 +137,38 @@ answer: ["・ー",
 "ーーーー・"]
 }
 });
+KlkETf3OcZASwrmrsYk4
 */
-
+/*
+await setDoc(doc(db, "posts", "KlkETf3OcZASwrmrsYk4"), {
+  title: "原始関数集（ただしCは積分定数とする、ただしlogは自然対数とする）",
+  subject: 1,
+  good: 0,
+  history: [],
+  contents: {
+    question: [
+      "\\(\\int \\cos x\\, dx \\)",
+      "\\(\\int \\sin x\\, dx\\)",
+      "\\(\\int \\tan x\\, dx\\)",
+      "\\(\\int \\frac{1}{x}\\, dx\\)",
+      "\\(\\int \\arcsin x\\, dx\\)",
+      "\\(\\int \\arccos x\\, dx\\)",
+      "\\(\\int \\arctan x\\, dx\\)",
+      "\\(\\int \\log x\\,dx\\)"
+    ],
+    answer: [
+      "\\(\\sin x + C\\)",
+      "\\(- \\cos x + C\\)",
+      "\\(- \\log \\left| \\cos x \\right| + C\\)",
+      "\\(\\log \\left| x \\right| + C\\)",
+      "\\(x \\arcsin x + \\sqrt{1 - x^2} + C\\)",
+      "\\(x \\arccos x - \\sqrt{1 - x^2} + C\\)",
+      "\\(x \\arctan x - \\frac{1}{2}\\log(x^2 + 1) + C\\)",
+      "\\(x \\log x - x + C\\)"
+    ]
+  }
+});
+*/
 for (let i = 0; i < 3; i++) {
   document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
   document.getElementById(btns[i]).addEventListener('click', () => {
@@ -343,6 +373,7 @@ function createContainer(docSnap, id) {
 fin = true;
 currentBoxes = [...Posts];
 setContainers(judgeBtns(currentBoxes));
+
 function insertRows(contents, targetID) {
   const target = document.getElementById(targetID);
   const tbody = target.getElementsByTagName('tbody')[0];
@@ -350,7 +381,7 @@ function insertRows(contents, targetID) {
   for (let i = 0; i < length; i++) {
     const newRow = tbody.insertRow();
     const cell = newRow.insertCell(0);
-    cell.textContent = contents.question[i];
+    cell.innerHTML = contents.question[i];
     if (i == length - 1 && length < contents.question.length) {
       cell.classList.add('last');
     }
@@ -378,6 +409,7 @@ function setContainers(users = false) {
     const createBox = Posts.filter((box) => box.id == element)[0];
     createContainer(createBox, createBox.id);
   }
+  MathJax.typeset();
 }
 
 input.addEventListener('input', async () => {
@@ -411,6 +443,7 @@ function judgeBtns(arr = Posts) {
         main.removeChild(fixedElem);
       }
     }
+    MathJax.typeset();
   }
   let data = [...arr];
   if (filterBtns[0]) {

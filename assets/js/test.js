@@ -496,6 +496,7 @@ function init() {
       }
     });
   }
+  MathJax.typeset();
   
   
   if (len == 0) {
@@ -549,7 +550,6 @@ function next(a) {
         "進捗: " + String(id) + " / " + String(len);
       document.getElementById("answer").innerHTML = "&#x00A0;";
       document.getElementById("question").innerHTML = problem[0][0];
-      MathJax.typeset();
       document.getElementById("button").textContent = "答えを見る";
       try {
         if (problem[0][2] != undefined) {
@@ -559,9 +559,9 @@ function next(a) {
       } catch (error) {
         console.error("A");
       }
+      MathJax.typeset();
     } else {
       document.getElementById("answer").innerHTML = problem[0][1];
-      MathJax.typeset();
       document.getElementById("button").textContent = "次の問題へ";
       const table = document
         .getElementById("resultTable")
@@ -611,6 +611,7 @@ function next(a) {
       }
     }
     answer = !answer;
+    MathJax.typeset();
   } else {
     if (a) {
       shuffleArray(question);
