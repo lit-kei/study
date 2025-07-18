@@ -164,6 +164,15 @@ td {
   overflow: hidden;          /* はみ出した部分を非表示 */
   text-overflow: ellipsis;   /* 省略記号「…」を表示 */
 }
+td.last > mjx-container,
+td.last > .MathJax {
+  max-width: 100%;
+  display: inline-block;
+  vertical-align: middle;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 tr {
     display: inline-block;
     width: 100%;
@@ -336,6 +345,13 @@ td.last::after {
 }
 #his-table tr.available:hover {
   background-color: #ddd;
+}
+
+h2.title:hover mjx-math {
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  max-width: 100%;
 }
 @media (max-width: 768px) {
   .html {

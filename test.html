@@ -15,9 +15,13 @@
     </script>
     <script>
     window.MathJax = {
-    options: {
-        enableMenu: false  // これで右クリックメニューを無効化
-    }
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: []
+        },
+        options: {
+            enableMenu: false
+        }
     };
     </script>
     <script id="MathJax-script" async
