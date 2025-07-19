@@ -500,6 +500,7 @@ function init() {
         checks = checks.filter(e => e != uid);
       }
       const index = originalData.findIndex(e => e.id === problemID);
+      if (problemID == "default") return;
       if (index == -1) {
         originalData.push({id: problemID, contents: [...checks]});
       } else {
@@ -614,6 +615,7 @@ function next(a) {
         } else {
           checks = checks.filter(e => e != uid);
         }
+        if (problemID == "default") return;
         const index = originalData.findIndex(e => e.id === problemID);
         if (index == -1) {
           originalData.push({id: problemID, contents: [...checks]});
