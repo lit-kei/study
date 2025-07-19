@@ -35,13 +35,16 @@ let checks = [];
 // 現在のURLのクエリパラメータを取得する場合
 const params = new URLSearchParams(window.location.search);
 
+let problemID = "default";
+
 const fileContent = localStorage.getItem("fileContent");
 const fileName = localStorage.getItem("fileName");
+let originalData = JSON.parse(localStorage.getItem('checked')) ?? [{id: null, contents: []}];
 try {
   await setArray();
   if (dataArray.shuffle != undefined) {
     for (let i = 0; i < dataArray.length; i++) {
-      dataArray.contents[i].id = crypto.randomUUID();
+      dataArray.contents[i].id = i;
     }
     question = {
       contents: [...dataArray.contents],
@@ -49,7 +52,7 @@ try {
     };
   } else {
     for (let i = 0; i < dataArray.length; i++) {
-      dataArray[i].id = crypto.randomUUID();
+      dataArray[i].id = i;
     }
     question = [...dataArray];
   }
@@ -416,7 +419,9 @@ async function setArray() {
       break;
 
     case "user":
-      await getDoc(doc(db, "posts", params.get("id"))).then(doc => {
+      problemID = params.get('id');
+      checks = (originalData.find(e => e.id === problemID) ?? {contents: []}).contents;
+      await getDoc(doc(db, "posts", problemID)).then(doc => {
         if (doc.exists()) {
           for (let i = 0; i < doc.data().contents.question.length; i++) {
             dataArray.push([doc.data().contents.question[i], doc.data().contents.answer[i]]);
@@ -457,7 +462,7 @@ function init() {
     problem = question.filter(e => !checks.includes(e.id));
     len = problem.length;
   }
-  const checked = question.filter(e => checks.includes(e.id));
+  const checked = dataArray.filter(e => checks.includes(e.id));
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
     const newRow = table.insertRow(0); // 新しい行を追加
@@ -474,7 +479,7 @@ function init() {
     box.className = 'custom-checkbox-input';
     box.name = 'checkbox';
     box.checked = true;
-    box.dataset.id = uuid;
+    box.dataset.id = String(uuid);
 
     // カスタム見た目用のspan
     const customSpan = document.createElement('span');
@@ -488,12 +493,19 @@ function init() {
     check.appendChild(label);
     // イベントリスナーはinputに付ける（変わらず）
     box.addEventListener('change', () => {
-      const uid = box.dataset.id;
+      const uid = Number(box.dataset.id);
       if (box.checked) {
         checks.push(uid);
       } else {
         checks = checks.filter(e => e != uid);
       }
+      const index = originalData.findIndex(e => e.id === problemID);
+      if (index == -1) {
+        originalData.push({id: problemID, contents: [...checks]});
+      } else {
+        originalData[index].contents = [...checks];
+      }
+      localStorage.setItem('checked', JSON.stringify(originalData));
     });
   }
   MathJax.typeset();
@@ -580,7 +592,7 @@ function next(a) {
       box.type = 'checkbox';
       box.className = 'custom-checkbox-input';
       box.checked = checks.includes(uuid);
-      box.dataset.id = uuid;
+      box.dataset.id = String(uuid);
       box.name = 'checkbox';
 
       // カスタム見た目用のspan
@@ -596,12 +608,19 @@ function next(a) {
 
       // イベントリスナーはinputに付ける（変わらず）
       box.addEventListener('change', () => {
-        const uid = box.dataset.id;
+        const uid = Number(box.dataset.id);
         if (box.checked) {
           checks.push(uid);
         } else {
           checks = checks.filter(e => e != uid);
         }
+        const index = originalData.findIndex(e => e.id === problemID);
+        if (index == -1) {
+          originalData.push({id: problemID, contents: [...checks]});
+        } else {
+          originalData[index].contents = [...checks];
+        }
+        localStorage.setItem('checked', JSON.stringify(originalData));
       });
       problem.shift();
       updateProgressBar(Math.floor((id / len) * 100));
