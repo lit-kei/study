@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>フォルダ選択</title>
-    <link rel="stylesheet" href="assets/css/menu.css">
+    <title>暗記の小屋 - トップページ</title>
+    <meta name="title" content="トップページ">
+    <link rel="stylesheet" href="assets/css/top.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="暗記の小屋は、自分だけの問題集を作成して暗記をサポートするWebアプリです。生徒や学生だけでなく、幅広い世代で使うことが出来ます。ぜひこれを活用して、森羅万象を覚えましょう！">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -15,35 +17,78 @@
 
         gtag('config', 'G-0XE4K5F37J');
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/",
+        "description": "暗記の小屋は、自分だけの問題集を作成して暗記をサポートするWebアプリです。生徒や学生だけでなく、幅広い世代で使うことが出来ます。ぜひこれを活用して、森羅万象を覚えましょう！"
+    }
+    </script>
+    <script src="assets/js/header.js"></script>
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <h1 onclick="window.location.href = 'index.html'" style="cursor: pointer;">テスト対策</h1>
-            <strong><a href="test.html">ファイル選択</a></strong>
-            <strong><a href="feed.html">みんなで問題作り</a></strong>
-            <div class="other-site">
-                <h2>他のサイト</h2>
-                <strong><a href="https://lit-kei.github.io/prime/" target="_blank" rel="noopener noreferrer">素因数分解シャトルラン</a></strong>
+    <header></header>
+    <main>
+        <div class="container">
+            <h1 class="title" style="margin-bottom: 10px;">トップページ</h1>
+            <div class="two-column">
+                <div class="left">
+                    <h2 class="sub-title">このサイトの目的</h2>
+                    <p>私は暗記科目の対策をするためにこのサイトを立ち上げました。</p>
+                    <p>初めは自分で問題集を作って解くだけのサイトでしたが、みんなで問題集を共有したいという思いからどんどん機能を追加しました。</p>
+                    <p>他の学習者の役に立つことを心から願っています。</p>
+                    <p style="font-size: 22px; background-color: yellow;" id="advise"><b>※このサイトはパソコン推奨です。</b></p>
+                </div>
+                <div class="right">
+                    <h2 class="sub-title">自己紹介</h2>
+                    <p>このサイトを製作した、<b>けい</b> です。</p>
+                    <p>私は現在、中学三年生で受験生なので、このサイトを活用しながら無理のない範囲で開発したいと思っています。</p>
+                    <p>拙いデザインですが、学習効率を最大限にするために力を尽くすので、どうかよろしくお願いします。</p>
+                </div>
             </div>
         </div>
-    </header>
-    <main>
-    <div class="container">
-        <form id="folderForm">
-            <input type="file" id="folderInput" webkitdirectory directory />
-            <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
-        </form>
-
-        <div id="folderStructure" class="folder-structure"></div>
-    </div>
-    <button id="downloadButton">サンプルのフォルダをダウンロード</button>
-    <strong>
-        <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
-        <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
-    </strong>
+        <div class="two-column main">
+            <div class="left-containers">
+                
+                <div class="main-container" data-href="feed.html">
+                    <h1 class="title">みんなの問題集</h1>
+                    <div class="main-text">
+                        <p>このページでは、みんなが作成した問題集で勉強することが出来ます。
+                        もちろん、自分でもオリジナルの問題集を投稿することが出来ます。
+                        ぜひ、このプラットフォームを利用して学びを深めてください。</p>
+                    </div>
+                    <img src="assets/images/feed.png" alt="問題集の画像" class="main-image">
+                </div>
+                
+            </div>
+            <div class="right-containers">
+                <div class="main-container" data-href="menu.html">
+                    <h1 class="title">フォルダ選択</h1>
+                    <div class="main-text">
+                        <p>このページでは、自分がローカルな環境で作った問題集を使って勉強することが出来ます。</p>
+                        <p>したがって、この問題集が共有されたり公開されたりされることは決してありません。</p>
+                        <p>友達の名前など、公に出せないようなものを問題集に入れたいときは、こちらをご利用ください。</p>
+                    </div>
+                    <img src="assets/images/folder.png" alt="フォルダーページの画像" class="main-image">
+                </div>
+            </div>
+        </div>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/jszip@3.9.1/dist/jszip.min.js"></script>
-    <script src="assets/js/menu.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            document.querySelectorAll('.main-container').forEach(function (element) {
+                element.addEventListener('click', function () {
+                    const url = element.getAttribute('data-href');
+                    if (url) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

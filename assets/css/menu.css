@@ -1,3 +1,7 @@
+main {
+    padding: 20px;
+}
+
 /* フォルダ選択フォーム */
 #folderForm {
     text-align: left;
@@ -60,6 +64,7 @@ li.folder {
 
 li.file {
     color: #333;
+    height: 20px;
     cursor: pointer;
 }
 
@@ -89,7 +94,7 @@ ul {
 }
 li {
     position: relative;
-    padding-left: 20px;
+    padding-left: 10px;
 }
 li::before {
     content: '';
@@ -100,9 +105,9 @@ li::before {
     height: 2px;
     background-color: #000;
 }
-.folder-structure .folder:first-child::before {
+.folder-structure > ul > li.folder:first-child::before {
     content: none;
 }
-.folder-structure .folder:first-child {
+.folder-structure > ul > li.folder:first-child {
     padding-left: 0px;
 }

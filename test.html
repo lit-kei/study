@@ -2,10 +2,13 @@
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
-    <title>テスト対策</title>
+    <title>暗記の小屋 - 暗記ページ</title>
+    <meta name="title" content="暗記ページ">
     <link rel="stylesheet" href="assets/css/test.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
+    <meta name="description" content="実際に自分が作ったデータや他の人が投稿したデータを使って暗記することが出来ます。">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag(){dataLayer.push(arguments);}
@@ -24,21 +27,24 @@
         }
     };
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/test.html",
+        "description": "実際に自分が作ったデータや他の人が投稿したデータを使って暗記することが出来ます。"
+    }
+    </script>
     <script id="MathJax-script" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="assets/js/header.js"></script>
 
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <h1 onclick="window.location.href = 'index.html'" style="cursor: pointer;">テスト対策</h1>
-            <strong><a href="feed.html">みんなで問題作り</a></strong>
-            <div class="other-site">
-                <h2>他のサイト</h2>
-                <strong><a href="https://lit-kei.github.io/prime/" target="_blank" rel="noopener noreferrer">素因数分解シャトルラン</a></strong>
-            </div>
-        </div>
-    </header>
+    <header></header>
     <main>
         <form id="myForm">
             <!-- ファイル選択のカスタムボタン -->

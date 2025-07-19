@@ -3,10 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>みんなで問題作り</title>
+    <title>暗記の小屋 - 問題作り</title>
+    <meta name="title" content="問題作り">
     <link rel="stylesheet" href="assets/css/make.css">
     <link rel="stylesheet" href="assets/css/header.css">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="みんながオリジナルの問題集を作って投稿することで、このサイトはどんどん充実していきます。">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -15,19 +17,21 @@
 
         gtag('config', 'G-0XE4K5F37J');
     </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/make.html",
+        "description": "みんながオリジナルの問題集を作って投稿することで、このサイトはどんどん充実していきます。"
+    }
+    </script>
+    <script src="assets/js/header.js"></script>
 </head>
 <body>
-    <header>
-        <div class="header-inner">
-            <h1 onclick="window.location.href = 'index.html'" style="cursor: pointer;">テスト対策</h1>
-            <strong><a href="test.html">ファイル選択</a></strong>
-            <strong><a href="feed.html">みんなで問題作り</a></strong>
-            <div class="other-site">
-                <h2>他のサイト</h2>
-                <strong><a href="https://lit-kei.github.io/prime/" target="_blank" rel="noopener noreferrer">素因数分解シャトルラン</a></strong>
-            </div>
-        </div>
-    </header>
+    <header></header>
     <main>
         <form id="mainForm">
             <div class="title">

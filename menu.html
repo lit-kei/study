@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="title" content="フォルダ選択">
+    <title>暗記の小屋 - フォルダ選択</title>
+    <link rel="stylesheet" href="assets/css/menu.css">
+    <link rel="stylesheet" href="assets/css/header.css">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="自分がローカル環境で作成したデータをアップロードして、自分だけの問題集を楽しめます。">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-0XE4K5F37J');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/menu.html",
+        "description": "自分がローカル環境で作成したデータをアップロードして、自分だけの問題集を楽しめます。"
+    }
+    </script>
+    <script src="assets/js/header.js"></script>
+</head>
+<body>
+    <header></header>
+    <main>
+    <div class="container">
+        <form id="folderForm">
+            <input type="file" id="folderInput" webkitdirectory directory />
+            <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
+        </form>
+
+        <div id="folderStructure" class="folder-structure"></div>
+    </div>
+    <button id="downloadButton">サンプルのフォルダをダウンロード</button>
+    <strong>
+        <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
+        <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
+    </strong>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/jszip@3.9.1/dist/jszip.min.js"></script>
+    <script src="assets/js/menu.js"></script>
+</body>
+</html>
