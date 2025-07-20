@@ -65,6 +65,7 @@ try {
 async function setArray() {
   switch (params.get("f")) {
     case "pp":
+      problemID = "pp";
       dataArray = [
   ["～である be", "be - was - been"],
   ["～になる become", "become - became - become"],
@@ -159,6 +160,7 @@ async function setArray() {
       document.getElementById("fileName").textContent = "過去分詞";
       break;
     case "morse":
+      problemID = "morse";
       dataArray = {
         contents: [
           ["A", "・ー"],
@@ -205,6 +207,7 @@ async function setArray() {
       document.getElementById("fileName").textContent = "モールス信号";
       break;
     case "goro":
+      problemID = "goro";
       dataArray = {
         contents: [
           ["倭の奴国王が後漢から金印をもらう", "57年　　こんな金印欲しかった"],
@@ -435,6 +438,7 @@ async function setArray() {
 
     break;
     default:
+      problemID = fileName;
       dataArray = JSON.parse(fileContent);
       document.getElementById("fileName").textContent = fileName;
       break;
