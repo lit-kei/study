@@ -53,7 +53,10 @@ ul {
 }
 
 #advise {
-    visibility: hidden;
+    font-size: 22px;
+    background-color: yellow;
+    min-height: 32px; /* だいたい1行分の高さ確保 */
+    display: none;
 }
 
 .main {
@@ -82,7 +85,7 @@ ul {
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: all 0.4s ease;
+    transition: background-color 0.4s ease;
 }
 .main-container:hover {
     transform: translateY(-15px);
@@ -90,6 +93,8 @@ ul {
 }
 .main-image {
     max-width: 100%;
+    width: 500px;
+    height: auto;
     opacity: 0.5;
     display: block;
     margin: 20px auto 0 auto;
@@ -113,7 +118,7 @@ ul {
 
 @media (max-width: 768px) {
     #advise {
-        visibility: visible;
+        display: block;
     }
     .two-column {
         display: block;
