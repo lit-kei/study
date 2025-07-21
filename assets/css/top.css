@@ -82,10 +82,11 @@ ul {
     width: 100%;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.4s ease;
+    transition: all 0.4s ease;
 }
 .main-container:hover {
     transform: translateY(-15px);
+    background-color: #ddd;
 }
 .main-image {
     max-width: 100%;

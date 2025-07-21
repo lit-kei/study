@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <title>暗記の小屋 - 暗記ページ</title>
     <meta name="title" content="暗記ページ">
-    <link rel="stylesheet" href="assets/css/test.css">
-    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/top.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="assets/css/header.css" media="print" onload="this.media='all'">
     <link rel="icon" href="favicon.ico" sizes="any">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
     <meta name="description" content="実際に自分が作ったデータや他の人が投稿したデータを使って暗記することが出来ます。">
@@ -37,59 +37,66 @@
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
         "url": "https://lit-kei.github.io/study/test.html",
-        "description": "実際に自分が作ったデータや他の人が投稿したデータを使って暗記することが出来ます。"
+        "description": "実際に自分が作ったデータや他の人が投稿したデータを使って暗記することが出来ます。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
     }
     </script>
     <script id="MathJax-script" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="assets/js/header.js"></script>
+    <script src="assets/js/header.js" defer></script>
 
 </head>
 <body>
     <header></header>
-    <main>
-        <form id="myForm">
-            <!-- ファイル選択のカスタムボタン -->
-            <input type="file" id="fileInput" />
-            <label for="fileInput" id="fileInputLabel">ファイルを選択</label>
-            <span id="fileName"></span> <!-- 選択したファイル名を表示 -->
-        </form>
-
-        <div id="que" class="que">
-            <h2 id="qu">問題:</h2>
-            <strong><p id="question" class="a">Loading...&#x00A0</p></strong>
-            <div class="imageContainer">
-                <img id="myImage"/>
+    <div class="main-content">
+        <main>
+            <form id="myForm">
+                <!-- ファイル選択のカスタムボタン -->
+                <input type="file" id="fileInput" />
+                <label for="fileInput" id="fileInputLabel">ファイルを選択</label>
+                <span id="fileName"></span> <!-- 選択したファイル名を表示 -->
+            </form>
+            <div id="que" class="que">
+                <h2 id="qu">問題:</h2>
+                <strong><p id="question" class="a">Loading...&#x00A0</p></strong>
+                <div class="imageContainer">
+                    <img id="myImage"/>
+                </div>
             </div>
-        </div>
-        <div id="ans" class="ans">
-            <h2 id="an">答え:</h2>
-            <strong><p id="answer" class="a">&#x00A0</p></strong>
-        </div>
-        <button id="button" type="submit">スタート</button>
-        <div id="progressContainer">
-            <div id="progressBar"></div>
-        </div>
-        <div id="progressLabel">進捗状況</div>
-        <div class="table-container">
-            <table id="resultTable">
-                <thead>
-                    <tr>
-                        <th class="id">ID</th>
-                        <th>問題</th>
-                        <th>答え</th>
-                        <th class="rem">覚えた</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-        <div class="checkbox">
-            <input type="checkbox" id="checkbox" />
-            <label class="advice" for="checkbox">チェックを入れるとシャッフルを防ぎます</label>
-        </div>
-    </main>
+            <div id="ans" class="ans">
+                <h2 id="an">答え:</h2>
+                <strong><p id="answer" class="a">&#x00A0</p></strong>
+            </div>
+            <button id="button" type="submit">スタート</button>
+            <div id="progressContainer">
+                <div id="progressBar"></div>
+            </div>
+            <div id="progressLabel">進捗状況</div>
+            <div class="table-container">
+                <table id="resultTable">
+                    <thead>
+                        <tr>
+                            <th class="id">ID</th>
+                            <th>問題</th>
+                            <th>答え</th>
+                            <th class="rem">覚えた</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="checkbox">
+                <input type="checkbox" id="checkbox" />
+                <label class="advice" for="checkbox">チェックを入れるとシャッフルを防ぎます</label>
+            </div>
+        </main>
+    </div>
     <script src="assets/js/test.js" type="module"></script>
 </body>
 </html>

@@ -6,11 +6,7 @@ import {
     doc,
     getDocs,
     getDoc,
-    increment,
-    setDoc,
-    limit,
-    orderBy,
-    query } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    increment} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCC4HW_rNFZHhhH1OzovE9coc_TRlKYJ4I",

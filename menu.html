@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="title" content="フォルダ選択">
     <title>暗記の小屋 - フォルダ選択</title>
-    <link rel="stylesheet" href="assets/css/menu.css">
-    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/top.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="assets/css/header.css" media="print" onload="this.media='all'">
     <link rel="icon" href="favicon.ico" sizes="any">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
     <meta name="description" content="自分がローカル環境で作成したデータをアップロードして、自分だけの問題集を楽しめます。">
@@ -27,28 +27,35 @@
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
         "url": "https://lit-kei.github.io/study/menu.html",
-        "description": "自分がローカル環境で作成したデータをアップロードして、自分だけの問題集を楽しめます。"
+        "description": "自分がローカル環境で作成したデータをアップロードして、自分だけの問題集を楽しめます。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
     }
     </script>
-    <script src="assets/js/header.js"></script>
+    <script src="assets/js/header.js" defer></script>
 </head>
 <body>
     <header></header>
-    <main>
-    <div class="container">
-        <form id="folderForm">
-            <input type="file" id="folderInput" webkitdirectory directory />
-            <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
-        </form>
-
-        <div id="folderStructure" class="folder-structure"></div>
+    <div class="main-content">
+        <main>
+        <div class="container">
+            <form id="folderForm">
+                <input type="file" id="folderInput" webkitdirectory directory />
+                <label for="folderInput" id="folderInputLabel">フォルダを選択</label>
+            </form>
+            <div id="folderStructure" class="folder-structure"></div>
+        </div>
+        <button id="downloadButton">サンプルのフォルダをダウンロード</button>
+        <strong>
+            <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
+            <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
+        </strong>
+        </main>
     </div>
-    <button id="downloadButton">サンプルのフォルダをダウンロード</button>
-    <strong>
-        <p>ダウンロードしたzipファイルを解凍したフォルダを上のボタンから選択してください。</p>
-        <p>サンプルのテキストファイルを参考にして、自分だけの問題集を作ってみても面白いです！</p>
-    </strong>
-    </main>
     <script src="https://cdn.jsdelivr.net/npm/jszip@3.9.1/dist/jszip.min.js"></script>
     <script src="assets/js/menu.js"></script>
 </body>

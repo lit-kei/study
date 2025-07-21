@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>暗記の小屋 - みんなの問題集</title>
     <meta name="title" content="みんなの問題集">
-    <link rel="stylesheet" href="assets/css/feed.css">
-    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/top.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="assets/css/header.css" media="print" onload="this.media='all'">
     <link rel="icon" href="favicon.ico" sizes="any">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
-    <meta name="description" content="投稿された問題はこのページに集結されます。みんなが作った問題集を試してみましょう。">
+    <meta name="description" content="暗記の小屋で投稿された問題はすべてこのページに集結されます。みんなが作った問題集を試してみましょう。">
     <meta name="robots" content="index, follow">
     
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
@@ -42,35 +42,43 @@
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
         "url": "https://lit-kei.github.io/study/feed.html",
-        "description": "投稿された問題はこのページに集結されます。みんなが作った問題集を試してみましょう。"
+        "description": "暗記の小屋で投稿された問題はすべてこのページに集結されます。みんなが作った問題集を試してみましょう。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
     }
     </script>
-    <script src="assets/js/header.js"></script>
+    <script src="assets/js/header.js" defer></script>
 </head>
 <body>
     <header></header>
-    <main>
-        <div class="form">
-            <div class="filter" id="filter">
-                <button class="focus" type="button" id="fixed-fil">固定された</button>
-                <button type="button" id="favorite-fil">スター付き</button>
-                <button type="button" id="good-fil">いいね順</button>
-                <button type="button" id="subject-fil">教科順</button>
+    <div class="main-content">
+        <main>
+            <div class="form">
+                <div class="filter" id="filter">
+                    <button class="focus" type="button" id="fixed-fil">固定された</button>
+                    <button type="button" id="favorite-fil">スター付き</button>
+                    <button type="button" id="good-fil">いいね順</button>
+                    <button type="button" id="subject-fil">教科順</button>
+                </div>
+                <input placeholder="問題集を検索... (例:徳川家)" id="input" autocomplete="off"></input>
+                <h2 onclick="window.location.href = 'make.html'">問題集を作る</h2>
             </div>
-            <input placeholder="問題集を検索... (例:徳川家)" id="input" autocomplete="off"></input>
-            <h2 onclick="window.location.href = 'make.html'">問題集を作る</h2>
-        </div>
-        <div class="main" id="main">
-        </div>
-    </main>
-    <div id="modal" class="modal">
-        <div class="modal-content">
-            <button type="button" id="back" onclick="document.getElementById('modal').style.display = 'none';">×</button>
-            <p id="label">この問題集の編集履歴</p>
-            <table id="his-table">
-                <tbody id="his-tbody">
-                </tbody>
-            </table>
+            <div class="main" id="main">
+            </div>
+        </main>
+        <div id="modal" class="modal">
+            <div class="modal-content">
+                <button type="button" id="back" onclick="document.getElementById('modal').style.display = 'none';">×</button>
+                <p id="label">この問題集の編集履歴</p>
+                <table id="his-table">
+                    <tbody id="his-tbody">
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
     

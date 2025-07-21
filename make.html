@@ -5,11 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>暗記の小屋 - 問題作り</title>
     <meta name="title" content="問題作り">
-    <link rel="stylesheet" href="assets/css/make.css">
-    <link rel="stylesheet" href="assets/css/header.css">
+    <link rel="stylesheet" href="assets/css/top.css" media="print" onload="this.media='all'">
+    <link rel="stylesheet" href="assets/css/header.css" media="print" onload="this.media='all'">
     <link rel="icon" href="favicon.ico" sizes="any">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
-    <meta name="description" content="みんながオリジナルの問題集を作って投稿することで、このサイトはどんどん充実していきます。">
+    <meta name="description" content="みんながオリジナルの問題集を作って投稿することで、暗記の小屋はどんどん充実していきます。">
     <meta name="robots" content="index, follow">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
     <script>
@@ -27,80 +27,88 @@
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
         "url": "https://lit-kei.github.io/study/make.html",
-        "description": "みんながオリジナルの問題集を作って投稿することで、このサイトはどんどん充実していきます。"
+        "description": "みんながオリジナルの問題集を作って投稿することで、暗記の小屋はどんどん充実していきます。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
     }
     </script>
-    <script src="assets/js/header.js"></script>
+    <script src="assets/js/header.js" defer></script>
 </head>
 <body>
     <header></header>
-    <main>
-        <form id="mainForm">
-            <div class="title">
-                <label for="title">問題集のタイトル：</label>
-                <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off" required>
+    <div class="main-content">
+        <main>
+            <form id="mainForm">
+                <div class="title">
+                    <label for="title">問題集のタイトル：</label>
+                    <input placeholder="タイトルを入力..." name="title" type="text" id="title" autocomplete="off" required>
+                </div>
+                <div class="subject">
+                    <label for="subject">教科を選択：</label>
+                    <select name="subject" id="subject" required>
+                        <option value="" disabled selected>選んでください</option>
+                        <option value="0" class="kokugo">国語</option>
+                        <option value="1" class="sugaku">数学</option>
+                        <option value="2" class="rika">理科</option>
+                        <option value="3" class="shakai">社会</option>
+                        <option value="4" class="eigo">英語</option>
+                        <option value="5" class="ongaku">音楽</option>
+                        <option value="6" class="kateika">家庭科</option>
+                        <option value="7" class="gijutsu">技術</option>
+                        <option value="8" class="bijutsu">美術</option>
+                        <option value="9" class="hotai">保体</option>
+                        <option value="10" class="others">その他</option>
+                    </select>
+                </div>
+                <table id="mainTable">
+                    <thead>
+                        <tr>
+                            <th>問題番号</th>
+                            <th>問題</th>
+                            <th>答え</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+        
+                        <!--<tr>
+                            <td class="id">1</td>
+                            <td class="que"><textarea class="question" required></textarea></td>
+                            <td class="ans"><textarea class="answer" required></textarea></td>
+                            <td class="last">
+                                <button type="button" class="dropBtn">&#x22ee;</button>
+                                <div class="menu">
+                                    <button type="button" class="insert">上に行を挿入</button>
+                                    <button type="button" class="delete">この行を削除</button>
+                                </div>
+                            </td>
+                        </tr>-->
+                    </tbody>
+                </table>
+                <button id="addRowBtn" type="button" onclick="addRow()">+</button>
+                <button id="delete" type="button">セーブデータを削除する</button>
+                <button id="save" type="button">途中でセーブする</button>
+                <button id="submit" type="submit">この問題集を投稿する</button>
+        
+            </form>
+        </main>
+        <div id="modal" class="modal">
+            <div class="spinner" id="spinner"></div>
+            <div class="modal-content">
+              <p id="label">投稿しています。少々お待ちください。</p>
+              <strong id="idLabel">#f2sE0Jih5KJPmUfX7vZc</strong>
+              <div class="buttons" id="buttons">
+                <button type="button" onclick="back()">戻る</button>
+                <button type="button" onclick="run()">試す</button>
+              </div>
             </div>
-            <div class="subject">
-                <label for="subject">教科を選択：</label>
-                <select name="subject" id="subject" required>
-                    <option value="" disabled selected>選んでください</option>
-                    <option value="0" class="kokugo">国語</option>
-                    <option value="1" class="sugaku">数学</option>
-                    <option value="2" class="rika">理科</option>
-                    <option value="3" class="shakai">社会</option>
-                    <option value="4" class="eigo">英語</option>
-                    <option value="5" class="ongaku">音楽</option>
-                    <option value="6" class="kateika">家庭科</option>
-                    <option value="7" class="gijutsu">技術</option>
-                    <option value="8" class="bijutsu">美術</option>
-                    <option value="9" class="hotai">保体</option>
-                    <option value="10" class="others">その他</option>
-                </select>
-            </div>
-            <table id="mainTable">
-                <thead>
-                    <tr>
-                        <th>問題番号</th>
-                        <th>問題</th>
-                        <th>答え</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    
-                    <!--<tr>
-                        <td class="id">1</td>
-                        <td class="que"><textarea class="question" required></textarea></td>
-                        <td class="ans"><textarea class="answer" required></textarea></td>
-                        <td class="last">
-                            <button type="button" class="dropBtn">&#x22ee;</button>
-                            <div class="menu">
-                                <button type="button" class="insert">上に行を挿入</button>
-                                <button type="button" class="delete">この行を削除</button>
-                            </div>
-                        </td>
-                    </tr>-->
-                </tbody>
-            </table>
-            <button id="addRowBtn" type="button" onclick="addRow()">+</button>
-            <button id="delete" type="button">セーブデータを削除する</button>
-            <button id="save" type="button">途中でセーブする</button>
-            <button id="submit" type="submit">この問題集を投稿する</button>
-            
-        </form>
-    </main>
-    <div id="modal" class="modal">
-        <div class="spinner" id="spinner"></div>
-        <div class="modal-content">
-          <p id="label">投稿しています。少々お待ちください。</p>
-          <strong id="idLabel">#f2sE0Jih5KJPmUfX7vZc</strong>
-          <div class="buttons" id="buttons">
-            <button type="button" onclick="back()">戻る</button>
-            <button type="button" onclick="run()">試す</button>
-          </div>
         </div>
+        <div id="saveToast">保存しました！</div>
     </div>
-    <div id="saveToast">保存しました！</div>
     <script src="assets/js/make.js" type="module"></script>
 </body>
 </html>
