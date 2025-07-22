@@ -39,7 +39,7 @@ h2.title {
 .save {
   height: 30px;
   width: 200px;
-  font-size: 16px;
+  font-size: 15px;
   color: white;
   border: none;
   outline: none;
@@ -61,6 +61,8 @@ h2.title {
   align-items: center;
   cursor: pointer;
   transition: background-color 0.3s;
+  border-left: 3px solid #4caf50;
+  background-color: #f7f7f7;
 }
 .accordion:hover {
   background-color: #dadada;
@@ -75,7 +77,9 @@ h2.title {
 .accordion.open .accordion-icon {
   transform: rotate(180deg);
 }
-
+.accordion.open + .panel {
+  border-top: 1px solid black;
+}
 .panel {
   max-height: 0;
   overflow: hidden;
