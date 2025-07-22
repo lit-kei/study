@@ -61,22 +61,49 @@
                 <p>ページ右上の「問題集を作る」をクリックし、問題作りのガイドページを参考にしてください。</p>
             </div>
 
-                <!-- アコーディオン2 -->
             <button class="accordion">
-                テーマの色
+                問題作り
                 <span class="accordion-icon">▼</span>
             </button>
             <div class="panel">
-                <p>カラーテーマを選ぶことで、見やすい配色に変更できます。</p>
+                <p>セーブボタンをクリックしたら、サイトを離れてもデータが保持されます。</p>
+                <div class="save-btn" style="margin: 20px 0 40px 0; display: flex; flex-wrap: wrap; align-items: center;">
+                    <p><b>セーブボタンの例：　</b></p>
+                    <button type="button" class="save">途中でセーブする</button>
+                </div>
+                <p style="font-size: 20px;">「 &#x22ee; 」をクリックすると、二つのボタンが現れます。<br>参考図↓</p>
+                <picture style="max-width: 100%;">
+                    <source srcset="assets/images/make-ex.webp" type="image/webp">
+                    <img src="assets/images/make-ex.png" alt="説明の画像" width="700px" height="auto" loading="lazy" style="max-width: 100%;">
+                </picture>
             </div>
 
-            <!-- アコーディオン3 -->
             <button class="accordion">
-                よくある質問
+                フォルダ選択（※最難関なので、解らなくても大丈夫です。）
                 <span class="accordion-icon">▼</span>
             </button>
             <div class="panel">
-                <p>質問と回答がここに表示されます。</p>
+                <p><b>1. まず以下のようなファイルを格納したフォルダを作成します。（ファイルは複数個あっても構いません。入れ子構造も対応しています。）</b></p>
+                <div class="code-block">
+                    <div class="filename">test.json</div>
+<pre><code>{
+    contents: [
+        ["問題１", "解答１"],
+        ["問題２", "解答２"],
+        ["問題３", "解答３"]…
+    ],
+    shuffle: true
+}
+</code></pre>
+                </div>
+                <p>contentsの配列の要素は、1つ目が表示される問題、2つ目がその答えになるようにする。</p>
+                <p>shuffleの値はtrueにするとシャッフルが行われ、falseにすると、シャッフルが自動で防がれます。</p>
+                <p class="index"><b>2. <a href="menu.html" class="link"><i>フォルダ選択のページ</i> </a>にアクセスして、「フォルダを選択」ボタンをクリックする。</b></p>
+                <p class="index"><b>3. 1で作ったフォルダをアップロードする。</b></p>
+                <picture>
+                    <source srcset="assets/images/folder.webp" type="image/webp">
+                    <img src="assets/images/folder.png" alt="説明の画像" width="1000px" height="auto" loading="lazy" style="max-width: 100%;">
+                </picture>
             </div>
         </div>
         <div class="feedback container">
@@ -87,7 +114,7 @@
                 </label><br><br>
             
                 <label>フィードバック内容<br>
-                    <textarea name="message" required placeholder="ご意見やご感想をどうぞ" style="width: 400px; height: 90px;" autocomplete="off" class="input"></textarea>
+                    <textarea name="message" required placeholder="ご意見やご感想をどうぞ" style="max-width: 100%; width: 400px; height: 90px;" autocomplete="off" class="input"></textarea>
                 </label><br><br>
             
                 <button type="submit" class="submit">送信</button>
