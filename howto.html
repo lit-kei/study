@@ -36,6 +36,20 @@
         }
     }
     </script>
+    
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: []
+        },
+        options: {
+            enableMenu: false
+        }
+    };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="assets/js/header.js" defer></script>
 </head>
 <body>
@@ -76,6 +90,13 @@
                     <source srcset="assets/images/make-ex.webp" type="image/webp">
                     <img src="assets/images/make-ex.png" alt="説明の画像" width="700px" height="auto" loading="lazy" style="max-width: 100%;">
                 </picture>
+                
+                <h2 style="margin: 30px 0 10px 0;">問題集に数学を組み込むことができます。</h2>
+                <p>詳しくはLaTexと調べてください。</p>
+                <div class="code-block">
+                    <div class="filename">例： \(\frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2}\)の入力の仕方</div>
+<pre><code>\( \frac{1}{\sqrt{2}} = \frac{\sqrt{2}}{2} \)</code></pre>
+                </div>
             </div>
 
             <button class="accordion">
