@@ -43,44 +43,48 @@
     <div class="main-content">
         <div class="container">
             <h1 class="title">暗記の小屋のガイドページ</h1>
+            <p style="font-size: 20px; margin-bottom: 20px;">知りたい箇所をクリックすることで解説を見られます。</p>
             <button class="accordion">
-                入力文字のサイズ
+                みんなの問題集
                 <span class="accordion-icon">▼</span>
-                </button>
-                <div class="panel">
+            </button>
+            <div class="panel">
                 <p>文字サイズを選べます。通常は16pxがおすすめです。</p>
-                </div>
+            </div>
 
                 <!-- アコーディオン2 -->
-                <button class="accordion">
+            <button class="accordion">
                 テーマの色
                 <span class="accordion-icon">▼</span>
-                </button>
-                <div class="panel">
+            </button>
+            <div class="panel">
                 <p>カラーテーマを選ぶことで、見やすい配色に変更できます。</p>
-                </div>
+            </div>
 
-                <!-- アコーディオン3 -->
-                <button class="accordion">
+            <!-- アコーディオン3 -->
+            <button class="accordion">
                 よくある質問
                 <span class="accordion-icon">▼</span>
-                </button>
-                <div class="panel">
+            </button>
+            <div class="panel">
                 <p>質問と回答がここに表示されます。</p>
-                </div>
+            </div>
         </div>
-        <form id="feedback-form">
-            <label>お名前（任意）<br>
-                <input type="text" name="name" placeholder="あなたのお名前">
-            </label><br><br>
+        <div class="feedback container">
+            <h2 class="title">フィードバックはこちら</h2>
+            <form id="feedback-form">
+                <label>お名前（任意）<br>
+                    <input type="text" name="name" placeholder="あなたのお名前" autocomplete="off" class="input">
+                </label><br><br>
             
-            <label>フィードバック内容<br>
-                <textarea name="message" required placeholder="ご意見やご感想をどうぞ"></textarea>
-            </label><br><br>
+                <label>フィードバック内容<br>
+                    <textarea name="message" required placeholder="ご意見やご感想をどうぞ" style="width: 400px; height: 90px;" autocomplete="off" class="input"></textarea>
+                </label><br><br>
             
-            <button type="submit">送信</button>
-        </form>
-        <div id="status"></div>
+                <button type="submit" class="submit">送信</button>
+            </form>
+            <div id="status"></div>
+        </div>
 
     </div>
     <script type="module" src="assets/js/howto.js"></script>
