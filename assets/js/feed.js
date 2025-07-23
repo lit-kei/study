@@ -6,6 +6,7 @@ import {
     doc,
     getDocs,
     getDoc,
+    setDoc,
     increment} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -66,16 +67,19 @@ await getDoc(doc(db, "posts", "gSCwhgTA5RWuieGWqFM7")).then(async docS => {
     }
   });
 });*/
-/*await setDoc(doc(db, "posts", "morusushingowooboeyo"), {
-  title: "モールス信号",
-  subject: 7,
-  display: "fixed",
+/*
+await setDoc(doc(db, "posts", "2B4cD6eFgHiJkLmNoPqR"), {
+  title: "慣用句一覧",
+  subject: 0,
+  good: 1,
+  history: [],
+  //display: "fixed",
   contents: {
   question: [],
-answer: []
+  answer: []
 }
-});
-*/
+});*/
+
 for (let i = 0; i < 3; i++) {
   document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
   document.getElementById(btns[i]).addEventListener('click', () => {
