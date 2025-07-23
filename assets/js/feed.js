@@ -7,6 +7,7 @@ import {
     getDocs,
     getDoc,
     setDoc,
+    addDoc,
     increment} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -68,15 +69,15 @@ await getDoc(doc(db, "posts", "gSCwhgTA5RWuieGWqFM7")).then(async docS => {
   });
 });*/
 /*
-await setDoc(doc(db, "posts", "2B4cD6eFgHiJkLmNoPqR"), {
-  title: "慣用句一覧",
-  subject: 0,
-  good: 1,
+await addDoc(collection(db, "posts"), {
+  title: "学問の英語集",
+  subject: 4,
+  good: 0,
   history: [],
   //display: "fixed",
   contents: {
-  question: [],
-  answer: []
+  question: ["生命倫理学","経済学","電子工学","倫理学","人間工学","遺伝学","老人病学","言語学","数学","機械学、力学","産科学","小児科学","言語心理学","物理学","音韻学","発音学（音声学）","統計学","人類学","考古学","生物学","生命工学（生物工学）","生態学","地質学","婦人科学","気象学","神話学","文献学","音韻論","生理学","地震学","社会学","神学","動物学","会計学","代数学","分析学","解剖学","美学","天文学","植物学","化学","土木工学","商業学","民俗学","地理学","幾何学","歴史学","法学","文学","論理学","金属工学、冶（や）金学","教育学","哲学","政治学"],
+  answer: ["bioethics","economics","electronics","ethics","ergonomics","genetics","geriatrics","linguistics","mathematics","mechanics","obstetrics","pediatrics","psycholinguistics","physics","phonemics","phonetics","statistics","anthropology","archaeology","biology","biotechnology","ecology","geology","gynecology","meteorology","mythology","philology","phonology","physiology","seismology","sociology","theology","zoology","accounting","algebra","analysis","anatomy","art","astronomy","botany","chemistry","civil engineering","commerce","folklore","geography","geometry","history","jurisprudence","literature","logic","metallurgy","pedagogy","philosophy","politics"]
 }
 });*/
 
