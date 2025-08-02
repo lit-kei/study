@@ -18,6 +18,7 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
+const imageCache = {}; 
 
 let shuffle = true;
 let dataArray = [];
@@ -28,6 +29,7 @@ let finish = false;
 let id = 0;
 let uuid = "";
 let len = 0;
+let old = false;
 let checks = [];
 // 現在のURLのクエリパラメータを取得する場合
 const params = new URLSearchParams(window.location.search);
@@ -37,12 +39,16 @@ let problemID = "default";
 const fileContent = localStorage.getItem("fileContent");
 const fileName = localStorage.getItem("fileName");
 let originalData = JSON.parse(localStorage.getItem('checked')) ?? [{id: null, contents: []}];
+let urls = [];
 try {
   await setArray();
   if (dataArray.shuffle != undefined) {
     for (let i = 0; i < dataArray.length; i++) {
       dataArray.contents[i].id = i;
+      urls = urls.concat(dataArray.contents[i][0].images);
+      urls = urls.concat(dataArray.contents[i][1].images);
     }
+    await preloadImages(urls);
     question = {
       contents: [...dataArray.contents],
       shuffle: dataArray.shuffle,
@@ -50,7 +56,10 @@ try {
   } else {
     for (let i = 0; i < dataArray.length; i++) {
       dataArray[i].id = i;
+      urls = urls.concat(dataArray[i][0].images);
+      urls = urls.concat(dataArray[i][1].images);
     }
+    await preloadImages(urls);
     question = [...dataArray];
   }
   shuffleArray(question);
@@ -58,7 +67,25 @@ try {
 } catch (error) {
   console.error("ファイルの内容がJSONとしてパースできません:", error);
 }
+function preloadImages(urls) {
+  const promises = urls.map(url => {;
 
+    // すでにキャッシュ済みならスキップ
+    if (imageCache[url]) return Promise.resolve();
+
+    return new Promise((resolve, reject) => {
+      const img = new Image();
+      img.src = url;
+      img.onload = () => {
+        imageCache[url] = img;
+        resolve();
+      };
+      img.onerror = reject;
+    });
+  });
+
+  return Promise.all(promises); // すべての画像の読み込み完了を待つ
+}
 async function setArray() {
   switch (params.get("f")) {
     case "pp":
@@ -459,9 +486,11 @@ function init() {
   finish = false;
   if (question.contents != undefined) {
     problem = question.contents.filter(e => !checks.includes(e.id));
+    old = question.contents[0][0].images == undefined
     len = problem.length;
   } else {
     problem = question.filter(e => !checks.includes(e.id));
+    old = question[0][0].images == undefined
     len = problem.length;
   }
   const checked = dataArray.filter(e => checks.includes(e.id));
@@ -565,24 +594,14 @@ function next(a) {
       document.getElementById("progressLabel").innerText =
         "進捗: " + String(id) + " / " + String(len);
       document.getElementById("answer").innerHTML = "&#x00A0;";
-      document.getElementById("question").innerHTML = problem[0][0].text;
+      document.getElementById("question").innerHTML = old ? problem[0][0] : problem[0][0].text;
       document.getElementById("button").textContent = "答えを見る";
-      for (const url of problem[0][0].images) {
-        const img = document.createElement('img');
-        img.className = "images"
-        img.src = url;
-        document.getElementById("queImages").appendChild(img);
-      }
+      loadAndCacheImages(problem[0][0].images, "queImages");
       MathJax.typeset();
     } else {
       document.getElementById("answer").innerHTML = problem[0][1].text;
       document.getElementById("button").textContent = "次の問題へ";
-      for (const url of problem[0][1].images) {
-        const img = document.createElement('img');
-        img.className = "images"
-        img.src = url;
-        document.getElementById("ansImages").appendChild(img);
-      }
+      loadAndCacheImages(problem[0][1].images, "ansImages");
       const table = document
         .getElementById("resultTable")
         .getElementsByTagName("tbody")[0];
@@ -693,3 +712,28 @@ document.getElementById('checkbox').addEventListener('change', () => {
   shuffleArray(question);
   init();
 });
+
+function loadAndCacheImages(urls, containerId) {
+  const container = document.getElementById(containerId);
+
+  for (const url of urls) {
+
+    // すでにキャッシュされていればそれを使う
+    if (imageCache[url]) {
+      const cachedImg = imageCache[url].cloneNode(); // cloneして使う
+      cachedImg.className = "images";
+      container.appendChild(cachedImg);
+    } else {
+      const img = new Image();
+      img.className = "images";
+      img.src = url;
+
+      // 読み込みが終わったらキャッシュに保存
+      img.onload = () => {
+        imageCache[url] = img;
+      };
+
+      container.appendChild(img);
+    }
+  }
+}
