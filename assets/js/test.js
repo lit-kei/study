@@ -453,7 +453,8 @@ function init() {
   table.innerHTML = "";
   document.getElementById("progressLabel").innerText = "進捗状況";
   document.getElementById("button").textContent = "スタート";
-  document.querySelector("#myImage").src = "";
+  document.getElementById("queImages").innerHTML = "";
+  document.getElementById("ansImages").innerHTML = "";
   answer = false;
   finish = false;
   if (question.contents != undefined) {
@@ -559,31 +560,36 @@ function next(a) {
     if (!answer) {
       id++;
       uuid = problem[0].id;
-      document.querySelector("#myImage").src = "";
+      document.getElementById("queImages").innerHTML = "";
+      document.getElementById("ansImages").innerHTML = "";
       document.getElementById("progressLabel").innerText =
         "進捗: " + String(id) + " / " + String(len);
       document.getElementById("answer").innerHTML = "&#x00A0;";
-      document.getElementById("question").innerHTML = problem[0][0];
+      document.getElementById("question").innerHTML = problem[0][0].text;
       document.getElementById("button").textContent = "答えを見る";
-      try {
-        if (problem[0][2] != undefined) {
-          document.querySelector("#myImage").src =
-            "images/" + problem[0][2] + ".png";
-        }
-      } catch (error) {
-        console.error("A");
+      for (const url of problem[0][0].images) {
+        const img = document.createElement('img');
+        img.className = "images"
+        img.src = url;
+        document.getElementById("queImages").appendChild(img);
       }
       MathJax.typeset();
     } else {
-      document.getElementById("answer").innerHTML = problem[0][1];
+      document.getElementById("answer").innerHTML = problem[0][1].text;
       document.getElementById("button").textContent = "次の問題へ";
+      for (const url of problem[0][1].images) {
+        const img = document.createElement('img');
+        img.className = "images"
+        img.src = url;
+        document.getElementById("ansImages").appendChild(img);
+      }
       const table = document
         .getElementById("resultTable")
         .getElementsByTagName("tbody")[0];
       const newRow = table.insertRow(0); // 新しい行を追加
       newRow.insertCell(0).textContent = id;
-      newRow.insertCell(1).innerHTML = problem[0][0];
-      newRow.insertCell(2).innerHTML = problem[0][1];
+      newRow.insertCell(1).innerHTML = problem[0][0].text;
+      newRow.insertCell(2).innerHTML = problem[0][1].text;
       const check = newRow.insertCell(3);
       check.className = 'check-td';
       // ラベルを作ってinputとカスタム見た目spanを入れる

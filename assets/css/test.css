@@ -33,12 +33,16 @@ main {
     color: #333;
     margin-top: 10px;
 }
-
-.imageContainer {
-    max-height: 100px;
+#queImages, #ansImages {
+    display: flex;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px 0;
 }
-#myImage {
-    max-height: 100%;
+.images {
+    max-height: 150px;
+    max-width: 150px;
 }
 
 .table-container {

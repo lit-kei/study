@@ -2,7 +2,13 @@ import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebase
 import { 
     getFirestore, 
     collection, 
-    addDoc} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+    addDoc,
+    getDocs,      // ← 追加
+    updateDoc,    // ← 追加
+    doc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
+
+const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dl7n5gvgh/image/upload";
+const UPLOAD_PRESET = "studyImages";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCC4HW_rNFZHhhH1OzovE9coc_TRlKYJ4I",
@@ -17,11 +23,14 @@ const firebaseConfig = {
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
+
 const subjects = ["kokugo", "sugaku", "rika", "shakai", "eigo","ongaku", "kateika", "gijutsu", "bijutsu", "hotai", "others"];
 const params = new URLSearchParams(window.location.search);
 
 const modal = document.getElementById('modal');
 const toast = document.getElementById('saveToast');
+
+const isMac = navigator.userAgent.includes('Macintosh');
 
 let index = 0;
 let id = '';
@@ -46,6 +55,40 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
 
   const que = document.createElement('textarea');
   const ans = document.createElement('textarea');
+  const queAdd = document.createElement('input');
+  const ansAdd = document.createElement('input');
+  const queImagePreview = document.createElement('div');
+  queImagePreview.className = 'image-preview';
+  const ansImagePreview = document.createElement('div');
+  ansImagePreview.className = 'image-preview';
+  queAdd.type = 'file';
+  ansAdd.type = 'file';
+  queAdd.className = 'qFile';
+  ansAdd.className = 'aFile';
+  queAdd.accept = 'image/*';
+  ansAdd.accept = 'image/*';
+  queAdd.multiple = true;
+  ansAdd.multiple = true;
+  queAdd.addEventListener('change', () => {
+    queImagePreview.innerHTML = '';
+    Array.from(queAdd.files).forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.style.maxWidth = '100px';
+      img.style.marginRight = '5px';
+      queImagePreview.appendChild(img);
+    });
+  });
+  ansAdd.addEventListener('change', () => {
+    ansImagePreview.innerHTML = '';
+    Array.from(ansAdd.files).forEach(file => {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.style.maxWidth = '100px';
+      img.style.marginRight = '5px';
+      ansImagePreview.appendChild(img);
+    });
+  });
 
   que.required = true;
   ans.required = true;
@@ -56,17 +99,21 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
   que.value = q;
   ans.value = a;
   que.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+    if (e.key === 'Enter') {
       e.preventDefault();
     }
   });
   ans.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter') {
+    if (e.key === 'Enter') {
       e.preventDefault();
     }
   });
   queCell.appendChild(que);
   ansCell.appendChild(ans);
+  queCell.appendChild(queAdd);
+  ansCell.appendChild(ansAdd);
+  queCell.appendChild(queImagePreview);
+  ansCell.appendChild(ansImagePreview);
   const dropBtn = document.createElement('button');
   dropBtn.type = 'button';
   dropBtn.className = 'dropBtn';
@@ -103,6 +150,7 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
   newRow.getElementsByTagName('textarea')[0].focus();
   window.scrollBy(0, 62);
 }
+
 function reset() {
   const tds = document.getElementsByClassName('id');
   for (let i = 0; i < tds.length; i++) {
@@ -140,22 +188,66 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
   if (index == 0) {
     alert('1つ以上の問題と答えをセットしてください。')
   } else {
+    let text = "";
+    let dots = "";
+    let count = 0;
+    const interval = setInterval(() => {
+      dots += ".";
+      if (dots.length >= 4) dots = "";
+      document.getElementById('label').innerHTML = `${text}<span style="font-size: 25px">${dots}</span>`;
+    }, 300);
+    modal.style.display = 'flex';
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('buttons').style.display = 'none';
+    document.getElementById('idLabel').style.display = 'none';
+    document.getElementById('idLabel').textContent = '';
+
     const title = document.getElementById('title').value;
     const subject = isNaN(Number(document.getElementById('subject').value)) ? 10 : Number(document.getElementById('subject').value);
     const trs = document.querySelectorAll('tbody tr');
     let question = [];
     let answer = [];
+    let totalImageCount = 0;
+    trs.forEach(tr => {
+      totalImageCount += tr.querySelector('input.qFile').files.length;
+      
+      totalImageCount += tr.querySelector('input.aFile').files.length;
+    });
     for (let i = 0; i < trs.length; i++) {
       const e = trs[i];
-      question.push(e.getElementsByClassName('question')[0].value);
-      answer.push(e.getElementsByClassName('answer')[0].value);
+      const qText = e.getElementsByClassName('question')[0].value;
+      const aText = e.getElementsByClassName('answer')[0].value;
+      const qImages = e.querySelector('input.qFile').files;
+      const aImages = e.querySelector('input.aFile').files;
+    
+      const qImageURLs = [];
+      const aImageURLs = [];
+    
+      for (let file of qImages) {
+        console.log("que");
+        count++;
+        text = `${count} / ${totalImageCount}の画像を処理中`;
+        const url = await uploadToCloudinary(file);
+        qImageURLs.push(url);
+      }
+      for (let file of aImages) {
+        console.log("ans");
+        count++;
+        text = `${count} / ${totalImageCount}の画像を処理中`;
+        const url = await uploadToCloudinary(file);
+        aImageURLs.push(url);
+      }
+    
+      question.push({
+        text: qText,
+        images: qImageURLs,
+      });
+      answer.push({
+        text: aText,
+        images: aImageURLs,
+      });
     }
-    modal.style.display = 'flex';
-    document.getElementById('spinner').style.display = 'block';
-    document.getElementById('label').textContent = '投稿しています。少々お待ちください。';
-    document.getElementById('buttons').style.display = 'none';
-    document.getElementById('idLabel').style.display = 'none';
-    document.getElementById('idLabel').textContent = '';
+    
     await addDoc(collection(db, "posts"), {
       title: title,
       subject: subject,
@@ -166,6 +258,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
       history: histories,
       good: 0
     }).then(ref => {
+        clearInterval(interval);
         document.getElementById('spinner').style.display = 'none';
         document.getElementById('label').textContent = '投稿しました。問題集のIDを表示します。';
         document.getElementById('buttons').style.display = 'flex';
@@ -209,6 +302,7 @@ document.addEventListener('DOMContentLoaded', function () {
       addRow();
       break;
   }
+  document.getElementById('addRowBtn').innerHTML = isMac ? '+' : '+<span style="font-size: 20px;">(Enter)</span>';
   window.addRow = addRow;
   window.back = back;
   window.run = run;
@@ -235,12 +329,6 @@ document.addEventListener('DOMContentLoaded', function () {
       }, 1000);
     }
   });
-});
-
-window.addEventListener('keydown', e => {
-  if (e.key === 'Enter') {
-    addRow();
-  }
 });
 
 
@@ -277,3 +365,31 @@ function run() {
   window.location.href = `test.html?f=user&id=${id}`;
 }
 
+window.addEventListener('keydown', e => {
+  if (e.key == 'Enter' && !isMac) {
+    addRow();
+  }
+});
+
+async function uploadToCloudinary(file) {
+  const formData = new FormData();
+  formData.append("file", file);
+  formData.append("upload_preset", UPLOAD_PRESET);
+
+  try {
+    const res = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!res.ok) {
+      throw new Error(`HTTP error! status: ${res.status}`);
+    }
+
+    const data = await res.json();
+    return data.secure_url;
+  } catch (err) {
+    console.error("Cloudinary upload error:", err);
+    return null; // もしくは null を返してスキップしても良い
+  }
+}

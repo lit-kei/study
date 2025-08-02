@@ -294,7 +294,7 @@ function insertRows(contents, targetID) {
   for (let i = 0; i < length; i++) {
     const newRow = tbody.insertRow();
     const cell = newRow.insertCell(0);
-    cell.innerHTML = contents.question[i];
+    cell.innerHTML = contents.question[i].text;
     if (i == length - 1 && length < contents.question.length) {
       cell.classList.add('last');
     }
