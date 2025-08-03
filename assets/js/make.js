@@ -69,6 +69,8 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
   ansAdd.accept = 'image/*';
   queAdd.multiple = true;
   ansAdd.multiple = true;
+  queAdd.tabIndex = -1;
+  ansAdd.tabIndex = -1;
   queAdd.addEventListener('change', () => {
     queImagePreview.innerHTML = '';
     Array.from(queAdd.files).forEach(file => {
