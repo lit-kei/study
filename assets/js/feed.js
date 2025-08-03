@@ -205,7 +205,7 @@ function createContainer(docSnap, id) {
       e.stopPropagation();
       let contents = [];
       for (let i = 0; i < docSnap.contents.question.length; i++) {
-        contents.push([docSnap.contents.question[i], docSnap.contents.answer[i]]);
+        contents.push([docSnap.contents.question[i].text, docSnap.contents.answer[i].text]);
       }
       localStorage.setItem('edit', JSON.stringify({
         contents: contents,
