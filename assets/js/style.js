@@ -4,6 +4,13 @@ const links = [
   { href: "menu.html", title: "フォルダ選択" },
   { href: "howto.html", title: "使い方ガイド"}
 ];
+const footerLinks = [
+  { href: "index.html", title: "トップページ" },
+  { href: "feed.html", title: "みんなの問題集" },
+  { href: "menu.html", title: "フォルダ選択" },
+  { href: "howto.html", title: "使い方ガイド"},
+  { href: "all-chugaku.html", title: "中学全範囲問題集"}
+];
 
 window.onload = function () {
   const metaTitle = document.querySelector('meta[name="title"]');
@@ -87,4 +94,36 @@ window.onload = function () {
       lastScrollY = currentScrollY;
     }
   });
+
+  const footer = document.getElementsByTagName('footer')[0];
+  const footerContainer = document.createElement('div');
+  footerContainer.className = "footer-container";
+  const footerLink = document.createElement('div');
+  footerLink.className = "footer-links";
+  const footerInfo = document.createElement('div');
+  footerInfo.className = "footer-info";
+  footerInfo.innerHTML = `
+  <small>&copy; 2025 暗記の小屋 | <a href="privacy.html">プライバシーポリシー</a></small>
+  `;
+  footerLinks.forEach( ({ href, title }) => {
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = title;
+    footerLink.appendChild(a);
+  });
+  footerContainer.appendChild(footerLink);
+  footerContainer.appendChild(footerInfo);
+  footer.appendChild(footerContainer);
 };
+/*
+
+            <a href="index.html">トップページ</a>
+            <a href="feed.html">みんなの問題集</a>
+            <a href="howto.html">使い方ガイド</a>
+            <a href="menu.html">フォルダ選択</a>
+            <a href="all-chugaku.html">暗記ページ</a>
+            </div>
+            <div class="footer-info">
+            <small>&copy; 2025 暗記の小屋 | <a href="privacy.html">プライバシーポリシー</a></small>
+            </div>
+            */

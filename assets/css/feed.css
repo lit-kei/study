@@ -1,5 +1,6 @@
 main {
-  margin-bottom: 50vh;
+  margin-bottom: 20vh;
+  min-height: 100vh;
 }
 .main {
     width: 100%;

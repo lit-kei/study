@@ -81,6 +81,43 @@ header {
     margin-left: 20px;
 }
 
+footer {
+  background-color: #4caf4f;
+  color: white;
+  padding: 20px 10px;
+  font-size: 0.9rem;
+  margin-top: 40px;
+  text-align: center;
+}
+
+.footer-container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.footer-links {
+  margin-bottom: 10px;
+}
+
+.footer-links a {
+  color: white;
+  margin: 0 12px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer-info small a {
+  color: #e0f2e9;
+  text-decoration: underline;
+}
+
+.footer-info small a:hover {
+  color: #c8e6c9;
+}
 
 /* ---------- スマホ対応 ---------- */
 @media screen and (max-width: 600px) {
@@ -109,5 +146,9 @@ header {
 
   .header-inner h1 {
     font-size: 1.2em;
+  }
+  .footer-links a {
+    display: block;
+    margin: 6px 0;
   }
 }

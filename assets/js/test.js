@@ -42,6 +42,11 @@ let originalData = JSON.parse(localStorage.getItem('checked')) ?? [{id: null, co
 let urls = [];
 try {
   await setArray();
+  if (params.get('f') === null) {
+  dataArray.contents = dataArray.map(item => ([{ text: item[0], images: [] }, { text: item[1], images: []}]));
+  dataArray.shuffle = dataArray.shuffle === undefined ? true : dataArray.shuffle;
+  dataArray.length = 0;
+}
   if (dataArray.shuffle != undefined) {
     for (let i = 0; i < dataArray.length; i++) {
       dataArray.contents[i].id = i;
@@ -487,6 +492,7 @@ function init() {
   if (question.contents != undefined) {
     problem = question.contents.filter(e => !checks.includes(e.id));
     old = question.contents[0][0].images == undefined
+
     len = problem.length;
   } else {
     problem = question.filter(e => !checks.includes(e.id));
