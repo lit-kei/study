@@ -55,8 +55,24 @@
 <body>
     <header></header>
     <div class="main-content">
+        <main>
+            <div class="canvas-container" style="display: flex; justify-content: center;">
+            
+                <canvas id="webgl"></canvas>
+            </div>
+            <div class="container">
+                <h2 class="title">国語</h2>
+            </div>
+        </main>
     </div>
     <footer></footer>
-    <script type="module" src="assets/js/howto.js"></script>
+    <script type="importmap">
+        {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js"
+        }
+        }
+    </script>
+    <script type="module" src="assets/js/all-chugaku.js"></script>
 </body>
 </html>

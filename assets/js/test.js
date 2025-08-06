@@ -43,8 +43,12 @@ let urls = [];
 try {
   await setArray();
   if (params.get('f') === null) {
-  dataArray.contents = dataArray.map(item => ([{ text: item[0], images: [] }, { text: item[1], images: []}]));
-  dataArray.shuffle = dataArray.shuffle === undefined ? true : dataArray.shuffle;
+    if (dataArray.shuffle === undefined) {
+      dataArray.contents = dataArray.map(item => ([{ text: item[0], images: [] }, { text: item[1], images: []}]));
+      dataArray.shuffle = true;
+    } else {
+      dataArray.contents = dataArray.contents.map(item => ([{ text: item[0], images: [] }, { text: item[1], images: []}]));
+    }
   dataArray.length = 0;
 }
   if (dataArray.shuffle != undefined) {

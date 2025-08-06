@@ -1,0 +1,16 @@
+main {
+    padding: 20px;
+}
+
+.container {
+    padding: 15px;
+    width: 250px;
+    aspect-ratio: 10 / 16;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    box-sizing: border-box;
+    cursor: default;
+    position: relative;
+    transition: background-color 0.3s ease;
+}
