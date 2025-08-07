@@ -1,5 +1,24 @@
 main {
   padding: 20px;
+  position: relative;
+}
+.uploadBtn {
+  display: none;
+}
+.upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: absolute;
+  top: 40px;
+  right: 40px;
+}
+.upload-container * {
+  cursor: pointer;
+}
+.upload-container .upload {
+  height: 30px;
+  width: 30px;
 }
 body {
   position: relative;
