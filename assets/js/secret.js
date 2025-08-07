@@ -122,9 +122,9 @@ document.getElementById('file').addEventListener('change', () => {
                           ansPreview.appendChild(img);
                         });
                     });
-                    queCell.textContent = e[0];
+                    queCell.innerHTML = e[0];
                     queCell.appendChild(queDiv);
-                    ansCell.textContent = e[1];
+                    ansCell.innerHTML = e[1];
                     ansCell.appendChild(ansDiv);
                     
                 }
