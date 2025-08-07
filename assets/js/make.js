@@ -250,7 +250,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         images: aImageURLs,
       });
     }
-    
+    text = '投稿しています';
     await addDoc(collection(db, "posts"), {
       title: title,
       subject: subject,

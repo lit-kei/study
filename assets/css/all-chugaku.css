@@ -15,6 +15,10 @@
     transition: all 0.3s ease;
     overflow: hidden;
   }
+  .subject-box:not(.available) {
+    background-color: #ddd;
+    box-shadow: none;
+  }
   
   .subject-header {
     display: flex;
@@ -26,8 +30,10 @@
     border-bottom: 1px solid #eee;
     transition: background-color 0.3s;
   }
-  
-  .subject-header:hover {
+  .subject-box:not(.available) .subject-header {
+    cursor: default;
+  }
+  .available .subject-header:hover {
     background-color: #eaf4ff;
   }
   

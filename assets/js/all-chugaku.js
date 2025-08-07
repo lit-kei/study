@@ -1,13 +1,55 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const subjectData = {
-    "国語": {units: ["文法", "古文", "漢字", "読解"], title: "japanese"},
-    "数学": {units: ["素因数分解", "一次方程式", "比例・反比例", "図形", "関数"], title: "math"},
-    "理科": {units: ["物理", "化学", "生物", "地学"], title: "science"},
-    "社会": {units: ["地理", "歴史", "公民"], title: "social-studies"},
-    "英語": {units: ["文法", "英単語", "リーディング", "リスニング"], title: "english"}
-  };
+import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc,
+    getDocs,      // ← 追加
+    query,
+    orderBy,
+    doc,
+    setDoc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-  document.querySelectorAll(".subject-box").forEach(box => {
+const firebaseConfig = {
+  apiKey: "AIzaSyCC4HW_rNFZHhhH1OzovE9coc_TRlKYJ4I",
+  authDomain: "study-1105a.firebaseapp.com",
+  projectId: "study-1105a",
+  storageBucket: "study-1105a.firebasestorage.app",
+  messagingSenderId: "356676590589",
+  appId: "1:356676590589:web:cd449cd5ac74e6db449794",
+  measurementId: "G-P84CG30Z7N"
+};
+
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
+
+const subject = ["japanese", "math", "science", "social-studies", "english"];
+
+document.addEventListener("DOMContentLoaded", async () => {
+  const boxes = document.getElementsByClassName('subject-box');
+  let subjectData = {
+    "japanese": [],
+    "math": [],
+    "science": [],
+    "social-studies": [],
+    "english": []
+  };
+  let available = [];
+
+  for (let i = 0; i < 5; i++) {
+    const snapshot = await getDocs(query(collection(db, "official", subject[i], "contents"), orderBy('index')));
+    if (!snapshot.empty) {
+      available.push(i);
+      let data = [];
+      snapshot.forEach(doc => {
+        data.push(doc.data().title);
+      });
+      subjectData[subject[i]] = [...data];
+    }
+  }
+  available.forEach(e => {
+    boxes[e].classList.add('available');
+  });
+  document.querySelectorAll(".subject-box.available").forEach(box => {
     const subject = box.dataset.subject;
     const header = box.querySelector(".subject-header");
     const unitsDiv = box.querySelector(".units");
@@ -15,16 +57,16 @@ document.addEventListener("DOMContentLoaded", () => {
     header.addEventListener("click", () => {
       if (unitsDiv.classList.contains("hidden")) {
         unitsDiv.innerHTML = "";
-        for (let i = 0; i < subjectData[subject].units.length; i++) {
+        for (let i = 0; i < subjectData[subject].length; i++) {
           const unitDiv = document.createElement("div");
           unitDiv.className = "unit";
-          unitDiv.textContent = subjectData[subject].units[i];
+          unitDiv.textContent = subjectData[subject][i];
           unitDiv.addEventListener("click", (e) => {
             e.stopPropagation();
-            if (subject == "数学" && i == 0) {
+            if (subject == "math" && i == 0) {
               window.open('https://lit-kei.github.io/prime/');
             } else {
-              const url = `test.html?f=subject&id=${encodeURIComponent(subjectData[subject].title)}&unit=${i}`;
+              const url = `test.html?f=official&subject=${subject}&unit=${i}`;
               window.location.href = url;
             }
           });
