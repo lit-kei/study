@@ -5,6 +5,7 @@ import {
     addDoc,
     getDocs,      // ← 追加
     updateDoc,    // ← 追加
+    Timestamp,
     doc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dl7n5gvgh/image/upload";
@@ -258,7 +259,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         answer: answer
       },
       history: histories,
-      good: 0
+      good: 0,
+      createdAt: Timestamp.now()
     }).then(ref => {
         clearInterval(interval);
         document.getElementById('spinner').style.display = 'none';

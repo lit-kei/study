@@ -8,6 +8,7 @@ import {
     getDoc,
     setDoc,
     addDoc,
+    Timestamp,
     increment} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -84,7 +85,24 @@ await addDoc(collection(db, "posts"), {
   answer: ["bioethics","economics","electronics","ethics","ergonomics","genetics","geriatrics","linguistics","mathematics","mechanics","obstetrics","pediatrics","psycholinguistics","physics","phonemics","phonetics","statistics","anthropology","archaeology","biology","biotechnology","ecology","geology","gynecology","meteorology","mythology","philology","phonology","physiology","seismology","sociology","theology","zoology","accounting","algebra","analysis","anatomy","art","astronomy","botany","chemistry","civil engineering","commerce","folklore","geography","geometry","history","jurisprudence","literature","logic","metallurgy","pedagogy","philosophy","politics"]
 }
 });*/
+/*
+function getRandomFirestoreTimestamp(startDateStr, endDateStr) {
+  const start = new Date(startDateStr).getTime();
+  const end = new Date(endDateStr).getTime();
+  const randomMillis = Math.floor(start + Math.random() * (end - start));
+  return Timestamp.fromMillis(randomMillis); // FirestoreのTimestamp型で返す
+}
 
+const snapshot = await getDocs(collection(db, "posts"));
+
+for (const document of snapshot.docs) {
+  const ref = doc(db, "posts", document.id); // ← ドキュメント参照
+  const randomTimestamp = getRandomFirestoreTimestamp("2025-07-28T00:00:00", "2025-08-05T23:59:59");
+
+  await updateDoc(ref, {
+    createdAt: randomTimestamp
+  });
+}*/
 for (let i = 0; i < 4; i++) {
   document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
   document.getElementById(btns[i]).addEventListener('click', () => {
