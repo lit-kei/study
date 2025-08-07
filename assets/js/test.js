@@ -509,7 +509,6 @@ function init() {
     len = problem.length;
   }
   const checked = !old ? dataArray.filter(e => checks.includes(e.id)) : dataArray.contents.filter(e => checks.includes(e.id));
-  console.log(checks);
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
     const newRow = table.insertRow(0); // 新しい行を追加
