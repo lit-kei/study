@@ -29,6 +29,7 @@ let finish = false;
 let id = 0;
 let uuid = "";
 let len = 0;
+let imageOld = false;
 let old = false;
 let checks = [];
 // 現在のURLのクエリパラメータを取得する場合
@@ -40,9 +41,12 @@ const fileContent = localStorage.getItem("fileContent");
 const fileName = localStorage.getItem("fileName");
 let originalData = JSON.parse(localStorage.getItem('checked')) ?? [{id: null, contents: []}];
 let urls = [];
+
+let user = false
 try {
   await setArray();
-  if (params.get('f') === null) {
+  checks = (originalData.find(e => e.id === problemID) ?? {contents: []}).contents;
+  if (user == false) {
     if (dataArray.shuffle === undefined) {
       dataArray.contents = dataArray.map(item => ([{ text: item[0], images: [] }, { text: item[1], images: []}]));
       dataArray.shuffle = true;
@@ -52,7 +56,8 @@ try {
   dataArray.length = 0;
 }
   if (dataArray.shuffle != undefined) {
-    for (let i = 0; i < dataArray.length; i++) {
+    old = true;
+    for (let i = 0; i < dataArray.contents.length; i++) {
       dataArray.contents[i].id = i;
       urls = urls.concat(dataArray.contents[i][0].images);
       urls = urls.concat(dataArray.contents[i][1].images);
@@ -221,7 +226,7 @@ async function setArray() {
           ["W", "・ーー"],
           ["X", "ー・・ー"],
           ["Y", "ー・ーー"],
-          ["Z", "ーー・・"],
+          ["Z", "ーー・・"]
         ],
         shuffle: false,
         extra: [
@@ -234,7 +239,7 @@ async function setArray() {
           ["6", "ー・・・・"],
           ["7", "ーー・・・"],
           ["8", "ーーー・・"],
-          ["9", "ーーーー・"],
+          ["9", "ーーーー・"]
         ],
       };
       document.getElementById("fileName").textContent = "モールス信号";
@@ -447,7 +452,7 @@ async function setArray() {
             "第四次中東戦争による石油危機",
             "1973年　　行く波高くなるオイルショック",
           ],
-          ["日中平和友好条約", "1978年　　行くよナンパ！日中友好へ！"],
+          ["日中平和友好条約", "1978年　　行くよナンパ！日中友好へ！"]
         ],
         shuffle: true,
       };
@@ -455,8 +460,8 @@ async function setArray() {
       break;
 
     case "user":
+      user = true;
       problemID = params.get('id');
-      checks = (originalData.find(e => e.id === problemID) ?? {contents: []}).contents;
       await getDoc(doc(db, "posts", problemID)).then(doc => {
         if (doc.exists()) {
           for (let i = 0; i < doc.data().contents.question.length; i++) {
@@ -495,21 +500,22 @@ function init() {
   finish = false;
   if (question.contents != undefined) {
     problem = question.contents.filter(e => !checks.includes(e.id));
-    old = question.contents[0][0].images == undefined
+    imageOld = question.contents[0][0].images == undefined
 
     len = problem.length;
   } else {
     problem = question.filter(e => !checks.includes(e.id));
-    old = question[0][0].images == undefined
+    imageOld = question[0][0].images == undefined
     len = problem.length;
   }
-  const checked = dataArray.filter(e => checks.includes(e.id));
+  const checked = !old ? dataArray.filter(e => checks.includes(e.id)) : dataArray.contents.filter(e => checks.includes(e.id));
+  console.log(checks);
   for (let i = 0; i < checked.length; i++) {
     const e = checked[i];
     const newRow = table.insertRow(0); // 新しい行を追加
     newRow.insertCell(0).textContent = "覚えた";
-    newRow.insertCell(1).innerHTML = e[0];
-    newRow.insertCell(2).innerHTML = e[1];
+    newRow.insertCell(1).innerHTML = e[0].text;
+    newRow.insertCell(2).innerHTML = e[1].text;
     const check = newRow.insertCell(3);
     check.className = 'check-td';
     // ラベルを作ってinputとカスタム見た目spanを入れる
@@ -520,8 +526,7 @@ function init() {
     box.className = 'custom-checkbox-input';
     box.name = 'checkbox';
     box.checked = true;
-    box.dataset.id = String(uuid);
-
+    box.dataset.id = String(old ? dataArray.contents.findIndex(element => element === e) : dataArray.findIndex(element => element === e));
     // カスタム見た目用のspan
     const customSpan = document.createElement('span');
     customSpan.className = 'custom-checkbox-span';
@@ -604,7 +609,7 @@ function next(a) {
       document.getElementById("progressLabel").innerText =
         "進捗: " + String(id) + " / " + String(len);
       document.getElementById("answer").innerHTML = "&#x00A0;";
-      document.getElementById("question").innerHTML = old ? problem[0][0] : problem[0][0].text;
+      document.getElementById("question").innerHTML = imageOld ? problem[0][0] : problem[0][0].text;
       document.getElementById("button").textContent = "答えを見る";
       loadAndCacheImages(problem[0][0].images, "queImages");
       MathJax.typeset();
@@ -679,7 +684,7 @@ function next(a) {
 
 function shuffleArray(array) {
   if (!shuffle) { return; }
-  if (array.shuffle != undefined && array.shuffle) {
+  if (old && array.shuffle) {
     // 配列の長さを取得
     for (let i = array.contents.length - 1; i > 0; i--) {
       // 0からiまでのランダムなインデックスを生成
