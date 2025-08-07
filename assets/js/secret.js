@@ -33,12 +33,7 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     document.getElementById('progress').textContent = 'データを調べています';
     let index = document.getElementById('unit').value;
-    if (index == "") {
-        const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
-        index = hoge.size;
-    } else {
-        index = parseInt(index);
-    }
+    const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
     let count = 0;
     const trs = document.querySelectorAll('tbody tr');
     for (let i = 0; i < trs.length; i++) {
@@ -64,11 +59,28 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
         data.answer.push({text: old ? fileContents.contents[i][1] : fileContents[i][1], images: ansUrls});
         document.getElementById('progress').textContent = 'だん！';
     }
-    await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
-        title: document.getElementById('unitName').value,
-        contents: data,
-        index: index
-    });
+    if (index == "") {
+        await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
+            title: document.getElementById('unitName').value,
+            contents: data,
+            index: hoge.size
+        });
+    } else {
+        index = parseInt(index);
+        if (index >= hoge.size) {
+            await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
+                title: document.getElementById('unitName').value,
+                contents: data,
+                index: index
+            });
+        } else {
+            const target = hoge.docs.find(e => e.data().index == index);
+            await setDoc(doc(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents', target.id), {
+                title: document.getElementById('unitName').value,
+                contents: data
+            }, { merge: true });
+        }
+    }
 });
 
 document.getElementById('file').addEventListener('change', () => {
