@@ -56,23 +56,42 @@
     <header></header>
     <div class="main-content">
         <main>
-            <div class="canvas-container" style="display: flex; justify-content: center;">
-            
-                <canvas id="webgl"></canvas>
-            </div>
-            <div class="container">
-                <h2 class="title">国語</h2>
+            <div class="subjects-grid">
+                <div class="subject-box" data-subject="国語">
+                  <div class="subject-header">
+                    <div class="label">国語</div>
+                  </div>
+                  <div class="units hidden"></div>
+                </div>
+              
+                <div class="subject-box" data-subject="数学">
+                    <div class="subject-header">
+                      <div class="label">数学</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="理科">
+                    <div class="subject-header">
+                      <div class="label">理科</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="社会">
+                    <div class="subject-header">
+                      <div class="label">社会</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="英語">
+                    <div class="subject-header">
+                      <div class="label">英語</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
             </div>
         </main>
     </div>
     <footer></footer>
-    <script type="importmap">
-        {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js"
-        }
-        }
-    </script>
-    <script type="module" src="assets/js/all-chugaku.js"></script>
+    <script src="assets/js/all-chugaku.js"></script>
 </body>
 </html>
