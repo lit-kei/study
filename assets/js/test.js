@@ -2,7 +2,12 @@ import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebase
 import { 
     getFirestore, 
     doc,
-    getDoc
+    getDoc,
+    getDocs,
+    query,
+    where,
+    limit,
+    collection
   } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -474,7 +479,25 @@ async function setArray() {
         }
       });
 
-    break;
+      break;
+    case "official":
+      user = true;
+      const subject = params.get('subject');
+      const unit = parseInt(params.get('unit'));
+      const snapshot = await getDocs(query(collection(db, 'official', subject, 'contents'), where("index", "==", unit), limit(1)));
+      snapshot.forEach(doc => {
+        if (doc.exists()) {
+          for (let i = 0; i < doc.data().contents.question.length; i++) {
+            dataArray.push([doc.data().contents.question[i], doc.data().contents.answer[i]]);
+          }
+          document.getElementById("fileName").textContent = doc.data().title;
+        } else {
+          console.log("そのようなIDの問題集は存在しません。");
+          dataArray = JSON.parse(fileContent);  
+        }
+      });
+      problemID = `${subject}&${unit}`;
+      break;
     default:
       problemID = fileName;
       dataArray = JSON.parse(fileContent);
