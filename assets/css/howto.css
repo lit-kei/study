@@ -114,7 +114,7 @@ h2.title {
 }
 
 pre {
-    margin: 0;
+    margin: 15px 0 0;
     padding: 1em;
     background-color: #fdfdfd;
     overflow-x: auto;
