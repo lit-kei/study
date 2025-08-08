@@ -53,9 +53,14 @@ main {
     cursor: pointer;
     transition: background-color 0.2s;
   }
-  
+  .unit.fake {
+    background: #ffe0e0;
+  }
   .unit:hover {
     background: #bcdfff;
+  }
+  .unit.fake:hover  {
+    background: #ffb7b7;
   }
   
   .hidden {

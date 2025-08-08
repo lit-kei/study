@@ -61,6 +61,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           const unitDiv = document.createElement("div");
           unitDiv.className = "unit";
           unitDiv.textContent = subjectData[subject][i];
+          if (subject == "math" && i == 0) { unitDiv.classList.add('fake') }
           unitDiv.addEventListener("click", (e) => {
             e.stopPropagation();
             if (subject == "math" && i == 0) {
