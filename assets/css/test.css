@@ -25,12 +25,12 @@ main {
 
 #que h2, #ans h2 {
     font-size: 25px;
-    color: #555;
+    color: #333;
 }
 
 #question, #answer {
     font-size: 20px;
-    color: #333;
+    color: #000;
     margin-top: 10px;
 }
 #queImages, #ansImages {
@@ -93,9 +93,6 @@ tr:hover {
     height: 50px;
 }
 
-p {
-    font-size: 100px;
-}
 
 button:hover {
     background-color: #45a049;
