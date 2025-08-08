@@ -25,20 +25,21 @@ main {
 
 #que h2, #ans h2 {
     font-size: 25px;
-    color: #333;
+    height: 40px;
+    color: #555;
+    margin-bottom: 15px;
 }
 
 #question, #answer {
     font-size: 20px;
     color: #000;
-    margin-top: 10px;
 }
 #queImages, #ansImages {
     display: flex;
     width: 100%;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 20px 0;
+    padding: 10px 0;
 }
 .images {
     max-height: 150px;
