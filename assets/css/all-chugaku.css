@@ -1,9 +1,12 @@
+main {
+  padding: 20px;
+}
 .subjects-grid {
     display: flex;
     flex-direction: column;
     align-items: center;
     gap: 20px;
-    padding: 30px;
+    padding: 40px;
   }
   
   .subject-box {
