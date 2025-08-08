@@ -154,7 +154,7 @@ querySnapshot.forEach((doc) => {
 });
 function createContainer(docSnap, id) {
   const container = document.createElement('div');
-  container.addEventListener('click', () => window.location.href = `test.html?f=user&id=${id}`);
+  container.addEventListener('click', () => window.location.href = `/study/test.html?f=user&id=${id}`);
   container.id = id;
   container.classList.add('container');
   container.innerHTML = docSnap.display == 'fixed' ? `
@@ -244,7 +244,7 @@ function createContainer(docSnap, id) {
         subject: docSnap.subject,
         history: [id, ...(docSnap.history || [])]
       }));
-      window.location.href = `make.html?c=edit`;
+      window.location.href = `/study/make.html?c=edit`;
     });
     if (docSnap.history != undefined && docSnap.history.length != 0) {
       const btn = document.getElementById(`history-${id}`);
@@ -304,7 +304,7 @@ function createContainer(docSnap, id) {
             idCell.textContent = "#" + item;
             titleCell.textContent = title;
             newRow.addEventListener('click', () => {
-              window.location.href = `test.html?f=user&id=${item}`;
+              window.location.href = `/study/test.html?f=user&id=${item}`;
             });
           }
         }));

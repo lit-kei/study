@@ -66,7 +66,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (subject == "math" && i == 0) {
               window.open('https://lit-kei.github.io/prime/');
             } else {
-              const url = `test.html?f=official&subject=${subject}&unit=${i}`;
+              const url = `/study/test.html?f=official&subject=${subject}&unit=${i}`;
               window.location.href = url;
             }
           });

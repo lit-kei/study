@@ -402,11 +402,11 @@ function save() {
 }
 
 function back() {
-  window.location.href = 'feed.html';
+  window.location.href = '/study/feed.html';
 }
 
 function run() {
-  window.location.href = `test.html?f=user&id=${id}`;
+  window.location.href = `/study/test.html?f=user&id=${id}`;
 }
 
 window.addEventListener('keydown', e => {

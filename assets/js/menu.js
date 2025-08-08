@@ -98,7 +98,7 @@ function recursion(folder, parentElement) {
             li.addEventListener('click', function() {
                 localStorage.setItem('fileContent', element.file);
                 localStorage.setItem('fileName', element.name);
-                window.location.href = 'test.html'; // 画面遷移
+                window.location.href = '/study/test.html'; // 画面遷移
             });
         }
         ul.appendChild(li);

@@ -1,15 +1,15 @@
 const links = [
-  { href: "index.html", title: "トップページ" },
-  { href: "feed.html", title: "みんなの問題集" },
-  { href: "menu.html", title: "フォルダ選択" },
-  { href: "howto.html", title: "使い方ガイド"}
+  { href: "/study/", title: "トップページ" },
+  { href: "/study/feed.html", title: "みんなの問題集" },
+  { href: "/study/menu.html", title: "フォルダ選択" },
+  { href: "/study/howto.html", title: "使い方ガイド"}
 ];
 const footerLinks = [
-  { href: "index.html", title: "トップページ" },
-  { href: "feed.html", title: "みんなの問題集" },
-  { href: "menu.html", title: "フォルダ選択" },
-  { href: "howto.html", title: "使い方ガイド"},
-  { href: "all-chugaku.html", title: "中学全範囲問題集"}
+  { href: "/study/", title: "トップページ" },
+  { href: "/study/feed.html", title: "みんなの問題集" },
+  { href: "/study/menu.html", title: "フォルダ選択" },
+  { href: "/study/howto.html", title: "使い方ガイド"},
+  { href: "/study/all-chugaku.html", title: "中学全範囲問題集"}
 ];
 
 window.onload = function () {
@@ -32,7 +32,7 @@ window.onload = function () {
   img.alt = '暗記の小屋のロゴ';
   img.classList.add('logo-img');
   img.style.cursor = 'pointer';
-  img.onclick = () => window.location.href = 'index.html';
+  img.onclick = () => window.location.href = '/study/';
 
   logoPicture.appendChild(img);
 
@@ -103,7 +103,7 @@ window.onload = function () {
   const footerInfo = document.createElement('div');
   footerInfo.className = "footer-info";
   footerInfo.innerHTML = `
-  <small>&copy; 2025 暗記の小屋 | <a href="privacy.html">プライバシーポリシー</a></small>
+  <small>&copy; 2025 暗記の小屋 | <a href="/study/privacy.html">プライバシーポリシー</a></small>
   `;
   footerLinks.forEach( ({ href, title }) => {
     const a = document.createElement('a');
@@ -115,15 +115,3 @@ window.onload = function () {
   footerContainer.appendChild(footerInfo);
   footer.appendChild(footerContainer);
 };
-/*
-
-            <a href="index.html">トップページ</a>
-            <a href="feed.html">みんなの問題集</a>
-            <a href="howto.html">使い方ガイド</a>
-            <a href="menu.html">フォルダ選択</a>
-            <a href="all-chugaku.html">暗記ページ</a>
-            </div>
-            <div class="footer-info">
-            <small>&copy; 2025 暗記の小屋 | <a href="privacy.html">プライバシーポリシー</a></small>
-            </div>
-            */
