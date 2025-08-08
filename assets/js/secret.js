@@ -89,6 +89,10 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
 });
 
 document.getElementById('file').addEventListener('change', () => {
+    const tbody = document.getElementById('tbody');
+    while (tbody.firstChild) {
+        tbody.removeChild(tbody.firstChild);
+    }
     if (document.getElementById('file').files.length > 0) {
         const file = document.getElementById('file').files[0];
         const reader = new FileReader();
