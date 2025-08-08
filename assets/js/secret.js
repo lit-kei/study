@@ -26,19 +26,20 @@ const db = getFirestore(app);
 const subject = ["japanese", "math", "social-studies", "science", "english"];
 
 let fileContents = [];
-let old = false;
 let data = {question: [], answer: []};
 
 document.getElementById('myForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     const p = parseInt(prompt("パスワードを入力", "0"));
     if (!isNaN(p) && ((((p << 3) * 3) + 500) ^ 1234567890) == 1431782166) {
+        data = {question: [], answer: []}; 
         document.getElementById('progress').textContent = 'データを調べています';
         let index = document.getElementById('unit').value;
         const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
         let count = 0;
         const trs = document.querySelectorAll('tbody tr');
         for (let i = 0; i < trs.length; i++) {
+            console.log(i);
             const tr = trs[i];
             const tds = tr.getElementsByTagName('td');
             const queImages = tds[1].getElementsByTagName('input')[0].files;
@@ -49,7 +50,7 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
                 const url = await uploadToCloudinary(file);
                 queUrls.push(url);
             }
-            data.question.push({text: old ? fileContents.contents[i][0] : fileContents[i][0], images: queUrls});
+            data.question.push({text: fileContents[i][0], images: queUrls});
             const ansImages = tds[2].getElementsByTagName('input')[0].files;
             let ansUrls = [];
             for (const file of ansImages) {
@@ -58,9 +59,10 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
                 const url = await uploadToCloudinary(file);
                 ansUrls.push(url);
             }
-            data.answer.push({text: old ? fileContents.contents[i][1] : fileContents[i][1], images: ansUrls});
+            data.answer.push({text: fileContents[i][1], images: ansUrls});
             document.getElementById('progress').textContent = 'だん！';
         }
+        
         if (index == "") {
             await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
                 title: document.getElementById('unitName').value,
@@ -100,6 +102,9 @@ document.getElementById('file').addEventListener('change', () => {
             const fileContent = e.target.result;
             try {
                 fileContents = JSON.parse(fileContent);
+                if (fileContents.shuffle != undefined) {
+                    fileContents = [...fileContents.contents];
+                }
                 for (let i = 0; i < fileContents.length; i++) {
                     const e = fileContents[i];
                     const newRow = document.getElementById('tbody').insertRow();
