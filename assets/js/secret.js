@@ -31,55 +31,60 @@ let data = {question: [], answer: []};
 
 document.getElementById('myForm').addEventListener('submit', async (e) => {
     e.preventDefault();
-    document.getElementById('progress').textContent = 'データを調べています';
-    let index = document.getElementById('unit').value;
-    const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
-    let count = 0;
-    const trs = document.querySelectorAll('tbody tr');
-    for (let i = 0; i < trs.length; i++) {
-        const tr = trs[i];
-        const tds = tr.getElementsByTagName('td');
-        const queImages = tds[1].getElementsByTagName('input')[0].files;
-        let queUrls = [];
-        for (const file of queImages) {
-            count++;
-            document.getElementById('progress').textContent = `${count}枚目の画像を処理中`;
-            const url = await uploadToCloudinary(file);
-            queUrls.push(url);
+    const p = parseInt(prompt("パスワードを入力", "0"));
+    if (!isNaN(p) && ((((p << 3) * 3) + 500) ^ 1234567890) == 1431782166) {
+        document.getElementById('progress').textContent = 'データを調べています';
+        let index = document.getElementById('unit').value;
+        const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
+        let count = 0;
+        const trs = document.querySelectorAll('tbody tr');
+        for (let i = 0; i < trs.length; i++) {
+            const tr = trs[i];
+            const tds = tr.getElementsByTagName('td');
+            const queImages = tds[1].getElementsByTagName('input')[0].files;
+            let queUrls = [];
+            for (const file of queImages) {
+                count++;
+                document.getElementById('progress').textContent = `${count}枚目の画像を処理中`;
+                const url = await uploadToCloudinary(file);
+                queUrls.push(url);
+            }
+            data.question.push({text: old ? fileContents.contents[i][0] : fileContents[i][0], images: queUrls});
+            const ansImages = tds[2].getElementsByTagName('input')[0].files;
+            let ansUrls = [];
+            for (const file of ansImages) {
+                count++;
+                document.getElementById('progress').textContent = `${count}枚目の画像を処理中`;
+                const url = await uploadToCloudinary(file);
+                ansUrls.push(url);
+            }
+            data.answer.push({text: old ? fileContents.contents[i][1] : fileContents[i][1], images: ansUrls});
+            document.getElementById('progress').textContent = 'だん！';
         }
-        data.question.push({text: old ? fileContents.contents[i][0] : fileContents[i][0], images: queUrls});
-        const ansImages = tds[2].getElementsByTagName('input')[0].files;
-        let ansUrls = [];
-        for (const file of ansImages) {
-            count++;
-            document.getElementById('progress').textContent = `${count}枚目の画像を処理中`;
-            const url = await uploadToCloudinary(file);
-            ansUrls.push(url);
-        }
-        data.answer.push({text: old ? fileContents.contents[i][1] : fileContents[i][1], images: ansUrls});
-        document.getElementById('progress').textContent = 'だん！';
-    }
-    if (index == "") {
-        await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
-            title: document.getElementById('unitName').value,
-            contents: data,
-            index: hoge.size
-        });
-    } else {
-        index = parseInt(index);
-        if (index >= hoge.size) {
+        if (index == "") {
             await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
                 title: document.getElementById('unitName').value,
                 contents: data,
-                index: index
+                index: hoge.size
             });
         } else {
-            const target = hoge.docs.find(e => e.data().index == index);
-            await setDoc(doc(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents', target.id), {
-                title: document.getElementById('unitName').value,
-                contents: data
-            }, { merge: true });
+            index = parseInt(index);
+            if (index >= hoge.size) {
+                await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
+                    title: document.getElementById('unitName').value,
+                    contents: data,
+                    index: index
+                });
+            } else {
+                const target = hoge.docs.find(e => e.data().index == index);
+                await setDoc(doc(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents', target.id), {
+                    title: document.getElementById('unitName').value,
+                    contents: data
+                }, { merge: true });
+            }
         }
+    } else {
+        alert("パスワードが違います。");
     }
 });
 
