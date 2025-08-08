@@ -5,6 +5,7 @@ import {
     addDoc,
     getDocs,      // ← 追加
     updateDoc,    // ← 追加
+    Timestamp,
     doc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const CLOUDINARY_URL = "https://api.cloudinary.com/v1_1/dl7n5gvgh/image/upload";
@@ -249,7 +250,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         images: aImageURLs,
       });
     }
-    
+    text = '投稿しています';
     await addDoc(collection(db, "posts"), {
       title: title,
       subject: subject,
@@ -258,7 +259,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
         answer: answer
       },
       history: histories,
-      good: 0
+      good: 0,
+      createdAt: Timestamp.now()
     }).then(ref => {
         clearInterval(interval);
         document.getElementById('spinner').style.display = 'none';
@@ -329,6 +331,46 @@ document.addEventListener('DOMContentLoaded', function () {
       timeoutId = setTimeout(() => {
         toast.classList.remove('show');
       }, 1000);
+    }
+  });
+  document.getElementById('upload-icon').addEventListener('click', () => {
+    document.getElementById('upload-input').click();
+  });
+  document.getElementById('upload-label').addEventListener('click', () => {
+    document.getElementById('upload-input').click();
+  });
+  document.getElementById('upload-input').addEventListener('change', () => {
+    if (document.getElementById('upload-input').files.length > 0) {
+      index = 0;
+      id = '';
+      histories = [];
+      document.querySelector('#mainTable tbody').innerHTML = ``;
+      const file = document.getElementById('upload-input').files[0];
+      const reader = new FileReader();
+      
+      reader.onload = (e) => {
+        const fileContent = e.target.result;
+        try {
+          // JSONとしてパースして配列に変換
+          const parsed = JSON.parse(fileContent);
+          if (parsed.shuffle == undefined) {
+            for (let i = 0; i < parsed.length; i++) {
+              const e = parsed[i];
+              addRow({q: e[0], a: e[1]});
+            }
+          } else {
+            for (let i = 0; i < parsed.contents.length; i++) {
+              const e = parsed.contents[i];
+              addRow({q: e[0], a: e[1]});
+            }
+          }
+        } catch (error) {
+          console.error("ファイルの内容がJSONとしてパースできません:", error);
+        }
+      };
+      
+      reader.readAsText(file);
+      document.getElementById('upload-label').textContent = file.name;
     }
   });
 });

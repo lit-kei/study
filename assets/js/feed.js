@@ -8,6 +8,7 @@ import {
     getDoc,
     setDoc,
     addDoc,
+    Timestamp,
     increment} from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -43,10 +44,14 @@ const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
 let Posts = []; 
 let Fixed = [];
-let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false];
+let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false, false];
+if (filterBtns.length == 3) {
+  filterBtns.push(false);
+  localStorage.setItem('setting', JSON.stringify(filterBtns));
+}
 let fixedFil = true;
 let currentBoxes = [];
-const btns = ["favorite-fil", "good-fil", "subject-fil"];
+const btns = ["favorite-fil", "good-fil", "subject-fil", "createdAt-fil"];
 let fin = false;
 let isProcessing = false;
 let favorites = JSON.parse(localStorage.getItem('favorites'));
@@ -80,20 +85,47 @@ await addDoc(collection(db, "posts"), {
   answer: ["bioethics","economics","electronics","ethics","ergonomics","genetics","geriatrics","linguistics","mathematics","mechanics","obstetrics","pediatrics","psycholinguistics","physics","phonemics","phonetics","statistics","anthropology","archaeology","biology","biotechnology","ecology","geology","gynecology","meteorology","mythology","philology","phonology","physiology","seismology","sociology","theology","zoology","accounting","algebra","analysis","anatomy","art","astronomy","botany","chemistry","civil engineering","commerce","folklore","geography","geometry","history","jurisprudence","literature","logic","metallurgy","pedagogy","philosophy","politics"]
 }
 });*/
+/*
+function getRandomFirestoreTimestamp(startDateStr, endDateStr) {
+  const start = new Date(startDateStr).getTime();
+  const end = new Date(endDateStr).getTime();
+  const randomMillis = Math.floor(start + Math.random() * (end - start));
+  return Timestamp.fromMillis(randomMillis); // FirestoreのTimestamp型で返す
+}
 
-for (let i = 0; i < 3; i++) {
+const snapshot = await getDocs(collection(db, "posts"));
+
+for (const document of snapshot.docs) {
+  const ref = doc(db, "posts", document.id); // ← ドキュメント参照
+  const randomTimestamp = getRandomFirestoreTimestamp("2025-07-28T00:00:00", "2025-08-05T23:59:59");
+
+  await updateDoc(ref, {
+    createdAt: randomTimestamp
+  });
+}*/
+for (let i = 0; i < 4; i++) {
   document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
   document.getElementById(btns[i]).addEventListener('click', () => {
     if (filterBtns[i]) {
       document.getElementById(btns[i]).classList.remove('focus');
     } else {
       document.getElementById(btns[i]).classList.add('focus');
-      if (i === 1 && filterBtns[2]) {
+      if (i === 1) {
         document.getElementById(btns[2]).classList.remove('focus');
         filterBtns[2] = false;
-      } else if (i === 2 && filterBtns[1]) {
+        document.getElementById(btns[3]).classList.remove('focus');
+        filterBtns[3] = false;
+      } else if (i === 2) {
         document.getElementById(btns[1]).classList.remove('focus');
         filterBtns[1] = false;
+        document.getElementById(btns[3]).classList.remove('focus');
+        filterBtns[3] = false;
+      } else if (i === 3) {
+        document.getElementById(btns[1]).classList.remove('focus');
+        filterBtns[1] = false;
+        document.getElementById(btns[2]).classList.remove('focus');
+        filterBtns[2] = false;
+
       }
     }
     filterBtns[i] = !filterBtns[i];
@@ -114,13 +146,12 @@ document.getElementById('fixed-fil').addEventListener('click', () => {
 const querySnapshot = await getDocs(collection(db, "posts"));
 querySnapshot.forEach((doc) => {
   if (doc.data().display == 'fixed') {
-    Fixed.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: 'fixed'});
+    Fixed.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, display: 'fixed'});
     createContainer(doc.data(), doc.id);
   } else {
-    Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: doc.data().display ?? 'normal'});
+    Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: doc.data().display ?? 'normal', createdAt: doc.data().createdAt});
   }
 });
-
 function createContainer(docSnap, id) {
   const container = document.createElement('div');
   container.addEventListener('click', () => window.location.href = `test.html?f=user&id=${id}`);
@@ -366,6 +397,8 @@ function judgeBtns(arr = Posts) {
     data.sort((a, b) => b.good - a.good);
   } else if (filterBtns[2]) {
     data.sort((a, b) => a.subject - b.subject);
+  } else if (filterBtns[3]) {
+    data.sort((a, b) => b.createdAt - a.createdAt);
   } else if (!filterBtns[0]) {
     return arr.map(e => e.id);
   }

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="icon" href="favicon.ico" sizes="any">
     <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
-    <meta name="description" content="中学校で習う全範囲の内容を作者が勝手にまとめたものです。暇なときにどんどん更新するので楽しみにしていて下さい。">
+    <meta name="description" content="中学校で習う全範囲の内容を運営がまとめたものです。暇なときにどんどん更新するので楽しみにしていて下さい。">
     <meta name="robots" content="index, follow">
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-0XE4K5F37J"></script>
     <script>
@@ -27,7 +27,7 @@
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
         "url": "https://lit-kei.github.io/studyall-chugaku.html/",
-        "description": "中学校で習う全範囲の内容を作者が勝手にまとめたものです。暇なときにどんどん更新するので楽しみにしていて下さい。",
+        "description": "中学校で習う全範囲の内容を運営がまとめたものです。暇なときにどんどん更新するので楽しみにしていて下さい。",
         "offers": {
             "@type": "Offer",
             "price": "0",
@@ -54,25 +54,44 @@
 </head>
 <body>
     <header></header>
-    <div class="main-content">
+    <div class="main-content" style="min-height: 100vh;">
         <main>
-            <div class="canvas-container" style="display: flex; justify-content: center;">
-            
-                <canvas id="webgl"></canvas>
-            </div>
-            <div class="container">
-                <h2 class="title">国語</h2>
+            <div class="subjects-grid">
+                <div class="subject-box" data-subject="japanese">
+                  <div class="subject-header">
+                    <div class="label">国語</div>
+                  </div>
+                  <div class="units hidden"></div>
+                </div>
+              
+                <div class="subject-box" data-subject="math">
+                    <div class="subject-header">
+                      <div class="label">数学</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="science">
+                    <div class="subject-header">
+                      <div class="label">理科</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="social-studies">
+                    <div class="subject-header">
+                      <div class="label">社会</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
+                  <div class="subject-box" data-subject="english">
+                    <div class="subject-header">
+                      <div class="label">英語</div>
+                    </div>
+                    <div class="units hidden"></div>
+                  </div>
             </div>
         </main>
     </div>
     <footer></footer>
-    <script type="importmap">
-        {
-        "imports": {
-            "three": "https://cdn.jsdelivr.net/npm/three@0.175.0/build/three.module.js"
-        }
-        }
-    </script>
-    <script type="module" src="assets/js/all-chugaku.js"></script>
+    <script src="assets/js/all-chugaku.js" type="module"></script>
 </body>
 </html>

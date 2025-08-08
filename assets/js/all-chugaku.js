@@ -1,63 +1,81 @@
-import * as THREE from 'three';
-import { RoundedBoxGeometry } from 'https://cdn.jsdelivr.net/npm/three@0.152.2/examples/jsm/geometries/RoundedBoxGeometry.js';
+import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+import { 
+    getFirestore, 
+    collection, 
+    addDoc,
+    getDocs,      // ← 追加
+    query,
+    orderBy,
+    doc,
+    setDoc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
-const color = ["#E57373", "#64B5F6", "#4DB6AC", "#FBC02D", "#FF67AD"];
-const boxes = [];
-let rotation = 0;
+const firebaseConfig = {
+  apiKey: "AIzaSyCC4HW_rNFZHhhH1OzovE9coc_TRlKYJ4I",
+  authDomain: "study-1105a.firebaseapp.com",
+  projectId: "study-1105a",
+  storageBucket: "study-1105a.firebasestorage.app",
+  messagingSenderId: "356676590589",
+  appId: "1:356676590589:web:cd449cd5ac74e6db449794",
+  measurementId: "G-P84CG30Z7N"
+};
 
-const width = 960;
-const height = 600;
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const db = getFirestore(app);
 
-// レンダラーを作成
-const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector('#webgl')
-});
-renderer.setSize(width, height);
-renderer.setPixelRatio(window.devicePixelRatio);
+const subject = ["japanese", "math", "science", "social-studies", "english"];
 
-// シーンを作成
-const scene = new THREE.Scene();
-scene.background = new THREE.Color(0xf4f4f9);
+document.addEventListener("DOMContentLoaded", async () => {
+  const boxes = document.getElementsByClassName('subject-box');
+  let subjectData = {
+    "japanese": [],
+    "math": [],
+    "science": [],
+    "social-studies": [],
+    "english": []
+  };
+  let available = [];
 
-// カメラを作成
-const camera = new THREE.PerspectiveCamera(45, width / height, 1, 10000);
-camera.position.set(0, 0, 700);      // Y軸上に500の高さ
-camera.lookAt(0, 0, 0);
-
-// 箱を作成
-for (let i = 0; i < color.length; i++) {
-    
-    const geometry = new THREE.BoxGeometry(200, 320, 10);
-    const material = new THREE.MeshStandardMaterial({color: color[i]});
-    const box = new THREE.Mesh(geometry, material);
-    boxes.push(box);
-    scene.add(box);
-}
-
-// 平行光源
-const light = new THREE.DirectionalLight(0xFFFFFF);
-light.intensity = 1.5; // 光の強さを倍に
-light.position.set(0, 100, 500);
-light.target.position.set(0, 0, 0);
-// シーンに追加
-scene.add(light);
-
-tick();
-
-function tick() {
-  requestAnimationFrame(tick);
-  rotation += pi(1/750);
-
-  boxes.forEach((box, i) => {
-    // 箱を回転させる
-    box.rotation.y = pi(2/5) * i + rotation;
-    box.position.x = Math.sin(pi(2/5) * i + rotation) * 200;
-    box.position.z = Math.cos(pi(2/5) * i + rotation) * 200;
+  for (let i = 0; i < 5; i++) {
+    const snapshot = await getDocs(query(collection(db, "official", subject[i], "contents"), orderBy('index')));
+    if (!snapshot.empty) {
+      available.push(i);
+      let data = [];
+      snapshot.forEach(doc => {
+        data.push(doc.data().title);
+      });
+      subjectData[subject[i]] = [...data];
+    }
+  }
+  available.forEach(e => {
+    boxes[e].classList.add('available');
   });
-  // レンダリング
-  renderer.render(scene, camera);
-}
+  document.querySelectorAll(".subject-box.available").forEach(box => {
+    const subject = box.dataset.subject;
+    const header = box.querySelector(".subject-header");
+    const unitsDiv = box.querySelector(".units");
 
-function pi(q) {
-    return Math.PI * q;
-}
+    header.addEventListener("click", () => {
+      if (unitsDiv.classList.contains("hidden")) {
+        unitsDiv.innerHTML = "";
+        for (let i = 0; i < subjectData[subject].length; i++) {
+          const unitDiv = document.createElement("div");
+          unitDiv.className = "unit";
+          unitDiv.textContent = subjectData[subject][i];
+          unitDiv.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (subject == "math" && i == 0) {
+              window.open('https://lit-kei.github.io/prime/');
+            } else {
+              const url = `test.html?f=official&subject=${subject}&unit=${i}`;
+              window.location.href = url;
+            }
+          });
+          unitsDiv.appendChild(unitDiv);
+        }
+        unitsDiv.classList.remove("hidden");
+      } else {
+        unitsDiv.classList.add("hidden");
+      }
+    });
+  });
+});
