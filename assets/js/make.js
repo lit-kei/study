@@ -393,7 +393,7 @@ function save() {
   document.getElementById('delete').style.display = 'block';
 
   toast.textContent = '保存しました！';
-  toast.style.backgroundColor = '#4caf4f';
+  toast.style.backgroundColor = '#2B9C2E';
   toast.classList.add('show');
 
   timeoutId = setTimeout(() => {

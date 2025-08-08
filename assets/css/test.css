@@ -110,7 +110,7 @@ button:hover {
     width: 200px;
     display: inline-block;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #2B9C2E;
     color: white;
     border: none;
     border-radius: 4px;
@@ -148,7 +148,7 @@ button:hover {
     width: 200px;
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    background-color: #2B9C2E;
     color: white;
     border: none;
     border-radius: 4px;
@@ -179,7 +179,7 @@ button:hover {
 #progressBar {
     height: 30px;
     width: 0%;
-    background-color: #4caf50;
+    background-color: #2B9C2E;
     border-radius: 5px;
 }
 

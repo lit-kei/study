@@ -19,7 +19,7 @@ header {
   z-index: 10;
   min-height: 90px; /* 最小限の高さにするならこれでOK */
   width: 100%;
-  background-color: #4caf4f;
+  background-color: #2B9C2E;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
@@ -82,7 +82,7 @@ header {
 }
 
 footer {
-  background-color: #4caf4f;
+  background-color: #2B9C2E;
   color: white;
   padding: 20px 10px;
   font-size: 0.9rem;
