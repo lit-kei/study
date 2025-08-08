@@ -1,11 +1,11 @@
 const links = [
-  { href: "/study/", title: "トップページ" },
+  { href: "/study/index.html", title: "トップページ" },
   { href: "/study/feed.html", title: "みんなの問題集" },
   { href: "/study/menu.html", title: "フォルダ選択" },
   { href: "/study/howto.html", title: "使い方ガイド"}
 ];
 const footerLinks = [
-  { href: "/study/", title: "トップページ" },
+  { href: "/study/index.html", title: "トップページ" },
   { href: "/study/feed.html", title: "みんなの問題集" },
   { href: "/study/menu.html", title: "フォルダ選択" },
   { href: "/study/howto.html", title: "使い方ガイド"},
@@ -32,7 +32,7 @@ window.onload = function () {
   img.alt = '暗記の小屋のロゴ';
   img.classList.add('logo-img');
   img.style.cursor = 'pointer';
-  img.onclick = () => window.location.href = '/study/';
+  img.onclick = () => window.location.href = '/study/index.html';
 
   logoPicture.appendChild(img);
 
