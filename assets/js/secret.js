@@ -5,6 +5,10 @@ import {
     addDoc,
     getDocs,      // ← 追加
     doc,
+    updateDoc,
+    query,
+    orderBy,
+    getDoc,
     setDoc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -27,19 +31,80 @@ const subject = ["japanese", "math", "social-studies", "science", "english"];
 
 let fileContents = [];
 let data = {question: [], answer: []};
+let selected = {};
+function checkPass(p) {
+    return ((((p << 3) * 3) + 500) ^ 1234567890) == 1431782166;
+}
+async function rec(structure, folderDoc, subject, parent) {
+    for (const folderID of folderDoc.data().folders) {
+        const folDoc = await getDoc(doc(db, "official", subject, "structure", folderID));
+        const folS = {name: folDoc.data().title, type: "folder", children: []};
+        const folDiv = document.createElement('li');
+        folDiv.className = "folder";
+        folDiv.textContent = folDoc.data().title;
+        await rec(folS, folDoc, subject, folDiv);
+        parent.appendChild(folDiv);
+        structure.children.push(folS);
+        folDiv.addEventListener('click', () => {
+            selected.type = 'folder';
+            selected.content = folDoc;
+            folDiv.style.backgroundColor = '#2B9C2E';
+            folDiv.style.color = 'white';
+        });
+    }
+
+    for (const fileID of folderDoc.data().files) {
+        const fileDoc = await getDoc(doc(db, "official", subject, "contents", fileID));
+        structure.children.push({name: fileDoc.data().title, type: "file", index: fileDoc.data().index});
+        const fileSpan = document.createElement('ul');
+        fileSpan.className = "file";
+        fileSpan.textContent = `${fileDoc.data().title}, index: ${fileDoc.data().index}`;
+        parent.appendChild(fileSpan);
+
+        fileSpan.addEventListener('click', (e) => {
+            e.stopPropagation();
+            selected.type = 'file';
+            selected.content = fileDoc;
+            fileSpan.style.backgroundColor = '#2B9C2E';
+            fileSpan.style.color = 'white';
+        });
+    }
+}
+document.getElementById('subject').addEventListener('change', async () => {
+    const v = parseInt(document.getElementById('subject').value);
+    const root = await getDoc(doc(db, "official", subject[v], "structure", "root"));
+    const structure = {
+        name: "root",
+        type: "folder",
+        children: []
+    };
+    const rootDiv = document.createElement('li');
+    rootDiv.textContent = "root";
+    rootDiv.className = "folder";
+    rootDiv.addEventListener('click', () => {
+        selected.type = 'folder';
+        selected.content = root;
+        rootDiv.style.backgroundColor = '#2B9C2E';
+        rootDiv.style.color = 'white';
+    });
+    document.getElementById('structure').appendChild(rootDiv);
+    await rec(structure, root, subject[v], rootDiv);
+});
 
 document.getElementById('myForm').addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (selected.type == undefined) {
+        alert("ファイルかフォルダーを選んでね");
+        return;
+    }
     const p = parseInt(prompt("パスワードを入力", "0"));
-    if (!isNaN(p) && ((((p << 3) * 3) + 500) ^ 1234567890) == 1431782166) {
+    if (!isNaN(p) && checkPass(p)) {
         data = {question: [], answer: []}; 
         document.getElementById('progress').textContent = 'データを調べています';
-        let index = document.getElementById('unit').value;
         const hoge = await getDocs(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'));
         let count = 0;
         const trs = document.querySelectorAll('tbody tr');
         for (let i = 0; i < trs.length; i++) {
-            console.log(i);
             const tr = trs[i];
             const tds = tr.getElementsByTagName('td');
             const queImages = tds[1].getElementsByTagName('input')[0].files;
@@ -62,9 +127,26 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
             data.answer.push({text: fileContents[i][1], images: ansUrls});
             document.getElementById('progress').textContent = 'だん！';
         }
-        
+        const v = parseInt(document.getElementById('subject').value);
+        if (selected.type == "file") {
+            await updateDoc(doc(db, "official", subject[v], "contents", selected.content.id), {
+                title: document.getElementById('unitName').value,
+                contents: data
+            });
+        } else {
+            const newDoc = await addDoc(collection(db, 'official', subject[v], 'contents'), {
+                title: document.getElementById('unitName').value,
+                contents: data,
+                index: hoge.size
+            });
+            await updateDoc(doc(db, "official", subject[v], "structure", selected.content.id), {
+                files: [...selected.content.data().files, newDoc.id]
+            });
+        }
+        document.getElementById('progress').textContent = 'だん！';
+        /*
         if (index == "") {
-            await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
+            await addDoc(collection(db, 'official', subject[v], 'contents'), {
                 title: document.getElementById('unitName').value,
                 contents: data,
                 index: hoge.size
@@ -72,19 +154,19 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
         } else {
             index = parseInt(index);
             if (index >= hoge.size) {
-                await addDoc(collection(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents'), {
+                await addDoc(collection(db, 'official', subject[v], 'contents'), {
                     title: document.getElementById('unitName').value,
                     contents: data,
                     index: index
                 });
             } else {
                 const target = hoge.docs.find(e => e.data().index == index);
-                await setDoc(doc(db, 'official', subject[parseInt(document.getElementById('subject').value)], 'contents', target.id), {
+                await setDoc(doc(db, 'official', subject[v], 'contents', target.id), {
                     title: document.getElementById('unitName').value,
                     contents: data
                 }, { merge: true });
             }
-        }
+        }*/
     } else {
         alert("パスワードが違います。");
     }
