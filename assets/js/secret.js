@@ -30,6 +30,8 @@ const db = getFirestore(app);
 const subject = ["japanese", "math", "social-studies", "science", "english"];
 
 let fileContents = [];
+let files = []; 
+let DOMs = [];
 let data = {question: [], answer: []};
 let selected = {};
 function checkPass(p) {
@@ -45,24 +47,33 @@ async function rec(structure, folderDoc, subject, parent) {
         await rec(folS, folDoc, subject, folDiv);
         parent.appendChild(folDiv);
         structure.children.push(folS);
-        folDiv.addEventListener('click', () => {
+        DOMs.push(folDiv);
+        folDiv.addEventListener('click', (e) => {
+            e.stopPropagation();
+            DOMs.forEach(e => {
+                e.style.backgroundColor = '';
+                e.style.color = '';
+            });
             selected.type = 'folder';
             selected.content = folDoc;
             folDiv.style.backgroundColor = '#2B9C2E';
             folDiv.style.color = 'white';
         });
     }
-
     for (const fileID of folderDoc.data().files) {
-        const fileDoc = await getDoc(doc(db, "official", subject, "contents", fileID));
+        const fileDoc = files.docs[fileID];
         structure.children.push({name: fileDoc.data().title, type: "file", index: fileDoc.data().index});
         const fileSpan = document.createElement('ul');
         fileSpan.className = "file";
         fileSpan.textContent = `${fileDoc.data().title}, index: ${fileDoc.data().index}`;
         parent.appendChild(fileSpan);
-
+        DOMs.push(fileSpan);
         fileSpan.addEventListener('click', (e) => {
             e.stopPropagation();
+            DOMs.forEach(e => {
+                e.style.backgroundColor = '';
+                e.style.color = '';
+            });
             selected.type = 'file';
             selected.content = fileDoc;
             fileSpan.style.backgroundColor = '#2B9C2E';
@@ -71,7 +82,11 @@ async function rec(structure, folderDoc, subject, parent) {
     }
 }
 document.getElementById('subject').addEventListener('change', async () => {
+    document.getElementById('structure').innerHTML = '';
+    files = [];
+    DOMs = [];
     const v = parseInt(document.getElementById('subject').value);
+    files = await getDocs(query(collection(db, "official", subject[v], "contents"), orderBy("index")));
     const root = await getDoc(doc(db, "official", subject[v], "structure", "root"));
     const structure = {
         name: "root",
@@ -88,6 +103,7 @@ document.getElementById('subject').addEventListener('change', async () => {
         rootDiv.style.color = 'white';
     });
     document.getElementById('structure').appendChild(rootDiv);
+    DOMs.push(rootDiv);
     await rec(structure, root, subject[v], rootDiv);
 });
 

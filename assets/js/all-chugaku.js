@@ -4,6 +4,7 @@ import {
     collection, 
     addDoc,
     getDocs,      // ← 追加
+    getDoc,
     query,
     orderBy,
     doc,
@@ -23,56 +24,134 @@ const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
 const subject = ["japanese", "math", "science", "social-studies", "english"];
+let subjectData = {
+    japanese: {
+      structure: {
+        name: "root",
+        type: "folder",
+        children: []
+      },
+      contents: []
+    },
+    math: {
+      structure: {
+        name: "root",
+        type: "folder",
+        children: []
+      },
+      contents: []
+    },
+
+    science: {
+      structure: {
+        name: "root",
+        type: "folder",
+        children: []
+      },
+      contents: []
+    },
+
+    "social-studies": {
+      structure: {
+        name: "root",
+        type: "folder",
+        children: []
+      },
+      contents: []
+    },
+
+    english: {
+      structure: {
+        name: "root",
+        type: "folder",
+        children: []
+      },
+      contents: []
+    }
+};
+
+async function rec(structure, folderDoc, s, depth, parent) {
+    const folderData = folderDoc.data();
+
+    // フォルダ
+    for (const folderID of folderData.folders || []) {
+        const folDoc = await getDoc(doc(db, "official", s, "structure", folderID));
+        if (folDoc.exists()) {
+            const folS = {name: folDoc.data().title, type: "folder", children: []};
+            const folDiv = document.createElement('div');
+            folDiv.className = 'folder';
+            folDiv.style.margin = '5px auto 5px 0';
+            folDiv.style.width = `${110 - (10 * depth)}%'`;
+            const folHeader = document.createElement('div');
+            folHeader.className = 'folder-header';
+            folHeader.textContent = folDoc.data().title;
+            const unitsDiv = document.createElement('div');
+            unitsDiv.className = "units hidden";
+            folHeader.addEventListener('click', () => {
+              if (unitsDiv.classList.contains("hidden")) {
+                unitsDiv.classList.remove("hidden");
+              } else {
+                unitsDiv.classList.add("hidden");
+              }
+            });
+            folDiv.appendChild(folHeader);
+            folDiv.appendChild(unitsDiv);
+            await rec(folS, folDoc, s, depth + 1, unitsDiv);
+            structure.children.push(folS);
+            parent.appendChild(folDiv);
+        }
+    }
+
+    // ファイル
+    for (const fileID of folderData.files || []) {
+        const fileDoc = subjectData[s].contents.docs.find(d => d.data().index === fileID);
+        if (fileDoc) {
+            structure.children.push({
+                name: fileDoc.data().title,
+                type: "file",
+                index: fileDoc.data().index
+            });
+            const unitDiv = document.createElement("div");
+            unitDiv.className = "unit";
+            unitDiv.textContent = subjectData[s].contents.docs.find(d => d.data().index === fileID).data().title;
+            if (s == "math" && fileID == 0) { unitDiv.classList.add('fake') }
+            unitDiv.addEventListener("click", (e) => {
+              e.stopPropagation();
+              if (s == "math" && fileID == 0) {
+                window.open('https://lit-kei.github.io/prime/');
+              } else {
+                const url = `/study/test.html?f=official&subject=${s}&index=${fileID}`;
+                window.location.href = url;
+              }
+            });
+            parent.appendChild(unitDiv);
+        }
+    }
+}
 
 document.addEventListener("DOMContentLoaded", async () => {
   const boxes = document.getElementsByClassName('subject-box');
-  let subjectData = {
-    "japanese": [],
-    "math": [],
-    "science": [],
-    "social-studies": [],
-    "english": []
-  };
   let available = [];
 
   for (let i = 0; i < 5; i++) {
     const snapshot = await getDocs(query(collection(db, "official", subject[i], "contents"), orderBy('index')));
     if (!snapshot.empty) {
       available.push(i);
-      let data = [];
-      snapshot.forEach(doc => {
-        data.push(doc.data().title);
-      });
-      subjectData[subject[i]] = [...data];
+      subjectData[subject[i]].contents = snapshot;
+      const root = await getDoc(doc(db, "official", subject[i], "structure", "root"));
+      const unitsDiv = document.getElementById(`${subject[i]}-units`);
+      rec(subjectData[subject[i]].structure, root, subject[i], 0, unitsDiv);
     }
   }
   available.forEach(e => {
     boxes[e].classList.add('available');
   });
   document.querySelectorAll(".subject-box.available").forEach(box => {
-    const subject = box.dataset.subject;
     const header = box.querySelector(".subject-header");
     const unitsDiv = box.querySelector(".units");
 
     header.addEventListener("click", () => {
       if (unitsDiv.classList.contains("hidden")) {
-        unitsDiv.innerHTML = "";
-        for (let i = 0; i < subjectData[subject].length; i++) {
-          const unitDiv = document.createElement("div");
-          unitDiv.className = "unit";
-          unitDiv.textContent = subjectData[subject][i];
-          if (subject == "math" && i == 0) { unitDiv.classList.add('fake') }
-          unitDiv.addEventListener("click", (e) => {
-            e.stopPropagation();
-            if (subject == "math" && i == 0) {
-              window.open('https://lit-kei.github.io/prime/');
-            } else {
-              const url = `/study/test.html?f=official&subject=${subject}&unit=${i}`;
-              window.location.href = url;
-            }
-          });
-          unitsDiv.appendChild(unitDiv);
-        }
         unitsDiv.classList.remove("hidden");
       } else {
         unitsDiv.classList.add("hidden");

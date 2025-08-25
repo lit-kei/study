@@ -39,7 +39,23 @@ main {
   .available .subject-header:hover {
     background-color: #eaf4ff;
   }
-  
+  .folder {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    overflow: hidden;
+  }
+  .folder-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 14px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+    transition: background-color 0.3s;
+  }
   .units {
     padding: 10px 20px;
     background: #f9f9f9;

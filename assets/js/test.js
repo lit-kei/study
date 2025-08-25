@@ -483,7 +483,7 @@ async function setArray() {
     case "official":
       user = true;
       const subject = params.get('subject');
-      const unit = parseInt(params.get('unit'));
+      const unit = parseInt(params.get('index'));
       const snapshot = await getDocs(query(collection(db, 'official', subject, 'contents'), where("index", "==", unit), limit(1)));
       snapshot.forEach(doc => {
         if (doc.exists()) {
