@@ -25,6 +25,7 @@ main {
   
   .subject-header {
     display: flex;
+    position: relative;
     align-items: center;
     padding: 15px 20px;
     font-size: 20px;
@@ -86,3 +87,15 @@ main {
     display: none;
   }
   
+  .progress {
+    position: absolute;
+    height: 100%;
+    width: 0%;
+    top: 0;
+    left: 0;
+    background-color: rgb(171, 214, 171);
+    transition: width 0.5s ease-in-out, opacity 0.5s ease-in;
+  }
+  .label {
+    z-index: 2;
+  }

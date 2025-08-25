@@ -70,9 +70,12 @@ let subjectData = {
     }
 };
 
-async function rec(structure, folderDoc, s, depth, parent) {
+async function rec(structure, folderDoc, s, depth, parent, progress, now, max) {
     const folderData = folderDoc.data();
-
+    const plus = (max - now) / folderData.folders.length;
+    let n = now;
+    let m = max;
+    let count = 0;
     // フォルダ
     for (const folderID of folderData.folders || []) {
         const folDoc = await getDoc(doc(db, "official", s, "structure", folderID));
@@ -96,12 +99,13 @@ async function rec(structure, folderDoc, s, depth, parent) {
             });
             folDiv.appendChild(folHeader);
             folDiv.appendChild(unitsDiv);
-            await rec(folS, folDoc, s, depth + 1, unitsDiv);
+            await rec(folS, folDoc, s, depth + 1, unitsDiv, progress, count * plus + n, (count + 1) * plus + n);
             structure.children.push(folS);
             parent.appendChild(folDiv);
         }
+        count++;
     }
-
+    progress.style.width = `${m}%`;
     // ファイル
     for (const fileID of folderData.files || []) {
         const fileDoc = subjectData[s].contents.docs.find(d => d.data().index === fileID);
@@ -136,26 +140,29 @@ document.addEventListener("DOMContentLoaded", async () => {
   for (let i = 0; i < 5; i++) {
     const snapshot = await getDocs(query(collection(db, "official", subject[i], "contents"), orderBy('index')));
     if (!snapshot.empty) {
+      const progress = document.getElementById(`${subject[i]}-progress`);
+      progress.style.width = '15%';
       available.push(i);
       subjectData[subject[i]].contents = snapshot;
       const root = await getDoc(doc(db, "official", subject[i], "structure", "root"));
-      const unitsDiv = document.getElementById(`${subject[i]}-units`);
-      rec(subjectData[subject[i]].structure, root, subject[i], 0, unitsDiv);
+      const unitsD = document.getElementById(`${subject[i]}-units`);
+      await rec(subjectData[subject[i]].structure, root, subject[i], 0, unitsD, progress, 15, 100);
+      const box = boxes[i];
+      progress.style.width = '100%';
+      setTimeout(() => {
+        progress.style.opacity = "0";
+        box.classList.add('available');
+      }, 500)
+      const header = box.querySelector(".subject-header");
+      const unitsDiv = box.querySelector(".units");
+
+      header.addEventListener("click", () => {
+        if (unitsDiv.classList.contains("hidden")) {
+          unitsDiv.classList.remove("hidden");
+        } else {
+          unitsDiv.classList.add("hidden");
+        }
+      });
     }
   }
-  available.forEach(e => {
-    boxes[e].classList.add('available');
-  });
-  document.querySelectorAll(".subject-box.available").forEach(box => {
-    const header = box.querySelector(".subject-header");
-    const unitsDiv = box.querySelector(".units");
-
-    header.addEventListener("click", () => {
-      if (unitsDiv.classList.contains("hidden")) {
-        unitsDiv.classList.remove("hidden");
-      } else {
-        unitsDiv.classList.add("hidden");
-      }
-    });
-  });
 });
