@@ -27,7 +27,7 @@ const UPLOAD_PRESET = "studyImages";
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app);
 
-const subject = ["japanese", "math", "social-studies", "science", "english"];
+const subject = ["japanese", "math", "science", "social-studies", "english"];
 
 let fileContents = [];
 let files = []; 
