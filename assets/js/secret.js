@@ -150,13 +150,13 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
                 contents: data
             });
         } else {
-            const newDoc = await addDoc(collection(db, 'official', subject[v], 'contents'), {
+            await addDoc(collection(db, 'official', subject[v], 'contents'), {
                 title: document.getElementById('unitName').value,
                 contents: data,
                 index: hoge.size
             });
             await updateDoc(doc(db, "official", subject[v], "structure", selected.content.id), {
-                files: [...selected.content.data().files, newDoc.id]
+                files: [...selected.content.data().files, hoge.size]
             });
         }
         document.getElementById('progress').textContent = 'だん！';
