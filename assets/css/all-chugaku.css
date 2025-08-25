@@ -56,6 +56,9 @@ main {
     border-bottom: 1px solid #eee;
     transition: background-color 0.3s;
   }
+  .folder-header:hover {
+    background-color: #eaf4ff;
+  }
   .units {
     padding: 10px 20px;
     background: #f9f9f9;
