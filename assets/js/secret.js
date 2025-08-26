@@ -9,6 +9,7 @@ import {
     query,
     orderBy,
     getDoc,
+    deleteDoc,
     setDoc  } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -59,6 +60,19 @@ async function rec(structure, folderDoc, subject, parent) {
             folDiv.style.backgroundColor = '#2B9C2E';
             folDiv.style.color = 'white';
         });
+        folDiv.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            DOMs.forEach(e => {
+                e.style.backgroundColor = '';
+                e.style.color = '';
+            });
+            selected.type = 'folder';
+            selected.content = folDoc;
+            folDiv.style.backgroundColor = '#2B9C2E';
+            document.getElementById('download').style.display = 'none';
+            folDiv.style.color = 'white';
+            document.getElementById('dialog').style.display = 'block';
+        });
     }
     for (const fileID of folderDoc.data().files) {
         const fileDoc = files.docs[fileID];
@@ -79,9 +93,167 @@ async function rec(structure, folderDoc, subject, parent) {
             fileSpan.style.backgroundColor = '#2B9C2E';
             fileSpan.style.color = 'white';
         });
+        fileSpan.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            e.stopPropagation();
+            DOMs.forEach(e => {
+                e.style.backgroundColor = '';
+                e.style.color = '';
+            });
+            selected.type = 'file';
+            selected.content = fileDoc;
+            fileSpan.style.backgroundColor = '#2B9C2E';
+            document.getElementById('download').style.display = 'inline';
+            fileSpan.style.color = 'white';
+            document.getElementById('dialog').style.display = 'block';
+        });
     }
 }
 document.getElementById('subject').addEventListener('change', async () => {
+    await refresh();
+});
+async function choose(action) {
+    if (action == 'cancel') { return document.getElementById('dialog').style.display = 'none'; }
+    const p = parseInt(prompt("パスワードを入力", "0"));
+    if (!isNaN(p) && checkPass(p)) {
+        const v = parseInt(document.getElementById('subject').value);
+        switch(action) {
+            case 'delete':
+                if (confirm(`本当に  ${selected.content.data().title} ${selected.type == 'file' ? "ファイル" : "フォルダ"}  を削除しますか？`)) {
+                    if (selected.type == 'file') {
+                        await deleteDoc(doc(db, "official", subject[v], "contents", selected.content.id));
+                        const folderDocs = await getDocs(collection(db, "official", subject[v], "structure"));
+                        folderDocs.forEach(async (folderDoc) => {
+                            if (folderDoc.data().files.includes(selected.content.data().index)) {
+                                const newFiles = folderDoc.data().files.filter(index => index !== selected.content.data().index);
+                                await updateDoc(doc(db, "official", subject[v], "structure", folderDoc.id), {
+                                    files: newFiles
+                                });
+                            }
+                        });
+                        const fileDocs = await getDocs(query(collection(db, "official", subject[v], "contents"), orderBy("index")));
+                        let deleteIndex = selected.content.data().index;
+                        fileDocs.forEach(async (fileDoc) => {
+                            if (fileDoc.data().index > deleteIndex) {
+                                await updateDoc(doc(db, "official", subject[v], "contents", fileDoc.id), {
+                                    index: fileDoc.data().index - 1
+                                });
+                            }
+                        });
+                    } else if (selected.type == 'folder') {
+                        if (selected.content.id == 'root') {
+                            alert("rootフォルダーは削除できません");
+                            break;
+                        }
+                        const folderDocs = await getDocs(collection(db, "official", subject[v], "structure"));
+                        folderDocs.forEach(async (folderDoc) => {
+                            if (folderDoc.data().folders.includes(selected.content.id)) {
+                                const newFolders = folderDoc.data().folders.filter(id => id !== selected.content.id);
+                                await updateDoc(doc(db, "official", subject[v], "structure", folderDoc.id), {
+                                    folders: newFolders
+                                });
+                            }
+                        });
+                        await deleteDoc(doc(db, "official", subject[v], "structure", selected.content.id));
+                    }
+                    document.getElementById('dialog').style.display = 'none';
+                    await refresh();
+                    selected = {};
+                }
+                break;
+            case 'change':
+                const newName = prompt("新しい名前を入力", "");
+                if (newName != null && newName.trim() !== '') {
+                    if (selected.type == 'file') {
+                        await updateDoc(doc(db, "official", subject[v], "contents", selected.content.id), {
+                            title: newName
+                        });
+                    } else if (selected.type == 'folder') {
+                        await updateDoc(doc(db, "official", subject[v], "structure", selected.content.id), {
+                            title: newName
+                        });
+                    }
+                    document.getElementById('dialog').style.display = 'none';
+                    await refresh();
+                    selected = {};
+                }
+                break;
+            case 'download':
+                document.getElementById('unitName').value = selected.content.data().title;
+                fileContents = [];
+                document.getElementById('tbody').innerHTML = '';
+                for (let i = 0; i < selected.content.data().contents.question.length; i++) {
+                    const q = selected.content.data().contents.question[i];
+                    const a = selected.content.data().contents.answer[i];
+                    fileContents.push([q.text, a.text]);
+                    const newRow = document.getElementById('tbody').insertRow();
+                    const idCell = newRow.insertCell();
+                    const queCell = newRow.insertCell();
+                    const ansCell = newRow.insertCell();
+                    idCell.textContent = String(i);
+                    const queImages = document.createElement('input');
+                    const ansImages = document.createElement('input');
+                    queImages.multiple = true;
+                    ansImages.multiple = true;
+                    queImages.type = 'file';
+                    ansImages.type = 'file';
+                    queImages.accept = 'image/*';
+                    ansImages.accept = 'image/*';
+                    const queDiv = document.createElement('div');
+                    const ansDiv = document.createElement('div');
+                    queDiv.appendChild(queImages);
+                    ansDiv.appendChild(ansImages);
+                    const quePreview = document.createElement('div');
+                    const ansPreview = document.createElement('div');
+                    queDiv.appendChild(quePreview);
+                    ansDiv.appendChild(ansPreview);
+                    queImages.addEventListener('change', () => {
+                        quePreview.innerHTML = '';
+                        Array.from(queImages.files).forEach(file => {
+                          const img = document.createElement('img');
+                          img.src = URL.createObjectURL(file);
+                          img.style.maxWidth = '100px';
+                          img.style.marginRight = '5px';
+                          quePreview.appendChild(img);
+                        });
+                    });
+                    ansImages.addEventListener('change', () => {
+                        ansPreview.innerHTML = '';
+                        Array.from(ansImages.files).forEach(file => {
+                          const img = document.createElement('img');
+                          img.src = URL.createObjectURL(file);
+                          img.style.maxWidth = '100px';
+                          img.style.marginRight = '5px';
+                          ansPreview.appendChild(img);
+                        });
+                    });
+                    queCell.innerHTML = q.text;
+                    queCell.appendChild(queDiv);
+                    ansCell.innerHTML = a.text;
+                    ansCell.appendChild(ansDiv);
+                    q.images.forEach(url => {
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100px';
+                        img.style.marginRight = '5px';
+                        quePreview.appendChild(img);
+                    });
+                    a.images.forEach(url => {   
+                        const img = document.createElement('img');
+                        img.src = url;
+                        img.style.maxWidth = '100px';
+                        img.style.marginRight = '5px';
+                        ansPreview.appendChild(img);
+                    });
+                }
+                break;
+        }
+    } else {
+        alert("パスワードが違います。");
+    }
+    document.getElementById('dialog').style.display = 'none';
+}
+async function refresh() {
     document.getElementById('structure').innerHTML = '';
     files = [];
     DOMs = [];
@@ -105,8 +277,7 @@ document.getElementById('subject').addEventListener('change', async () => {
     document.getElementById('structure').appendChild(rootDiv);
     DOMs.push(rootDiv);
     await rec(structure, root, subject[v], rootDiv);
-});
-
+}
 document.getElementById('myForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     if (selected.type == undefined) {
@@ -159,30 +330,9 @@ document.getElementById('myForm').addEventListener('submit', async (e) => {
                 files: [...selected.content.data().files, hoge.size]
             });
         }
+        await refresh();
+        selected = {};
         document.getElementById('progress').textContent = 'だん！';
-        /*
-        if (index == "") {
-            await addDoc(collection(db, 'official', subject[v], 'contents'), {
-                title: document.getElementById('unitName').value,
-                contents: data,
-                index: hoge.size
-            });
-        } else {
-            index = parseInt(index);
-            if (index >= hoge.size) {
-                await addDoc(collection(db, 'official', subject[v], 'contents'), {
-                    title: document.getElementById('unitName').value,
-                    contents: data,
-                    index: index
-                });
-            } else {
-                const target = hoge.docs.find(e => e.data().index == index);
-                await setDoc(doc(db, 'official', subject[v], 'contents', target.id), {
-                    title: document.getElementById('unitName').value,
-                    contents: data
-                }, { merge: true });
-            }
-        }*/
     } else {
         alert("パスワードが違います。");
     }
@@ -282,3 +432,5 @@ async function uploadToCloudinary(file) {
       return null; // もしくは null を返してスキップしても良い
     }
   }
+
+  window.choose = choose;
