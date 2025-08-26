@@ -360,4 +360,12 @@ th {
     bottom: 140px;
     left: 25px;
   }
+  .upload-container {
+    top: 110px;
+  }
+  table {
+    margin-top: 50px;
+    max-width: 100%;
+    overflow: hidden;
+  }
 }
