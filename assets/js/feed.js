@@ -362,7 +362,7 @@ input.addEventListener('input', async () => {
     if (value.length == 1) return;
     const id = value.slice(1, value.length);
     const idHit = Posts
-      .filter(box => box.id.toLowerCase().includes(id.toLowerCase()));
+      .filter(box => box.id.includes(id));
     currentBoxes = [...idHit];
     setContainers(judgeBtns(idHit));
   } else if (value.length) {
