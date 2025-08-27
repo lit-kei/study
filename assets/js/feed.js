@@ -359,7 +359,11 @@ function setContainers(users = false) {
 input.addEventListener('input', async () => {
   const value = input.value;
   if (value[0] == '#') {
-    if (value.length == 1) return;
+    if (value.length == 1) {
+      currentBoxes = [...Posts];
+      setContainers(judgeBtns(currentBoxes));
+      return;
+    }
     const id = value.slice(1, value.length);
     const idHit = Posts
       .filter(box => box.id.includes(id));
