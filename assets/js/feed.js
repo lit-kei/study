@@ -361,7 +361,10 @@ input.addEventListener('input', async () => {
   if (value[0] == '#') {
     if (value.length == 1) return;
     const id = value.slice(1, value.length);
-    setContainers([id]);
+    const idHit = Posts
+      .filter(box => box.id.toLowerCase().includes(id.toLowerCase()));
+    currentBoxes = [...idHit];
+    setContainers(judgeBtns(idHit));
   } else if (value.length) {
     // valueにデータがある
     // titleから検索
