@@ -125,7 +125,9 @@ async function choose(action) {
                         const folderDocs = await getDocs(collection(db, "official", subject[v], "structure"));
                         folderDocs.forEach(async (folderDoc) => {
                             if (folderDoc.data().files.includes(selected.content.data().index)) {
-                                const newFiles = folderDoc.data().files.filter(index => index !== selected.content.data().index);
+                                const newFiles = folderDoc.data().files
+                                    .filter(index => index !== selected.content.data().index) // 削除
+                                    .map(index => index > selected.content.data().index ? index - 1 : index);
                                 await updateDoc(doc(db, "official", subject[v], "structure", folderDoc.id), {
                                     files: newFiles
                                 });
