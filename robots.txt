@@ -1,2 +1,3 @@
 User-agent: *
-Disallow:
+Disallow: /study/sitemap_index.xml
+Disallow: /study/sitemap.xml
