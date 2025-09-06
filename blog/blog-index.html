@@ -28,7 +28,7 @@
         "name": "暗記の小屋",
         "operatingSystem": "WEB",
         "applicationCategory": "EducationApplication",
-        "url": "https://lit-kei.github.io/study/all-chugaku.html/",
+        "url": "https://lit-kei.github.io/study/blog/blog-index.html/",
         "description": "私が暇なときに書いた、勉強法や面白い豆知識などのブログがこのページにまとめられています。不定期更新で申し訳ないですが、時間があれば読んでいただけると幸いです。",
         "offers": {
             "@type": "Offer",
@@ -92,7 +92,7 @@
                     <div class="content">
                         <h3 class="blog-title">${blog.title}</h3>
                         <div class="tags">
-                            ${blog.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                            ${blog.tags.map(tag => `<span class="tag"> # ${tag}</span>`).join('')}
                         </div>
                         <p class="summary">${blog.summary}</p>
                         <p class="date">

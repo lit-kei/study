@@ -1,3 +1,7 @@
+html {
+  scroll-behavior: smooth;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -8,14 +12,14 @@
 main {
     width: 100%;
     max-width: 1100px;
-    padding: 30px 50px; /* 余白を調整 */
+    padding: 30px 70px; /* 余白を調整 */
     margin: 40px auto 30px auto;
     background-color: white;
     box-sizing: border-box; /* これで padding を幅に含める */
 }
 #top-content {
     min-height: 330px;
-    margin-bottom: 30px;
+    margin-bottom: 60px;
     padding: 40px 40px 20px 40px;
     background: 
         linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
@@ -44,11 +48,11 @@ h1.title {
     margin: 20px 0 20px 0;
 }
 .tag {
-    background-color: #fff;
+    background-color: #f2f2f2;
+    border: 1px solid #ccc;
     color: #333;
     padding: 2px 12px;
     border-radius: 12px;
-    border: #333 1px solid;
     font-size: 16px;
     /*transition: background-color 0.3s, color 0.3s;
     cursor: pointer;*/
@@ -102,11 +106,133 @@ h1.title {
     margin: 3px 0 0;
 }
 
+.blog-content p:not(.point) {
+    font-size: 18px;
+    color: #333;
+    margin-bottom: 60px;
+}
+.blog-content p.point {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+.blog-content p.point::before {
+    font-family: 'Font Awesome 6 Free';
+    color: #2b9c2e;
+    margin-right: 10px;
+    font-size: 20px;
+    content: "\f14a"; /* チェック付き四角形アイコン */
+    position: relative;
+    top: 0px;
+}
+.blog-content h2 {
+    font-size: 26px;
+    margin: 30px 0 30px 0;
+    color: #333;
+}
+.blog-content h2:not(.avoid) {
+    border-left: #2b9c2e 9px solid;
+    padding-left: 10px;
+    padding: 20px 0 20px 10px;
+    background-color: #f3f3f3;
+}
+.blog-content h3 {
+    font-size: 22px;
+    margin: 25px 0 25px 0;
+    padding: 10px 0;
+    color: #333;
+    border-left: #2b9c2e 6px solid;
+    padding-left: 10px;
+}
+.blog-content h3 .mini {
+  display: block;         /* ブロック化して縦に並べる */
+  font-size: 18px;       /* 小さく表示 */
+  color: #555;            /* 薄い色で補助的に見せる */
+  margin-bottom: 2px;     /* 本文との間隔 */
+}
+
+.blog-content .ul-box {
+    padding: 40px 40px 20px;
+    margin-bottom: 30px;
+    width: 100%;
+    background-color: #f5fff5;
+    border: #2b9c2e 1px dashed;
+}
+.ul-box ul {
+    list-style-type: disc;
+}
+.ul-box ul li {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+.blog-content a {
+    color: #20699e;
+    transition: color 0.3s ease;
+}
+.blog-content a:visited {
+    color: #20699e;
+}
+.blog-content a:hover {
+    color: #123c5a;
+}
 
 .color-marker {
     background: linear-gradient(transparent 50%, #ffde15 50%);
     font-weight: bold;
 }
+.balloon {
+  position: relative;
+  margin: 2em 0 2em 40px;
+  padding: 15px;
+  background: #f5fff5;
+  border-radius: 30px;
+  border: #2b9c2e 1px solid;
+}
+
+.balloon:before {  
+  content: "";
+  position: absolute;
+  left: -38px;
+  width: 13px;
+  height: 12px;
+  bottom: 0;
+  background: #f5fff5;
+  border: #2b9c2e 1px solid;
+  border-radius: 50%;
+}
+
+.balloon:after {
+  content: "";
+  position: absolute;
+  left: -24px;
+  width: 20px;
+  height: 18px;
+  bottom: 3px;
+  background: #f5fff5;
+  border: #2b9c2e 1px solid;
+  border-radius: 50%;
+}
+.balloon span {
+  margin: 0; 
+  padding: 0 10px;
+  font-size: 18px;
+}
+blockquote {
+  border-left: 4px solid #bbb;
+  margin: 0;
+  padding: 1em 1em;
+  margin-bottom: 60px;
+  font-style: italic;
+  background: #f3f3f3;
+}
+.caption {
+  display: block;
+  text-align: left;
+  font-size: 18px;
+  color: #666;
+  margin-top: 5px;
+}
+
 
 @media (max-width: 768px) {
     main {
@@ -120,6 +246,7 @@ h1.title {
     .share-links {
         background: none !important;
         border: none;
+        width: 100%;
     }
     .share-label {
         width: 100%;

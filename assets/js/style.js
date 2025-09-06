@@ -94,7 +94,7 @@ window.onload = function () {
   let lastScrollY = window.pageYOffset;
   window.addEventListener('scroll', () => {
     const currentScrollY = window.pageYOffset;
-    if (Math.abs(currentScrollY - lastScrollY) > 5) {
+    if (Math.abs(currentScrollY - lastScrollY) > 200) { // 200px以上スクロールした場合のみ反応
       if (currentScrollY > lastScrollY) {
         // スクロールダウン（隠す）
         header.style.transform = `translateY(-${headerHeight}px)`;
