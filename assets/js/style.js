@@ -9,7 +9,8 @@ const footerLinks = [
   { href: "/study/feed.html", title: "みんなの問題集" },
   { href: "/study/menu.html", title: "フォルダ選択" },
   { href: "/study/howto.html", title: "使い方ガイド"},
-  { href: "/study/all-chugaku.html", title: "中学全範囲問題集"}
+  { href: "/study/all-chugaku.html", title: "中学全範囲問題集"},
+  { href: "/study/blog/blog-index.html", title: "勉強ブログ"},
 ];
 
 window.onload = function () {
@@ -24,15 +25,25 @@ window.onload = function () {
 
   const sourceWebp = document.createElement('source');
   sourceWebp.type = 'image/webp';
-  sourceWebp.srcset = 'assets/images/logo.webp';
   logoPicture.appendChild(sourceWebp);
-
+  
   const img = document.createElement('img');
-  img.src = 'assets/images/logo.png';
   img.alt = '暗記の小屋のロゴ';
   img.classList.add('logo-img');
   img.style.cursor = 'pointer';
   img.onclick = () => window.location.href = '/study/';
+
+  const hierarchy = document.querySelector('meta[name="hierarchy"]');
+  if (hierarchy && !isNaN(Number(hierarchy.getAttribute('content')))
+      && Number.isInteger(Number(hierarchy.getAttribute('content')))
+      && Number(hierarchy.getAttribute('content')) >= 0) {
+    const value = Number(hierarchy.getAttribute('content'));
+    img.src = '../'.repeat(value) + 'assets/images/logo.png';
+    sourceWebp.srcset = '../'.repeat(value) + 'assets/images/logo.webp';
+  } else {
+    sourceWebp.srcset = 'assets/images/logo.webp';
+    img.src = 'assets/images/logo.png';
+  }
 
   logoPicture.appendChild(img);
 

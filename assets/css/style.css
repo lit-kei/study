@@ -45,6 +45,7 @@ header {
 .header-inner h1 {
   font-size: 1.5em;
   cursor: default;
+  color: white;
   white-space: nowrap;
 }
 
@@ -80,6 +81,9 @@ header {
 .other-site a {
     margin-left: 20px;
 }
+.other-site h2 {
+  color: white;
+}
 
 footer {
   background-color: #2B9C2E;
@@ -110,6 +114,10 @@ footer {
   text-decoration: underline;
 }
 
+.footer-info small {
+  color: #e0f2e9;
+}
+
 .footer-info small a {
   color: #e0f2e9;
   text-decoration: underline;
@@ -121,6 +129,12 @@ footer {
 
 /* ---------- スマホ対応 ---------- */
 @media screen and (max-width: 600px) {
+  header {
+    position: relative;
+  }
+  .main-content {
+    padding: 0 !important;
+  }
   .header-inner {
     flex-direction: column;
     align-items: flex-start;

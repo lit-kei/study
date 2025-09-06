@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>勉強ブログ - 暗記の小屋</title>
+    <meta name="title" content="勉強ブログ">
+    <meta name="hierarchy" content="1">
+    <link rel="stylesheet" href="../assets/css/blog-index.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="icon" href="../favicon.ico" sizes="any">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="私が暇なときに書いた、勉強法や面白い豆知識などのブログがこのページにまとめられています。不定期更新で申し訳ないですが、時間があれば読んでいただけると幸いです。">
+    <meta name="robots" content="index, follow">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84CG30Z7N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-P84CG30Z7N');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/all-chugaku.html/",
+        "description": "私が暇なときに書いた、勉強法や面白い豆知識などのブログがこのページにまとめられています。不定期更新で申し訳ないですが、時間があれば読んでいただけると幸いです。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+    <script src="../assets/js/style.js" defer></script>
+</head>
+<body>
+    <header></header>
+    <div class="main-content" style="min-height: 100vh;">
+        <main>
+            <div class="container index">
+                <h1 class="title">勉強ブログについて</h1>
+                <div class="main-text">
+                  <p>私が暇なときに書いた、勉強法や面白い豆知識などのブログがこのページにまとめられています。</p>
+                  <p>不定期更新で申し訳ないですが、時間があれば読んでいただけると幸いです。</p>
+                  <p>フィードバックに勉強に関する質問を投稿してくだされば、それに返答することもあります。</p>
+                </div>
+            </div>
+            <div class="container main-item">
+                <h2 class="title" id="title">ブログ一覧</h2>
+                <div class="blog-list">
+                  <!--
+                  <div class="blog">
+                      <div class="content">
+                        <h3 class="blog-title">予習と復習、どっちが大事？</h3>
+                        <div class="tags">
+                            <span class="tag">授業</span>
+                            <span class="tag">勉強法</span>
+                        </div>
+                        <p class="summary">予習と復習、どちらがより重要かについて考察します。<br>効果的な学習方法を見つけるためのヒントを提供します。</p>
+                        <p class="date">
+                          <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>2025-09-06</span>
+                          <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>4 min</span>
+                        </p>
+                      </div>
+                      <picture>
+                        <img src="thumbnails/class.jpg" alt="教室の写真" class="thumbnail">
+                      </picture>
+                  </div>
+                -->
+                </div>
+            </div>
+            
+        </main>
+    </div>
+    <footer></footer>
+    <script>
+      fetch('../assets/json/blog-data.json')
+        .then(response => response.json())
+        .then(data => {
+            const blogList = document.querySelector('.blog-list');
+            data.forEach(blog => {
+                const blogElement = document.createElement('div');
+                blogElement.className = 'blog';
+                blogElement.innerHTML = `
+                    <div class="content">
+                        <h3 class="blog-title">${blog.title}</h3>
+                        <div class="tags">
+                            ${blog.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                        </div>
+                        <p class="summary">${blog.summary}</p>
+                        <p class="date">
+                          <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>${blog.date}</span>
+                          <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>${blog.readTime}</span>
+                        </p>
+                    </div>
+                    <picture>
+                        <img src="${blog.thumbnail}" alt="ブログのサムネイル" class="thumbnail">
+                    </picture>
+                `;
+                blogElement.addEventListener('click', () => {
+                    window.location.href = blog.id + '.html';
+                });
+                blogList.appendChild(blogElement);
+            });
+        })
+        .catch(error => {
+            console.error('Error loading blog data:', error);
+        });
+    </script>
+</body>
+</html>

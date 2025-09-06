@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333;
+}
+
+main {
+    width: 100%;
+    max-width: 1100px;
+    padding: 30px 50px; /* 余白を調整 */
+    margin: 40px auto 30px auto;
+    background-color: white;
+    box-sizing: border-box; /* これで padding を幅に含める */
+}
+#top-content {
+    min-height: 330px;
+    margin-bottom: 30px;
+    padding: 40px 40px 20px 40px;
+    background: 
+        linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), 
+        url("../../blog/thumbnails/class.jpg") center/cover no-repeat;
+}
+.back-links * {
+    margin-bottom: 20px;
+    font-size: 16px;
+    color: #333;
+    cursor: default;
+}
+.back-link {
+    cursor: pointer;
+}
+h1.title {
+    font-size: 32px;
+    margin: 20px 0;
+    text-align: center;
+    color: #333;
+}
+.tags {
+    display: flex;
+    flex-wrap: wrap;
+    padding-left: 5px;
+    gap: 15px;
+    margin: 20px 0 20px 0;
+}
+.tag {
+    background-color: #fff;
+    color: #333;
+    padding: 2px 12px;
+    border-radius: 12px;
+    border: #333 1px solid;
+    font-size: 16px;
+    /*transition: background-color 0.3s, color 0.3s;
+    cursor: pointer;*/
+}
+.svg-icon {
+    width: 18px;
+    height: 18px;
+    margin-right: 6px;
+}
+.date {
+    display: flex;
+    align-items: center;
+    margin-bottom: 30px;
+}
+.date span{
+    display: block;
+    font-size: 16px;
+    color: #555;
+    margin-top: 5px;
+}
+.share-links {
+    text-align: center;
+    width: 80%;
+    margin: 20px auto 30px auto;
+    border: #333 1px solid;
+    border-top: none;
+    background: linear-gradient(to right, #333 0 25%, transparent 25% 74%, #333 74% 100%) top / 100% 1px no-repeat;
+    position: relative;
+    padding-top: 22px;
+}
+.share-label {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 0 5px;
+    font-size: 16px;
+    color: #333;
+}
+.share-icons {
+    margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+.share-icon {
+    width: 43px;
+    height: 43px;
+    margin: 3px 0 0;
+}
+
+
+.color-marker {
+    background: linear-gradient(transparent 50%, #ffde15 50%);
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    main {
+        width: 100%;  /* vw ではなく % に */
+        margin: 0; /* 左右に少し余白 */
+        padding: 20px;
+    }
+    #top-content {
+        padding: 10px;
+    }
+    .share-links {
+        background: none !important;
+        border: none;
+    }
+    .share-label {
+        width: 100%;
+    }
+    .share-links {
+        background: linear-gradient(to right, black 0 5%, transparent 5% 95%, black 95% 100%) top / 100% 1px no-repeat;
+
+    }
+}
