@@ -1,7 +1,7 @@
 const links = [
   { href: "/study/", title: "トップページ" },
   { href: "/study/feed.html", title: "みんなの問題集" },
-  { href: "/study/menu.html", title: "フォルダ選択" },
+  { href: "/study/blog/blog-index.html", title: "勉強ブログ" },
   { href: "/study/howto.html", title: "使い方ガイド"}
 ];
 const footerLinks = [

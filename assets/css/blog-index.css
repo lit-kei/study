@@ -93,6 +93,16 @@ main {
     object-fit: cover;
     border-radius: 23px;
 }
+.main-content a {
+    color: #20699e;
+    transition: color 0.3s ease;
+}
+.main-content a:visited {
+    color: #20699e;
+}
+.main-content a:hover {
+    color: #123c5a;
+}
 @media (max-width: 768px) {
     .main {
         margin-top: 20px;
