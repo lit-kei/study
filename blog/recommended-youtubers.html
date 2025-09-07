@@ -52,7 +52,6 @@
     </script>
     <script id="MathJax-script" async
             src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <script src="../assets/js/style.js" defer></script>
     <style>
         cite {
             font-size: 16px;
@@ -72,7 +71,21 @@
     </style>
 </head>
 <body>
-    <header></header>
+    <header>
+        <div class="header-inner">
+            <picture>
+                <source type="image/webp" srcset="../assets/images/logo.webp">
+                <img alt="暗記の小屋のロゴ" class="logo-img" src="../assets/images/logo.png" style="cursor: pointer;">
+            </picture>
+            <nav id="links" class="header-nav">
+                <strong><a href="/study/">トップページ</a></strong>
+                <strong><a href="/study/feed.html">みんなの問題集</a></strong>
+                <strong><a href="/study/blog/blog-index.html">勉強ブログ</a></strong>
+                <strong><a href="/study/all-chugaku.html">中学全範囲問題集</a></strong>
+                <strong><a href="/study/howto.html">使い方ガイド</a></strong>
+            </nav>
+        </div>
+    </header>
     <div class="main-content" style="min-height: 100vh;">
         <main>
             <div id="top-content" style="background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('./thumbnails/youtube.jpg') center/cover no-repeat;">
@@ -228,7 +241,21 @@
             </div>
         </div>
     </div>
-    <footer></footer>
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <a href="/study/">トップページ</a>
+                <a href="/study/feed.html">みんなの問題集</a>
+                <a href="/study/menu.html">フォルダ選択</a>
+                <a href="/study/howto.html">使い方ガイド</a>
+                <a href="/study/all-chugaku.html">中学全範囲問題集</a>
+                <a href="/study/blog/blog-index.html">勉強ブログ</a>
+            </div>
+            <div class="footer-info">
+                <small>© 2025 暗記の小屋 | <a href="/study/privacy.html">プライバシーポリシー</a></small>
+            </div>
+        </div>
+    </footer>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     <script>
         fetch('../assets/json/blog-data.json')
