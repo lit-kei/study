@@ -39,13 +39,26 @@
         }
     }
     </script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: []
+            },
+            options: {
+                enableMenu: false
+            }
+        };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="../assets/js/style.js" defer></script>
 </head>
 <body>
     <header></header>
     <div class="main-content" style="min-height: 100vh;">
         <main>
-            <div id="top-content">
+            <div id="top-content" style="background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('../../blog/thumbnails/class.jpg') center/cover no-repeat;">
                 <div class="back-links">
                     <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> >
                 </div>
