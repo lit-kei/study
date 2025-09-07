@@ -6,6 +6,7 @@
     "readTime": "4 min",
     "summary": "予習と復習、どちらがより重要かについて考察します。<br>効果的な学習方法を見つけるためのヒントを提供します。",
     "tags": ["授業", "勉強法"],
-    "thumbnail": "./thumbnails/class.jpg"
+    "thumbnail": "./thumbnails/class.jpg",
+    "recommendations": []
   }
 ]

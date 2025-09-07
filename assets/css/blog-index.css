@@ -107,9 +107,6 @@ main {
     .main {
         margin-top: 20px;
     }
-    .main-content {
-        padding: 0 !important;
-    }
     .content {
         width: 100%;
         margin: 0 0 20px 0;
