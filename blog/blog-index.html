@@ -84,6 +84,7 @@
       fetch('../assets/json/blog-data.json')
         .then(response => response.json())
         .then(data => {
+            data.reverse(); // 新しい順に表示
             const blogList = document.querySelector('.blog-list');
             data.forEach(blog => {
                 const blogElement = document.createElement('div');
