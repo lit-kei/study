@@ -63,7 +63,7 @@ th, td {
     padding: 10px;
     text-align: left;
     /*border-bottom: 1px solid #ddd;*/
-    border: 1px solid #ddd; /* セルの枠線 */
+    border: 1px solid #aaa; /* セルの枠線 */
 }
 
 th {
@@ -72,7 +72,10 @@ th {
 }
 
 tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #f5f5ff;
+}
+tr:nth-child(odd) {
+    background-color: #fff5f5;
 }
 
 tr:hover {
@@ -172,6 +175,7 @@ button:hover {
     background-color: #f3f3f3;
     border-radius: 5px;
     margin-top: 20px;
+    border: 1px solid #aaa;
 }
 
 #progressBar {
