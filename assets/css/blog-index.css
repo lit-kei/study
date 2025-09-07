@@ -87,6 +87,10 @@ main {
     line-height: 1.6;
     font-size: 18px;
 }
+picture {
+    display: flex;
+    align-items: center;
+}
 .thumbnail {
     width: 224px;
     height: 140px;

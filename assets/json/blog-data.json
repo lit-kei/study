@@ -1,5 +1,15 @@
 [
   {
+    "id": "preparaation-vs-review",
+    "title": "予習と復習、どっちが大事？",
+    "date": "2025-09-06",
+    "readTime": "4 min",
+    "summary": "予習と復習、どちらがより重要かについて考察します。<br>効果的な学習方法を見つけるためのヒントを提供します。",
+    "tags": ["授業", "勉強法"],
+    "thumbnail": "./thumbnails/class.jpg",
+    "recommendations": ["recommended-youtubers"]
+  },
+  {
     "id": "preparation-vs-review",
     "title": "予習と復習、どっちが大事？",
     "date": "2025-09-06",
@@ -7,6 +17,16 @@
     "summary": "予習と復習、どちらがより重要かについて考察します。<br>効果的な学習方法を見つけるためのヒントを提供します。",
     "tags": ["授業", "勉強法"],
     "thumbnail": "./thumbnails/class.jpg",
+    "recommendations": ["recommended-youtubers"]
+  },
+  {
+    "id": "recommended-youtubers",
+    "title": "おすすめの勉強系ユーチューバー5選",
+    "date": "2025-09-07",
+    "readTime": "3 min",
+    "summary": "私がおすすめする勉強系ユーチューバーを5人紹介します。<br>モチベーションアップや効率的な学習に役立ちます。",
+    "tags": ["教材", "勉強法"],
+    "thumbnail": "./thumbnails/youtube-icon.jpg",
     "recommendations": []
   }
 ]

@@ -243,7 +243,7 @@ blockquote {
 
 .blog-box {
     margin-top: 40px;
-    padding-top: 60px;
+    padding-top: 30px;
     display: flex;
     justify-content: space-between;
     border-top: #333 2px dashed;
@@ -254,6 +254,9 @@ blockquote {
 }
 .prev-blog, .next-blog {
     margin-bottom: 0 !important;
+}
+.next-blog {
+    text-align: right;
 }
 .prev-blog a,
  .next-blog a {
@@ -347,5 +350,26 @@ blockquote {
         align-items: center;
         gap: 30px;
         margin-top: 40px;
+    }
+    .next-blog,
+    .prev-blog {
+        text-align: center;
+        margin: 0;
+    }
+    .blog-box {
+        padding-top: 20px;
+    }
+    .blog {
+        flex-direction: column;
+        align-items: center;
+        gap: 30px;
+        width: 100%;
+    }
+    .blog p.date {
+        margin-bottom: 0;
+    }
+    .content {
+        width: 100%;
+        margin: 0;
     }
 }
