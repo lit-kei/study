@@ -2,6 +2,7 @@ const links = [
   { href: "/study/", title: "トップページ" },
   { href: "/study/feed.html", title: "みんなの問題集" },
   { href: "/study/blog/blog-index.html", title: "勉強ブログ" },
+  { href: "/study/all-chugaku.html", title: "中学全範囲問題集"},
   { href: "/study/howto.html", title: "使い方ガイド"}
 ];
 const footerLinks = [
@@ -14,12 +15,11 @@ const footerLinks = [
 ];
 
 window.onload = function () {
-  const metaTitle = document.querySelector('meta[name="title"]');
-  const title = metaTitle ? metaTitle.getAttribute('content') : document.title || "暗記の小屋";
   const header = document.getElementsByTagName('header')[0];
 
   const inner = document.createElement('div');
   inner.classList.add('header-inner');
+
 
   const logoPicture = document.createElement('picture');
 
@@ -49,10 +49,6 @@ window.onload = function () {
 
   inner.appendChild(logoPicture);
 
-  const h1 = document.createElement('h1');
-  h1.textContent = title;
-  inner.appendChild(h1);
-
   const nav = document.createElement('nav');
   nav.id = "links";
   nav.classList.add("header-nav");
@@ -66,45 +62,8 @@ window.onload = function () {
   });
   inner.appendChild(nav);
 
-  const other = document.createElement('div');
-  other.classList.add('other-site');
-
-  const h2 = document.createElement('h2');
-  h2.textContent = "他のサイト";
-  other.appendChild(h2);
-
-  const strongOther = document.createElement('strong');
-  const aOther = document.createElement('a');
-  aOther.href = "https://lit-kei.github.io/prime/";
-  aOther.target = "_blank";
-  aOther.rel = "noopener noreferrer";
-  aOther.textContent = "素因数分解シャトルラン";
-  strongOther.appendChild(aOther);
-  other.appendChild(strongOther);
-
-  inner.appendChild(other);
 
   header.appendChild(inner);
-
-  const main = document.getElementsByClassName('main-content')[0];
-
-  const headerHeight = header.offsetHeight;
-  main.style.paddingTop = headerHeight + 'px';
-
-  let lastScrollY = window.pageYOffset;
-  window.addEventListener('scroll', () => {
-    const currentScrollY = window.pageYOffset;
-    if (Math.abs(currentScrollY - lastScrollY) > 200) { // 200px以上スクロールした場合のみ反応
-      if (currentScrollY > lastScrollY) {
-        // スクロールダウン（隠す）
-        header.style.transform = `translateY(-${headerHeight}px)`;
-      } else {
-        // スクロールアップ（表示）
-        header.style.transform = 'translateY(0)';
-      }
-      lastScrollY = currentScrollY;
-    }
-  });
 
   const footer = document.getElementsByTagName('footer')[0];
   const footerContainer = document.createElement('div');

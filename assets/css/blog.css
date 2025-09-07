@@ -17,6 +17,7 @@ main,
     margin: 40px auto 30px auto;
     background-color: white;
     box-sizing: border-box; /* これで padding を幅に含める */
+    border: #777 2px solid;
 }
 .main-content {
     margin-bottom: 25vh;
@@ -327,6 +328,7 @@ blockquote {
         width: 100%;  /* vw ではなく % に */
         margin: 0; /* 左右に少し余白 */
         padding: 20px;
+        border: none;
     }
     #top-content {
         padding: 10px;
@@ -367,6 +369,9 @@ blockquote {
     }
     .content {
         width: 100%;
+        margin: 0;
+    }
+    .recommendation {
         margin: 0;
     }
 }

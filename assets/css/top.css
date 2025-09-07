@@ -1,12 +1,9 @@
 
-.container {
-    background-color: #fff;
-    padding: 20px;
+.introduction {
+    padding: 30px;
     margin: 0 auto 30px auto;
     width: 95%;
-
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px #777 solid;
 }
 main {
     padding: 40px;
@@ -18,20 +15,15 @@ p {
     display: flex;
 }
 
-.left {
-    margin-top: 10px;
+.left, .right {
+    margin-top: 20px;
     width: 50%;
-    border-right: 2px solid #000;
-    padding: 15px;
+    padding: 25px;
     padding-top: 0;
     box-sizing: border-box;
 }
-.right {
-    margin-top: 10px;
-    width: 50%;
-    padding: 15px;
-    padding-top: 0;
-    box-sizing: border-box;
+.left {
+    border-right: 3px dashed #777;
 }
 
 .title {
@@ -52,11 +44,9 @@ ul {
     margin-top: 5px;
 }
 
-#advise {
-    font-size: 22px;
-    background-color: yellow;
-    min-height: 32px; /* だいたい1行分の高さ確保 */
-    display: none;
+.color-marker {
+    background: linear-gradient(transparent 80%, #69d46d 20%);
+    font-weight: bold;
 }
 
 .main {
@@ -117,9 +107,6 @@ ul {
   
 
 @media (max-width: 768px) {
-    #advise {
-        display: block;
-    }
     .two-column {
         display: block;
     }
@@ -135,5 +122,9 @@ ul {
     .left-containers,
     .right-containers {
         width: 100%;
+    }
+    .right-containers,
+    .left-containers {
+        margin: 0;
     }
 }

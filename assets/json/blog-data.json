@@ -8,5 +8,15 @@
     "tags": ["授業", "勉強法"],
     "thumbnail": "./thumbnails/class.jpg",
     "recommendations": ["recommended-youtubers"]
+  },
+  {
+    "id": "recommended-youtubers",
+    "title": "おすすめの勉強系ユーチューバー5選",
+    "date": "2025-09-07",
+    "readTime": "5 min",
+    "summary": "私がおすすめする勉強系ユーチューバーを5人紹介します。<br>モチベーションアップや効率的な学習に役立ちます。",
+    "tags": ["教材", "勉強法"],
+    "thumbnail": "./thumbnails/youtube.jpg",
+    "recommendations": ["preparation-vs-review"]
   }
 ]

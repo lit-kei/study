@@ -6,62 +6,59 @@
 .main-content {
   width: 100%;
   min-height: 100vh;
+  padding: 20px 0 0;
 }
 
 /* ボディ全体 */
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
+  background-color: /*#f4f4f9*/#f0fff0;
 }
 header {
-  position: fixed;
+  position: static;
   top: 0;
   z-index: 10;
   min-height: 90px; /* 最小限の高さにするならこれでOK */
   width: 100%;
-  background-color: #2B9C2E;
+  background-color: white;
+  border-bottom: #777 2px solid;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
 .header-inner {
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap; /*折り返しを有効にする */
   align-items: center;
   justify-content: left;
-  padding: 10px 20px;
-  gap: 30px;
+  padding: 20px 20px 30px;
+  gap: 20px;
   height: 100%;
-  color: white;
+  color: #222;
 }
 
 /* ロゴ画像 */
 .logo-img {
   height: 70px;
+  transform: translateX(-20px);
   cursor: pointer;
 }
-
-/* タイトル */
-.header-inner h1 {
-  font-size: 1.5em;
-  cursor: default;
-  color: white;
-  white-space: nowrap;
-}
-
 /* ナビゲーション */
 .header-nav {
   display: flex;
-  gap: 20px;
+  gap: 30px;
   flex-wrap: wrap;
 }
 
 .header-nav a,
 .other-site a {
-  color: white;
+  color: #222;
   text-decoration: none;
   font-weight: bold;
+  font-size: 18px;
 }
+
 
 .header-nav a:hover,
 .other-site a:hover {
@@ -73,7 +70,7 @@ header {
   display: flex;
   align-items: center;
   padding-left: 20px;
-  border-left: 2px solid #f4f4f9;
+  border-left: 2px solid #222;
   white-space: nowrap;
   height: 70px;
 }
@@ -82,12 +79,13 @@ header {
     margin-left: 20px;
 }
 .other-site h2 {
-  color: white;
+  color: #222;
 }
 
 footer {
-  background-color: #2B9C2E;
-  color: white;
+  background-color: white;
+  color: #222;
+  border-top: #777 2px solid;
   padding: 20px 10px;
   font-size: 0.9rem;
   margin-top: 40px;
@@ -104,7 +102,7 @@ footer {
 }
 
 .footer-links a {
-  color: white;
+  color: #222;
   margin: 0 12px;
   text-decoration: none;
   font-weight: bold;
@@ -115,26 +113,20 @@ footer {
 }
 
 .footer-info small {
-  color: #e0f2e9;
+  color: #222;
 }
 
 .footer-info small a {
-  color: #e0f2e9;
+  color: #222;
   text-decoration: underline;
 }
 
 .footer-info small a:hover {
-  color: #c8e6c9;
+  color: #222;
 }
 
 /* ---------- スマホ対応 ---------- */
 @media screen and (max-width: 600px) {
-  header {
-    position: static;
-  }
-  .main-content {
-    padding: 0 !important;
-  }
   .header-inner {
     flex-direction: column;
     align-items: flex-start;
@@ -156,6 +148,7 @@ footer {
 
   .logo-img {
     height: 60px;
+    margin-left: 20px;
   }
 
   .header-inner h1 {
@@ -164,5 +157,8 @@ footer {
   .footer-links a {
     display: block;
     margin: 6px 0;
+  }
+  .main-content {
+    padding: 0;
   }
 }
