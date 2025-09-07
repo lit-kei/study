@@ -225,6 +225,10 @@ blockquote {
   font-style: italic;
   background: #f3f3f3;
 }
+.blog-image {
+    width: 95%;
+    max-width: 500px;
+}
 .caption {
   display: block;
   text-align: left;
