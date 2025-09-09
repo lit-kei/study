@@ -18,5 +18,15 @@
     "tags": ["教材", "勉強法"],
     "thumbnail": "./thumbnails/youtube.jpg",
     "recommendations": ["preparation-vs-review"]
+  },
+  {
+    "id": "math-factorization-base",
+    "title": "因数分解に慣れよう～基礎編～",
+    "date": "2025-09-09",
+    "readTime": "10 min",
+    "summary": "中3の初めに習う因数分解、苦手とする人は多いのでは？<br>因数分解のコツや考え方を完璧に言語化します。",
+    "tags": ["因数分解", "数学", "中3", "基礎"],
+    "thumbnail": "./thumbnails/math-board.jpg",
+    "recommendations": []
   }
 ]

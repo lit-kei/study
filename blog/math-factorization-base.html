@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>因数分解に慣れよう～基礎編～ | 勉強ブログ - 暗記の小屋</title>
+    <meta name="title" content="勉強ブログ">
+    <meta name="hierarchy" content="1">
+    <link rel="stylesheet" href="../assets/css/blog.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="icon" href="https://lit-kei.github.io/study/favicon.ico" sizes="any">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="中学3年生の初めに習う因数分解は多くの人がつまずきます。詳しく言語化したので、ぜひ見てください。">
+    <meta name="robots" content="index, follow">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84CG30Z7N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-P84CG30Z7N');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/blog/math-factorization-base.html/",
+        "description": "中学3年生の初めに習う因数分解は多くの人がつまずきます。詳しく言語化したので、ぜひ見てください。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            options: {
+                enableMenu: false
+            },
+            chtml: {
+                displayAlign: 'left',   // 左寄せに変更
+                displayIndent: '1em'    // インデント（必要なら）
+            }
+        };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../assets/js/style.js" defer></script>
+</head>
+<body>
+    <header></header>
+    <div class="main-content" style="min-height: 100vh;">
+        <main>
+            <div id="top-content" style="background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('./thumbnails/math-board.jpg') center/cover no-repeat;">
+                <div class="back-links">
+                    <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> >
+                </div>
+                <h1 class="title">因数分解に慣れよう～基礎編～</h1>
+                <div class="tags">
+                    <span class="tag"># 因数分解</span>
+                    <span class="tag"># 数学</span>
+                    <span class="tag"># 中3</span>
+                    <span class="tag"># 基礎</span>
+                </div>
+                <div class="date">
+                    <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>2025-09-09</span>
+                    <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>10 min</span>
+                </div>
+                <div class="share-links">
+                    <span class="share-label">ぜひこの記事をシェアしてください！</span>
+                    <div class="share-icons">
+                        <a href="https://twitter.com/intent/tweet?text=因数分解に慣れよう～基礎編～&url=https://lit-kei.github.io/study/blog/math-factorization.html&hashtags=暗記の小屋" target="_blank">
+                            <img src="../assets/images/x-icon.png" alt="Xでシェア" class="share-icon">
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://lit-kei.github.io/study/blog/math-factorization.html" target="_blank">
+                            <img src="../assets/images/fb-icon.png" alt="Facebookでシェア" class="share-icon">
+                        </a>
+                        <a href="https://social-plugins.line.me/lineit/share?url=https://lit-kei.github.io/study/blog/math-factorization.html&text=因数分解に慣れよう～基礎編～" target="_blank">
+                            <img src="../assets/images/line-icon.png" alt="LINEでシェア" class="share-icon">
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="blog-content">
+                <p class="point">前提知識</p>
+                <div class="ul-box">
+                    <ul>
+                        <li>中1で習う文字式の計算</li>
+                    </ul>
+                </div>
+                <h2 class="avoid">中学3年生の初めに習う <span class="color-marker">因数分解</span> を苦手とする人は多い！</h2>
+                <p>これは私の感想ではありません。</p>
+                <p>実際、私の周りにも因数分解を苦手とする生徒は散見されます。</p>
+                <p>この記事では因数分解の基礎を詳しく解説します。</p>
+                <p class="point">この記事の目次</p>
+                <div class="ul-box">
+                    <ul>
+                        <li><a href="#section1">因数分解と展開の関係性</a></li>
+                        <li><a href="#section2">公式を用いた因数分解</a></li>
+                        <li><a href="#section3">演習</a></li>
+                    </ul>
+                </div>
+                <h2 id="section1">因数分解と展開の関係性</h2>
+                <p>このセクションでは因数分解という言葉を聞いたことが無い人向けに、その意味について長々と説明します。</p>
+                <p>すでに知っている人は<a href="#section2">次のセクション【公式を用いた因数分解】</a>へ飛んでください。</p>
+                <p>まず、かけ算ができないと割り算ができないように、展開ができなければ因数分解はできません。</p>
+                <p>そのため展開について解説した後、因数分解に進みます。</p>
+                <h2 class="avoid">展開とは、 <span class="color-marker">多項式のかけ算を足し算で表すこと</span> </h2>
+                <p class="point">最も重要な式</p>
+                <div class="math-box" id="formula1">
+                    <div class="math-box-title">分配法則</div>
+                    <div class="math-box-content">\[ m(a + b)=ma + mb \]</div>
+                </div>
+                <p>展開はこの式をいじくり回すだけで実現できます。</p>
+                <p>つまり、この式こそが展開の根幹であり、すべてです。</p>
+                <div class="balloon"> $ m(a + b + c) $ だったらどうなるんだろう？</div>
+                <p>もちろん、 $ ma + mb + mc $ となります。</p>
+                <p>以下の計算のように、分配法則を2回用いることで示されます。</p>
+                <div class="math-box">
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    m(a + b + c) &= m(a + (b + c)) \\
+                                &= ma + m(b + c) \\
+                                &= ma + mb + mc \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>括弧内の項数が4以上に増えても同様に分配法則を利用できます。</p>
+                <p>さて、分配法則の理解を深めたところで、展開に入りましょう。</p>
+                <p>先述の通り、展開とは多項式のかけ算を足し算にすることです。</p>
+                <p>具体的な計算をしてみましょう。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例 1 - 1</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &(a + b)(c + d) \\[0.5em]
+                    &=c(a + b) + d(a + b) \quad \text{分配法則より} \\
+                    &=ca + cb + da + db \quad \text{分配法則より} \\
+                    &=ac + ad + bc + bd \quad \text{交換法則より} \\
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>このように、分配法則を繰り返し用いると足し算の式に変形できることが分かります。</p>
+                <p>そして因数分解はその逆、つまり <span class="color-marker">足し算からかけ算に変形すること</span> です。</p>
+                <p>計算方法は次のセクションで紹介しますが、この関係性は覚えておいてください。</p>
+
+                <h2 id="section2">公式を用いた因数分解</h2>
+                <p class="point">このセクションでは以下の4つの式が活躍します。</p>
+                <div class="ul-box" id="formula-box">
+                    <ul>
+                        <li>公式①: $ ma + mb = m(a + b) $</li>
+                        <li>公式②: $ a^2 + 2ab + b^2 = (a + b)^2 $</li>
+                        <li>公式③: $ a^2 - b^2 = (a + b)(a - b) $</li>
+                        <li>公式④: $ x^2 + (a + b)x + ab = (x + a)(x + b) $</li>
+                    </ul>
+                </div>
+                <p>ちなみに、4つ目の式で $ (a + b)x $ という項が残っているのは、 $a$ と $b$ は定数で、 $x$ が変数だからです。</p>
+                <p>では実際に因数分解をしてみましょう。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 2 - 1</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 + 2x + 1 \text{を因数分解せよ} \\[0.5em]
+                    &=(x + 1)^2 \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <div class="speech-bubble">公式②を使っただけだね！</div>
+                <p>もし、この変形が理解できなかったら $(a,b)$ に $(x,1)$ を代入していると考えてみてください。</p>
+                <div class="math-box">
+                    <div class="math-box-title">補足説明</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    a^2 + 2ab + b^2 &= (a + b)^2 \quad \text{公式②} \\[0.7em]
+                    & \downarrow a=x, b=1を代入\\[0.7em]
+                    x^2 + 2x + 1 &=(x + 1)^2 \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>このように、 <span class="color-marker">多項式を多項式の積に分解すること</span> が因数分解です。</p>
+
+                <h2 class="avoid">公式③の練習です。</h2>
+                <div class="math-box">
+                    <div class="math-box-title">例題 2 - 2</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 - 9 \text{を因数分解せよ} \\[0.5em]
+                    &=(x + 3)(x - 3) \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>因数分解で「<span class="color-marker">2乗 引く 2乗</span>」を見つけたらこれしかありません。</p>
+                <p>9は $3^2$ なので、例題は「2乗（$x^2$）引く 2乗（$3^2$）」になっています。</p>
+
+                <h2 class="avoid">ラスト、公式④です。</h2>
+                <p>つまずきやすいポイントなのでしっかり解説します。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 2 - 3</div>
+                    <div class="math-box-content">$x^2 + 5x + 6$ を因数分解せよ</div>
+                </div>
+                <p><a href="#formula-box">公式④</a> によると、因数分解するためには $a$ と $b$ を求める必要があります。</p>
+                <p>両者の係数を比較して、 $a+b = 5, ab = 6$ を満たす $a$ と $b$ を見つければよいと解ります。</p>
+                <p>$a$ と $b$ は気合で見つけるのが定石です。</p>
+                <p>今回の場合$a=2,b=3$で条件を満たすため、公式④より、</p>
+                <p><span class="color-marker">$(x + 2)(x + 3)$</span> が答えです。</p>
+
+                <h2 id="section3">演習</h2>
+                <p>以下の5つの問いに答えてください。</p>
+                <div class="math-box">
+                    <div class="math-box-title">問 1</div>
+                    <div class="math-box-content">$ 4x^2 - 25 $ を因数分解せよ</div>
+                </div>
+                <div class="math-box">
+                    <div class="math-box-title">問 2</div>
+                    <div class="math-box-content">$ x^2 + 8x + 16 $ を因数分解せよ</div>
+                </div>
+                <div class="math-box">
+                    <div class="math-box-title">問 3</div>
+                    <div class="math-box-content">$ x^2 + 7x + 12 $ を因数分解せよ</div>
+                </div>
+                <div class="math-box">
+                    <div class="math-box-title">問 4</div>
+                    <div class="math-box-content">$ x^2 + 8x + 12 $ を因数分解せよ</div>
+                </div>
+                <div class="math-box">
+                    <div class="math-box-title">問 5</div>
+                    <div class="math-box-content">$ x^2 - 6x + 8 $ を因数分解せよ</div>
+                </div>
+                <h2 class="avoid">答え</h2>
+                <div class="math-box" style="margin-bottom: 20px">
+                    <div class="math-box-title">問 1</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &4x^2 - 25 \text{を因数分解せよ} \\[0.5em]
+                    &=(2x + 5)(2x - 5) \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>公式③の定番問題です。</p>
+
+                <div class="math-box" style="margin-bottom: 20px">
+                    <div class="math-box-title">問 2</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 + 8x + 16 \text{を因数分解せよ} \\[0.5em]
+                    &=(x + 4)^2 \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>公式②を思い出しましょう。</p>
+
+                <div class="math-box" style="margin-bottom: 20px">
+                    <div class="math-box-title">問 3</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 + 7x + 12 \text{を因数分解せよ} \\[0.5em]
+                    &=(x + 3)(x + 4) \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>足して7、かけて12になる2数は「3と4」です。</p>
+
+                <div class="math-box" style="margin-bottom: 20px">
+                    <div class="math-box-title">問 4</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 + 8x + 12 \text{を因数分解せよ} \\[0.5em]
+                    &=(x + 2)(x + 6) \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>足して8、かけて12になる2数は「2と6」です。</p>
+                
+                <div class="math-box" style="margin-bottom: 20px">
+                    <div class="math-box-title">問 5</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2 - 6x + 8 \text{を因数分解せよ} \\[0.5em]
+                    &=(x - 2)(x - 4) \quad \blacksquare
+                    \end{aligned}
+                    \]</div>
+                </div>
+                <p>応用力を試しました。</p>
+                <p>足して-6、かけて8になる2数は「-2と-4」です。</p>
+
+                <h2>まとめ</h2>
+                <p>以上、因数分解の基礎編でした。</p>
+                <p>元々応用の記事を書くつもりでしたが、全ての人が楽しめるように基礎から解説しました。</p>
+                <p>次回の記事では興味深い因数分解もあるので、ぜひ楽しみにしていてください。</p>
+                <div class="blog-box"></div>
+            </div>
+            
+            <div class="back-links">
+                <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> > 
+                <span>因数分解に慣れよう～基礎編～</span>
+            </div>
+        </main>
+        <div class="container recommendation">
+            <h2>この記事を読んだあなたにおすすめ</h2>
+            <div class="recommendation-box">
+                <!-- JavaScriptでおすすめブログがここに挿入される -->
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script>
+        fetch('../assets/json/blog-data.json')
+            .then(response => response.json())
+            .then(data => {
+                const id = window.location.pathname.split('/').pop().replace('.html', '');
+                const index = data.findIndex(blog => blog.id === id);
+                if (index === -1) return;
+                const blogBox = document.querySelector('.blog-box');
+                if (index != 0) {
+                    const previous = data[index - 1];
+                    const prevElement = document.createElement('p');
+                    prevElement.className = 'prev-blog';
+                    prevElement.innerHTML = `前のブログ<a href="./${previous.id}.html">&#8592; ${previous.title}</a>`;
+                    blogBox.appendChild(prevElement);
+                    blogBox.style.display = 'flex';
+                } else {
+                    const dummy = document.createElement('div');
+                    blogBox.appendChild(dummy);
+                }
+                if (index != data.length - 1) {
+                    const next = data[index + 1];
+                    const nextElement = document.createElement('p');
+                    nextElement.className = 'next-blog';
+                    nextElement.innerHTML = `次のブログ<a href="./${next.id}.html">${next.title} &#8594;</a>`;
+                    blogBox.appendChild(nextElement);
+                    blogBox.style.display = 'flex';
+                }
+                const recommendation = document.querySelector('.recommendation-box');
+                if (data[index].recommendations && data[index].recommendations.length > 0) {
+                    data[index].recommendations.forEach(recId => {
+                        const recBlog = data.find(blog => blog.id === recId);
+                        if (recBlog) {
+                            document.querySelector('.recommendation').style.display = 'block';
+                            const recElement = document.createElement('div');
+                            recElement.className = 'blog';
+                            recElement.innerHTML = `
+                                <div class="content">
+                                    <h3 class="blog-title">${recBlog.title}</h3>
+                                    <div class="tags">
+                                        ${recBlog.tags.map(tag => `<span class="tag"> # ${tag}</span>`).join('')}
+                                    </div>
+                                    <p class="summary">${recBlog.summary}</p>
+                                    <p class="date">
+                                      <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>${recBlog.date}</span>
+                                      <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>${recBlog.readTime}</span>
+                                    </p>
+                                </div>
+                                <picture>
+                                    <img src="${recBlog.thumbnail}" alt="ブログのサムネイル" class="thumbnail">
+                                </picture>
+                            `;
+                            recElement.addEventListener('click', () => {
+                                window.location.href = recBlog.id + '.html';
+                            });
+                            recommendation.appendChild(recElement);
+                        }
+                    });
+                }
+            }).catch(error => {
+                console.error('Error loading blog data:', error);
+            });
+    </script>
+</body>
+</html>
