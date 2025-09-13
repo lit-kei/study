@@ -164,6 +164,8 @@ h1.title {
     margin-bottom: 30px;
     width: 100%;
     border: #2b9c2e 1px dashed;
+    overflow-x: auto;
+    white-space: nowrap;
 }
 .blog-content .ul-box-red {
     background-color: #fff5f5;
