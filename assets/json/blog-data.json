@@ -14,7 +14,7 @@
     "title": "おすすめの勉強系ユーチューバー5選",
     "date": "2025-09-07",
     "readTime": "5 min",
-    "summary": "私がおすすめする勉強系ユーチューバーを5人紹介します。<br>モチベーションアップや効率的な学習に役立ちます。",
+    "summary": "私がおすすめする勉強系ユーチューバーを5組紹介します。<br>モチベーションアップや効率的な学習に役立ちます。",
     "tags": ["教材", "勉強法"],
     "thumbnail": "./thumbnails/youtube.jpg",
     "recommendations": ["preparation-vs-review"]
@@ -25,7 +25,17 @@
     "date": "2025-09-09",
     "readTime": "10 min",
     "summary": "中3の初めに習う因数分解、苦手とする人は多いのでは？<br>因数分解のコツや考え方を完璧に言語化します。",
-    "tags": ["因数分解", "数学", "中3", "基礎"],
+    "tags": ["因数分解", "基礎", "数学", "中3"],
+    "thumbnail": "./thumbnails/math-note.jpg",
+    "recommendations": ["math-factorization-advance"]
+  },
+  {
+    "id": "math-factorization-advance",
+    "title": "因数分解に慣れよう～応用編～",
+    "date": "2025-09-13",
+    "readTime": "6 min",
+    "summary": "難しい因数分解の解き方を解説します。<br>数学好きの方はぜひ読んでください。",
+    "tags": ["因数分解", "応用", "数学", "中3"],
     "thumbnail": "./thumbnails/math-board.jpg",
     "recommendations": []
   }

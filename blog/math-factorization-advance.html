@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>因数分解に慣れよう～応用編～ | 勉強ブログ - 暗記の小屋</title>
+    <meta name="title" content="勉強ブログ">
+    <meta name="hierarchy" content="1">
+    <link rel="stylesheet" href="../assets/css/blog.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="少し難しい因数分解の練習問題とともに、因数分解のコツを完全解説します。">
+    <meta name="robots" content="index, follow">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84CG30Z7N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-P84CG30Z7N');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/blog/math-factorization-advance",
+        "description": "少し難しい因数分解の練習問題とともに、因数分解のコツを完全解説します。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['\\[', '\\]']]
+            },
+            options: {
+                enableMenu: false
+            },
+            chtml: {
+                displayAlign: 'left',
+                displayIndent: '1em'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../assets/js/style.js" defer></script>
+</head>
+<body>
+    <header></header>
+    <div class="main-content" style="min-height: 100vh;">
+        <main>
+            <div id="top-content" style="background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('./thumbnails/math-board.jpg') center/cover no-repeat;">
+                <div class="back-links">
+                    <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> >
+                </div>
+                <h1 class="title">因数分解に慣れよう～応用編～</h1>
+                <div class="tags">
+                    <span class="tag"># 因数分解</span>
+                    <span class="tag"># 応用</span>
+                    <span class="tag"># 数学</span>
+                    <span class="tag"># 中3</span>
+                </div>
+                <div class="date">
+                    <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>2025-09-13</span>
+                    <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>6 min</span>
+                </div>
+                <div class="share-links">
+                    <span class="share-label">ぜひこの記事をシェアしてください！</span>
+                    <div class="share-icons">
+                        <a href="https://twitter.com/intent/tweet?text=因数分解に慣れよう～応用編～&url=https://lit-kei.github.io/study/blog/math-factorization-advance.html&hashtags=暗記の小屋" target="_blank">
+                            <img src="../assets/images/x-icon.png" alt="Xでシェア" class="share-icon">
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://lit-kei.github.io/study/blog/math-factorization-advance.html" target="_blank">
+                            <img src="../assets/images/fb-icon.png" alt="Facebookでシェア" class="share-icon">
+                        </a>
+                        <a href="https://social-plugins.line.me/lineit/share?url=https://lit-kei.github.io/study/blog/math-factorization-advance.html&text=因数分解に慣れよう～応用編～" target="_blank">
+                            <img src="../assets/images/line-icon.png" alt="LINEでシェア" class="share-icon">
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="blog-content">
+                <p class="point">前提知識</p>
+                <div class="ul-box">
+                    <ul>
+                        <li>因数分解の諸公式</li>
+                    </ul>
+                </div>
+                <p>この記事では進んだ因数分解のコツについて詳しく解説します。</p>
+                <p>もし因数分解を全く知らない場合は、<a href="./math-factorization-base.html">前のブログ【因数分解に慣れよう～基礎編～】</a>を読んでください。</p>
+                <p class="point">この記事の目次</p>
+                <div class="ul-box">
+                    <ul>
+                        <li><a href="#section1">因数分解ではカタマリを作る</a></li>
+                        <li><a href="#section2">多変数多項式の因数分解は低次から</a></li>
+                    </ul>
+                </div>
+                <h2 id="section1">因数分解ではカタマリを作る</h2>
+                <p>次の例題を見てください。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 1-1</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &6xy + 4x + 9y + 6 \text{を因数分解せよ} \\[0.7em]
+                    &=2x(3y+2)+3(3y+2) \qquad (3y+2\text{がカタマリ}) \\
+                    &=(2x+3)(3y+2) \quad \blacksquare
+                    \end{aligned}
+                    \]
+                </div>
+                </div>
+                <p>このように公式が使えないときは、カタマリを作ることを意識しましょう</p>
+                <div class="speech-bubble">
+                    $2x$ で括るためにはひらめかないといけないよね？
+                    <span style="color: #555; display: block; margin-top: 10px; font-size: 15px;">※括る（くくる）：数学において、括弧を用いて囲うこと</span>
+                </div>
+                <p>確かに最初から $3y+2$ のカタマリを捉えるためには、ある程度の <span class="color-marker">慣れ</span> が必要です。</p>
+                <p>しかし例えば次のように解き進めていくと、ひらめかなくとも答えにたどり着くことができます。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 1-1 の別解法</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &6xy + 4x + 9y + 6 \; \text{を因数分解せよ} \\[0.7em]
+                    &=x(6y+4) + 9y + 6 \qquad \text{とりあえず $x$ で括る} \\
+                    &=x(6y+4) + \frac{3}{2}(6y+4) \qquad \text{無理やり $6y+4$ のカタマリを作る} \\
+                    &=(x+\frac{3}{2})(6y+4) \qquad (\text{これを解答にしても良い}) \\
+                    &=\frac{1}{2}(2x+3)(6y+4) \\
+                    &=(2x+3)(3y+2) \qquad \text{整数係数に直した} \quad \blacksquare
+                    \end{aligned}
+                    \]
+                </div>
+                </div>
+                <p>このように無理やりカタマリを作り出して因数分解することで、答えを導くことができます。</p>
+                <p>ちなみに、「もし整数係数多項式が有理数係数で因数分解できるなら、 <span class="color-marker">整数係数でも因数分解できる</span> 」ということを示した <b class="big">ガウスの補題（Gauss's lemma）</b> が存在します。</p>
+                <p>これによって、先ほども有理数係数から整数係数に直すことができました。</p>
+                <p>例えばマーク式のテストで「整数じゃないとマークできない」なんてこともあるかもしれないので、覚えておくとよいでしょう。</p>
+
+                <h2 id="section2">多変数多項式の因数分解は低次から</h2>
+                <p>多変数多項式とは、変数が複数ある多項式のことです。</p>
+                <div class="speech-bubble">つまり、 $x^2+2xy+y^2$ は多変数多項式だね！</div>
+                <p>今回は <span class="color-marker">文字が3つ以上ある多項式</span> の因数分解を解説します。</p>
+                <p>文字が多くなればなるほど、「公式で一発」という解き方は難しくなります。</p>
+                <p>次の例題を見てください。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 2-1</div>
+                    <div class="math-box-content">\[x^2+2xy+y^2-xz-yz \; を因数分解せよ\]
+                </div>
+                </div>
+                <p>いったん答えは見せませんが、大事なことを伝えます。</p>
+                <p>それは、「多変数多項式の因数分解は <span class="color-marker">低次</span> から」です。</p>
+                <p>それぞれの文字について次数を考え、最も次数が低いものでまとめると簡単に解けます。</p>
+                <p class="point">例題 2-1の場合</p>
+                <div class="ul-box">
+                    <ul>
+                        <li>$x$ についての 2 次式</li>
+                        <li>$y$ についての 2 次式</li>
+                        <li>$z$ についての <span class="color-marker">1</span> 次式</li>
+                    </ul>
+                </div>
+                <p>したがって、$z$ のみを変数とみなすと最も次数が低くなることが分かります。</p>
+                <p>ここで、$z$ についてまとめて解いてみましょう。</p>
+                <div class="math-box">
+                    <div class="math-box-title">例題 2-1 の答え</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2+2xy+y^2-xz-yz \\[0.7em]
+                    &=-z(x+y) + x^2+2xy+y^2 \\
+                    &=-z(x+y) + (x+y)^2 \\
+                    &= (x+y)(x+y-z) \qquad \blacksquare
+                    \end{aligned}
+                    \]
+                </div>
+                </div>
+                <p>どうですか？</p>
+                <p>もう一問解いてみましょう。</p>
+
+                <div class="math-box">
+                    <div class="math-box-title">例題 2-2</div>
+                    <div class="math-box-content">\[
+                    \begin{aligned}
+                    &x^2-2xz+2xy-4yz \; \text{を因数分解せよ（東京・法政大高）} \\[0.7em]
+                    &=2y(x-2z)+x^2-2xz \qquad \text{$y$,$z$についての1次式なので、$y$についてまとめた} \\
+                    &=2y(x-2z)+x(x-2z) \qquad \text{カタマリを作る} \\
+                    &=(x+2y)(x-2z) \qquad \blacksquare
+                    \end{aligned}
+                    \]
+                </div>
+                </div>
+                <h2>まとめ</h2>
+                <p>因数分解の理解は深まったでしょうか？</p>
+                <p>少しでもみなさまの因数分解に対する苦手意識が払拭されたのならば幸いです。</p>
+                <p>因数分解に臨むときは、常に「 <span class="color-marker">カタマリを作る</span> 」という意識をもってみてください。</p>
+                <p>これで因数分解の講義は終わりにします。</p>
+                <p>本当にお疲れさまでした。</p>
+
+                <div class="blog-box"></div>
+            </div>
+            
+            <div class="back-links">
+                <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> > 
+                <span>因数分解に慣れよう～応用編～</span>
+            </div>
+        </main>
+        <div class="container recommendation">
+            <h2>この記事を読んだあなたにおすすめ</h2>
+            <div class="recommendation-box">
+                <!-- JavaScriptでおすすめブログがここに挿入される -->
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script>
+        fetch('../assets/json/blog-data.json')
+            .then(response => response.json())
+            .then(data => {
+                const id = window.location.pathname.split('/').pop().replace('.html', '');
+                const index = data.findIndex(blog => blog.id === id);
+                if (index === -1) return;
+                const blogBox = document.querySelector('.blog-box');
+                if (index != 0) {
+                    const previous = data[index - 1];
+                    const prevElement = document.createElement('p');
+                    prevElement.className = 'prev-blog';
+                    prevElement.innerHTML = `前のブログ<a href="./${previous.id}.html">&#8592; ${previous.title}</a>`;
+                    blogBox.appendChild(prevElement);
+                    blogBox.style.display = 'flex';
+                } else {
+                    const dummy = document.createElement('div');
+                    blogBox.appendChild(dummy);
+                }
+                if (index != data.length - 1) {
+                    const next = data[index + 1];
+                    const nextElement = document.createElement('p');
+                    nextElement.className = 'next-blog';
+                    nextElement.innerHTML = `次のブログ<a href="./${next.id}.html">${next.title} &#8594;</a>`;
+                    blogBox.appendChild(nextElement);
+                    blogBox.style.display = 'flex';
+                }
+                const recommendation = document.querySelector('.recommendation-box');
+                if (data[index].recommendations && data[index].recommendations.length > 0) {
+                    data[index].recommendations.forEach(recId => {
+                        const recBlog = data.find(blog => blog.id === recId);
+                        if (recBlog) {
+                            document.querySelector('.recommendation').style.display = 'block';
+                            const recElement = document.createElement('div');
+                            recElement.className = 'blog';
+                            recElement.innerHTML = `
+                                <div class="content">
+                                    <h3 class="blog-title">${recBlog.title}</h3>
+                                    <div class="tags">
+                                        ${recBlog.tags.map(tag => `<span class="tag"> # ${tag}</span>`).join('')}
+                                    </div>
+                                    <p class="summary">${recBlog.summary}</p>
+                                    <p class="date">
+                                      <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>${recBlog.date}</span>
+                                      <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>${recBlog.readTime}</span>
+                                    </p>
+                                </div>
+                                <picture>
+                                    <img src="${recBlog.thumbnail}" alt="ブログのサムネイル" class="thumbnail">
+                                </picture>
+                            `;
+                            recElement.addEventListener('click', () => {
+                                window.location.href = recBlog.id + '.html';
+                            });
+                            recommendation.appendChild(recElement);
+                        }
+                    });
+                }
+            }).catch(error => {
+                console.error('Error loading blog data:', error);
+            });
+    </script>
+</body>
+</html>

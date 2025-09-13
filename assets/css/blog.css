@@ -391,6 +391,17 @@ blockquote {
 .math-box-content {
     background: #f5fff5;
     padding: 1em;
+    overflow-x: auto;
+    white-space: nowrap;
+}
+b.big {
+    font-size: 22px;
+}
+/* ディスプレイ数式（\[...\]）の上下マージン */
+mjx-mtr {
+    display: block !important;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
 
