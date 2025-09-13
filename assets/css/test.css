@@ -67,15 +67,15 @@ th, td {
 }
 
 th {
-    background-color: #f2f2f2;
-    color: #555;
+    background-color: #f0fff0;
+    color: #222;
 }
 
 tr:nth-child(even) {
-    background-color: #f5f5ff;
+    background-color: #f7f7ff;
 }
 tr:nth-child(odd) {
-    background-color: #fff5f5;
+    background-color: #fff7f7;
 }
 
 tr:hover {
