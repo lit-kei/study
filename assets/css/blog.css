@@ -56,8 +56,13 @@ h1.title {
     padding: 2px 12px;
     border-radius: 12px;
     font-size: 16px;
-    /*transition: background-color 0.3s, color 0.3s;
-    cursor: pointer;*/
+    cursor: pointer;
+    transition: all 0.5s;
+}
+
+.tag:hover {
+    background-color: #aaa;
+    color: #000;
 }
 .svg-icon {
     width: 18px;
@@ -331,7 +336,7 @@ blockquote {
 }
 
 .blog {
-    border-top: 1px solid #ccc;
+    border-top: 2px solid #777;
     padding: 20px;
     cursor: default;
     display: flex;
@@ -457,5 +462,6 @@ mjx-mtr {
     }
     .recommendation {
         margin: 0;
+        margin-top: 60px;
     }
 }

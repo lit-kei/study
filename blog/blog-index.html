@@ -83,20 +83,20 @@
     </div>
     <footer></footer>
     <script>
-      fetch('../assets/json/blog-data.json')
-        .then(response => response.json())
-        .then(data => {
-            data.reverse(); // 新しい順に表示
+      const mapping = fetch('../assets/json/mapping.json');
+      const blogData = fetch('../assets/json/blog-data.json');
+      Promise.all([mapping, blogData])
+        .then(responses => Promise.all(responses.map(response => response.json())))
+        .then(([mappingData, blogData]) => {
+            blogData.reverse(); // 新しい順に表示
             const blogList = document.querySelector('.blog-list');
-            data.forEach(blog => {
+            blogData.forEach(blog => {
                 const blogElement = document.createElement('div');
                 blogElement.className = 'blog';
                 blogElement.innerHTML = `
                     <div class="content">
                         <h3 class="blog-title">${blog.title}</h3>
-                        <div class="tags">
-                            ${blog.tags.map(tag => `<span class="tag"> # ${tag}</span>`).join('')}
-                        </div>
+                        <div class="tags"></div>
                         <p class="summary">${blog.summary}</p>
                         <p class="date">
                           <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>${blog.date}</span>
@@ -107,6 +107,17 @@
                         <img src="${blog.thumbnail}" alt="ブログのサムネイル" class="thumbnail">
                     </picture>
                 `;
+                const tags = blogElement.getElementsByClassName('tags')[0];
+                blog.tags.forEach(tagData => {
+                    const tag = document.createElement('span');
+                    tag.className = 'tag';
+                    tag.textContent = `# ${tagData}`;
+                    tag.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        window.location.href = `./search.html?tag=${mappingData[tagData]}`;
+                    });
+                    tags.appendChild(tag);
+                });
                 blogElement.addEventListener('click', () => {
                     window.location.href = blog.id + '.html';
                 });

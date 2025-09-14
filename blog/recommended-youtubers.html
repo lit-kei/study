@@ -84,6 +84,7 @@
                 <div class="tags">
                     <span class="tag"># 教材</span>
                     <span class="tag"># 勉強法</span>
+                    <span class="tag"># ユーチューバー</span>
                 </div>
                 <div class="date">
                     <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>2025-09-07</span>
@@ -249,67 +250,6 @@
         </div>
     </footer>
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
-    <script>
-        fetch('../assets/json/blog-data.json')
-            .then(response => response.json())
-            .then(data => {
-                const id = window.location.pathname.split('/').pop().replace('.html', '');
-                const index = data.findIndex(blog => blog.id === id);
-                if (index === -1) return;
-                const blogBox = document.querySelector('.blog-box');
-                if (index != 0) {
-                    const previous = data[index - 1];
-                    const prevElement = document.createElement('p');
-                    prevElement.className = 'prev-blog';
-                    prevElement.innerHTML = `前のブログ<a href="./${previous.id}.html">&#8592; ${previous.title}</a>`;
-                    blogBox.appendChild(prevElement);
-                    blogBox.style.display = 'flex';
-                } else {
-                    const dummy = document.createElement('div');
-                    blogBox.appendChild(dummy);
-                }
-                if (index != data.length - 1) {
-                    const next = data[index + 1];
-                    const nextElement = document.createElement('p');
-                    nextElement.className = 'next-blog';
-                    nextElement.innerHTML = `次のブログ<a href="./${next.id}.html">${next.title} &#8594;</a>`;
-                    blogBox.appendChild(nextElement);
-                    blogBox.style.display = 'flex';
-                }
-                const recommendation = document.querySelector('.recommendation-box');
-                if (data[index].recommendations && data[index].recommendations.length > 0) {
-                    data[index].recommendations.forEach(recId => {
-                        const recBlog = data.find(blog => blog.id === recId);
-                        if (recBlog) {
-                            document.querySelector('.recommendation').style.display = 'block';
-                            const recElement = document.createElement('div');
-                            recElement.className = 'blog';
-                            recElement.innerHTML = `
-                                <div class="content">
-                                    <h3 class="blog-title">${recBlog.title}</h3>
-                                    <div class="tags">
-                                        ${recBlog.tags.map(tag => `<span class="tag"> # ${tag}</span>`).join('')}
-                                    </div>
-                                    <p class="summary">${recBlog.summary}</p>
-                                    <p class="date">
-                                      <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>${recBlog.date}</span>
-                                      <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>${recBlog.readTime}</span>
-                                    </p>
-                                </div>
-                                <picture>
-                                    <img src="${recBlog.thumbnail}" alt="ブログのサムネイル" class="thumbnail">
-                                </picture>
-                            `;
-                            recElement.addEventListener('click', () => {
-                                window.location.href = recBlog.id + '.html';
-                            });
-                            recommendation.appendChild(recElement);
-                        }
-                    });
-                }
-            }).catch(error => {
-                console.error('Error loading blog data:', error);
-            });
-    </script>
+    <script src="../assets/js/blog.js"></script>
 </body>
 </html>

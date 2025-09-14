@@ -1,23 +1,43 @@
-
-.container {
+main {
     background-color: #fff;
-    margin: 0 auto 30px auto;
+    margin: 40px auto 30px auto;
     width: 95%;
-
+    padding: 0;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-main {
-    padding: 20px;
-}
-.index {
-    padding: 20px;
-    margin-top: 20px;
-}
-.main-item .title {
-    padding: 20px;
+
+h1 {
     text-align: center;
+    padding: 30px 0 0;
 }
+.hashtags {
+    padding: 30px 0 30px 60px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+.hashtag {
+    background-color: #ddd;
+    color: #333;
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-size: 20px;
+}
+.hashtag .delete {
+    display: inline-block;
+    margin-left: 8px;
+    font-weight: bold;
+    color: #888;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.hashtag .delete:hover {
+    color: #ff4d4f;
+}
+
+
 .blog {
     border-top: 1px solid #ccc;
     padding: 20px;
@@ -32,9 +52,6 @@ main {
 }
 .blog:hover {
     background-color: #eee;
-}
-.title {
-    font-size: 28px;
 }
 .content {
     width: 500px;
@@ -102,23 +119,13 @@ main {
     object-fit: cover;
     border-radius: 23px;
 }
-.main-content a {
-    color: #20699e;
-    transition: color 0.3s ease;
-}
-.main-content a:visited {
-    color: #20699e;
-}
-.main-content a:hover {
-    color: #123c5a;
-}
 @media (max-width: 768px) {
-    .main {
-        margin-top: 20px;
-    }
     .content {
         width: 100%;
         margin: 0 0 20px 0;
+    }
+    .hashtags {
+        padding: 20px;
     }
     .tag {
         font-size: 16px;
