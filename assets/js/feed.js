@@ -14,6 +14,7 @@ import {
     updateDoc,
     startAt,
     endAt,
+    startAfter,
     setDoc,
     addDoc,
     Timestamp,
@@ -54,6 +55,9 @@ const subjects = [
 ];
 const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
+
+let loadMore = false;
+
 let Posts = []; 
 let originalData = [];
 let Fixed = [];
@@ -121,14 +125,15 @@ for (let i = 0; i < 4; i++) {
       document.getElementById('search-modal').style.display = 'block';
       localStorage.setItem('setting', JSON.stringify(filterBtns));
       currentBoxes = [...(await fetchPosts())];
+      originalData = [...currentBoxes];
       currentBoxes.forEach(doc => {
         Posts.push({...doc});
       });
       Posts = [...Posts];
       document.getElementById('search-modal').style.display = 'none';
-      setContainers(judgeBtns(currentBoxes));
+      setContainers(judgeBtns(currentBoxes), loadMore);
     } else {
-      setContainers(sortData(currentBoxes));
+      setContainers(sortData(currentBoxes), loadMore);
     }
   });
 }
@@ -139,13 +144,13 @@ document.getElementById('fixed-fil').addEventListener('click', async () => {
   } else {
     document.getElementById('fixed-fil').classList.remove('focus');
   }
-  setContainers(judgeBtns(currentBoxes));
+  setContainers(judgeBtns(currentBoxes), loadMore);
 });
 document.getElementById('search-modal').style.display = 'block';
 const firstFrgment = document.createDocumentFragment();
 const fixedSnapshot = await getDocs(query(collection(db, "posts"), where("display", "==", "fixed")));
 fixedSnapshot.forEach(doc => {
-    Fixed.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, display: 'fixed'});
+    Fixed.push({id: doc.id, ...doc.data()});
     createContainer(doc.data(), doc.id, firstFrgment);
 });
 
@@ -153,11 +158,11 @@ fixedSnapshot.forEach(doc => {
 const querySnapshot = await fetchPosts();
 querySnapshot.forEach((doc) => {
   Posts.push({...doc});
-
 });
 
 
 async function fetchPosts(limitCount = 20) {
+  loadMore = false;
   if (filterBtns[0] === true) {
     const favoriteSnapshots = await Promise.all(
       favorites.map(favorite => getDoc(doc(db, "posts", favorite)))
@@ -199,7 +204,7 @@ async function fetchPosts(limitCount = 20) {
   if (snapshot.docs.length > 0) {
     lastDoc = snapshot.docs[snapshot.docs.length - 1];
   }
-  originalData = [...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))];
+  if (snapshot.docs.length == limitCount) loadMore = true;
   return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 }
 
@@ -373,7 +378,7 @@ function createContainer(docSnap, id, fragment = false) {
 fin = true;
 currentBoxes = [...Posts];
 main.appendChild(firstFrgment);
-setContainers(judgeBtns(currentBoxes));
+setContainers(judgeBtns(currentBoxes), loadMore);
 document.getElementById('search-modal').style.display = 'none';
 
 function insertRows(contents, targetID, fragment = false) {
@@ -395,7 +400,7 @@ function insertRows(contents, targetID, fragment = false) {
 
 
 
-function setContainers(users = false) {
+function setContainers(users = false, localLoadMore) {
   const unfixedContainers = document.querySelectorAll('div.container:not(.fixed)');
   const fragment = document.createDocumentFragment();
   for (const d of unfixedContainers) {
@@ -410,6 +415,29 @@ function setContainers(users = false) {
   }
   for (const element of users) {
     createContainer(element, element.id, fragment);
+  }
+  if (localLoadMore) {
+    const loadMoreDiv = document.createElement('div');
+    loadMoreDiv.className = 'container available';
+    const loadMoreLabel = document.createElement('h2');
+    loadMoreLabel.className = 'load-more-label';
+    loadMoreLabel.textContent = 'もっと見る';
+    loadMoreDiv.appendChild(loadMoreLabel);
+    loadMoreDiv.addEventListener('click', async () => {
+      document.getElementById('search-modal').style.display = 'block';
+      const newPosts = await fetchPosts();
+      newPosts.forEach(post => {
+        Posts.push({...post});
+        currentBoxes.push({...post});
+      });
+      Posts = [...Posts];
+      setContainers(judgeBtns(currentBoxes), loadMore);
+      originalData = [...currentBoxes];
+
+      document.getElementById('search-modal').style.display = 'none';
+    });
+
+    fragment.appendChild(loadMoreDiv)
   }
   main.appendChild(fragment);
   MathJax.typeset();
@@ -444,14 +472,14 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
     if (value[0] == '#') {
       if (value.length == 1) {
         currentBoxes = [...originalData];
-        setContainers(judgeBtns(currentBoxes));
+        setContainers(judgeBtns(currentBoxes), loadMore);
         return;
       }
       document.getElementById('search-modal').style.display = 'block';
       const id = value.slice(1, value.length);
       const idHit = await getDocs(query(collection(db, "posts"), orderBy("__name__"), startAt(id), endAt((id + "\uf8ff"))));
       currentBoxes = [...idHit.docs.map(e => ({id: e.id, ...e.data()}))];
-      setContainers(judgeBtns(currentBoxes));
+      setContainers(judgeBtns(currentBoxes), false);
       document.getElementById('search-modal').style.display = 'none';
     } else if (value.length) {
       // valueにデータがある
@@ -459,11 +487,11 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
       document.getElementById('search-modal').style.display = 'block';
       const titleHit = await getDocs(query(collection(db, "posts"), orderBy("title"), startAt(value), endAt((value + "\uf8ff"))));
       currentBoxes = [...titleHit.docs.map(e => ({id: e.id, ...e.data()}))];
-      setContainers(judgeBtns(currentBoxes));
+      setContainers(judgeBtns(currentBoxes), false);
       document.getElementById('search-modal').style.display = 'none';
     } else {
       currentBoxes = [...originalData];
-      setContainers(judgeBtns(currentBoxes));
+      setContainers(judgeBtns(currentBoxes), loadMore);
   }
 });
 

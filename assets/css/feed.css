@@ -91,6 +91,14 @@ input {
 .container.available:hover {
   background-color: #ddd;
 }
+.load-more-label {
+    position: absolute;
+    font-size: 23px;
+    top: 45%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .subject {
   position: absolute;
   font-size: 13px;
