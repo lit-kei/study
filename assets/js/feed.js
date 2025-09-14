@@ -1,11 +1,19 @@
 import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { 
     getFirestore, 
+    initializeFirestore,
+    CACHE_SIZE_UNLIMITED,
     collection, 
-    updateDoc,
     doc,
     getDocs,
     getDoc,
+    where,
+    limit,
+    query,
+    orderBy,
+    updateDoc,
+    startAt,
+    endAt,
     setDoc,
     addDoc,
     Timestamp,
@@ -22,8 +30,13 @@ const firebaseConfig = {
 };
 
 const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
-const db = getFirestore(app);
-
+const db = initializeFirestore(app, {
+  localCache: {
+    memory: true,        // メモリキャッシュ
+    persistence: true,   // IndexedDBによる永続キャッシュ
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED, // キャッシュサイズの上限
+  }
+});
 
 const subjects = [
   {name: "国語", color: "#E57373"},
@@ -39,11 +52,12 @@ const subjects = [
   {name: "保体", color: "#c93333ff"},
   {name: "その他", color: "#BA68C8"}
 ];
-
 const hisTbody = document.getElementById('his-tbody');
 const modal = document.getElementById('modal');
 let Posts = []; 
+let originalData = [];
 let Fixed = [];
+let sort = "unsorted";
 let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false, false];
 if (filterBtns.length == 3) {
   filterBtns.push(false);
@@ -52,75 +66,48 @@ if (filterBtns.length == 3) {
 let fixedFil = true;
 let currentBoxes = [];
 const btns = ["favorite-fil", "good-fil", "subject-fil", "createdAt-fil"];
+const sorts = ["good", "subject", "createdAt"];
 let fin = false;
 let isProcessing = false;
 let favorites = JSON.parse(localStorage.getItem('favorites'));
 if (favorites === null) { 
   favorites = [];
   localStorage.setItem('favorites', JSON.stringify([]));
-}
-/*
-await getDoc(doc(db, "posts", "gSCwhgTA5RWuieGWqFM7")).then(async docS => {
-  const data = docS.data();
-  await setDoc(doc(db, "posts", "1SCwhgTA5RWuieGWqFM7"), {
-    title: data.title,
-    subject: 1,
-    good: 1,
-    history: [],
-    contents: {
-      question: data.contents.question,
-      answer: data.contents.answer
-    }
-  });
-});*/
-/*
-await addDoc(collection(db, "posts"), {
-  title: "学問の英語集",
-  subject: 4,
-  good: 0,
-  history: [],
-  //display: "fixed",
-  contents: {
-  question: ["生命倫理学","経済学","電子工学","倫理学","人間工学","遺伝学","老人病学","言語学","数学","機械学、力学","産科学","小児科学","言語心理学","物理学","音韻学","発音学（音声学）","統計学","人類学","考古学","生物学","生命工学（生物工学）","生態学","地質学","婦人科学","気象学","神話学","文献学","音韻論","生理学","地震学","社会学","神学","動物学","会計学","代数学","分析学","解剖学","美学","天文学","植物学","化学","土木工学","商業学","民俗学","地理学","幾何学","歴史学","法学","文学","論理学","金属工学、冶（や）金学","教育学","哲学","政治学"],
-  answer: ["bioethics","economics","electronics","ethics","ergonomics","genetics","geriatrics","linguistics","mathematics","mechanics","obstetrics","pediatrics","psycholinguistics","physics","phonemics","phonetics","statistics","anthropology","archaeology","biology","biotechnology","ecology","geology","gynecology","meteorology","mythology","philology","phonology","physiology","seismology","sociology","theology","zoology","accounting","algebra","analysis","anatomy","art","astronomy","botany","chemistry","civil engineering","commerce","folklore","geography","geometry","history","jurisprudence","literature","logic","metallurgy","pedagogy","philosophy","politics"]
-}
-});*/
-/*
-function getRandomFirestoreTimestamp(startDateStr, endDateStr) {
-  const start = new Date(startDateStr).getTime();
-  const end = new Date(endDateStr).getTime();
-  const randomMillis = Math.floor(start + Math.random() * (end - start));
-  return Timestamp.fromMillis(randomMillis); // FirestoreのTimestamp型で返す
+} else {
+  favorites.sort();
 }
 
-const snapshot = await getDocs(collection(db, "posts"));
+// 最初の取得
+let lastDoc = null;
 
-for (const document of snapshot.docs) {
-  const ref = doc(db, "posts", document.id); // ← ドキュメント参照
-  const randomTimestamp = getRandomFirestoreTimestamp("2025-07-28T00:00:00", "2025-08-05T23:59:59");
-
-  await updateDoc(ref, {
-    createdAt: randomTimestamp
-  });
-}*/
 for (let i = 0; i < 4; i++) {
-  document.getElementById(btns[i]).className = filterBtns[i] ? 'focus' : '';
-  document.getElementById(btns[i]).addEventListener('click', () => {
+  if (filterBtns[i]) {
+    document.getElementById(btns[i]).className = 'focus';
+    if (i >= 1) sort = sorts[i - 1];
+  } else {
+    document.getElementById(btns[i]).className = '';
+  }
+  document.getElementById(btns[i]).addEventListener('click', async () => {
+    lastDoc = null;
     if (filterBtns[i]) {
+      if (i != 0) sort = "unsorted";
       document.getElementById(btns[i]).classList.remove('focus');
     } else {
       document.getElementById(btns[i]).classList.add('focus');
       if (i === 1) {
+        sort = 'good';
         document.getElementById(btns[2]).classList.remove('focus');
         filterBtns[2] = false;
         document.getElementById(btns[3]).classList.remove('focus');
         filterBtns[3] = false;
       } else if (i === 2) {
+        sort = 'subject';
         document.getElementById(btns[1]).classList.remove('focus');
         filterBtns[1] = false;
         document.getElementById(btns[3]).classList.remove('focus');
         filterBtns[3] = false;
       } else if (i === 3) {
+        sort = 'createdAt';
         document.getElementById(btns[1]).classList.remove('focus');
         filterBtns[1] = false;
         document.getElementById(btns[2]).classList.remove('focus');
@@ -129,11 +116,23 @@ for (let i = 0; i < 4; i++) {
       }
     }
     filterBtns[i] = !filterBtns[i];
-    localStorage.setItem('setting', JSON.stringify(filterBtns));
-    setContainers(judgeBtns(currentBoxes));
+    if (document.getElementById('input').value.length == 0 || 
+       (document.getElementById('input').value.length == 1 && document.getElementById('input').value[0] == "#")) {
+      document.getElementById('search-modal').style.display = 'block';
+      localStorage.setItem('setting', JSON.stringify(filterBtns));
+      currentBoxes = [...(await fetchPosts())];
+      currentBoxes.forEach(doc => {
+        Posts.push({...doc});
+      });
+      Posts = [...Posts];
+      document.getElementById('search-modal').style.display = 'none';
+      setContainers(judgeBtns(currentBoxes));
+    } else {
+      setContainers(sortData(currentBoxes));
+    }
   });
 }
-document.getElementById('fixed-fil').addEventListener('click', () => {
+document.getElementById('fixed-fil').addEventListener('click', async () => {
   fixedFil = !fixedFil;
   if (fixedFil) {
     document.getElementById('fixed-fil').classList.add('focus');
@@ -142,17 +141,69 @@ document.getElementById('fixed-fil').addEventListener('click', () => {
   }
   setContainers(judgeBtns(currentBoxes));
 });
-// やばくなったら"ページネーション"
-const querySnapshot = await getDocs(collection(db, "posts"));
-querySnapshot.forEach((doc) => {
-  if (doc.data().display == 'fixed') {
+document.getElementById('search-modal').style.display = 'block';
+const firstFrgment = document.createDocumentFragment();
+const fixedSnapshot = await getDocs(query(collection(db, "posts"), where("display", "==", "fixed")));
+fixedSnapshot.forEach(doc => {
     Fixed.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, display: 'fixed'});
-    createContainer(doc.data(), doc.id);
-  } else {
-    Posts.push({id: doc.id,title: doc.data().title, contents: doc.data().contents, subject: doc.data().subject, history: doc.data().history, good: doc.data().good ?? 0, display: doc.data().display ?? 'normal', createdAt: doc.data().createdAt});
-  }
+    createContainer(doc.data(), doc.id, firstFrgment);
 });
-function createContainer(docSnap, id) {
+
+//const querySnapshot = await getDocs(query(collection(db, "posts"), where("display", "==", "normal"), orderBy("display")));
+const querySnapshot = await fetchPosts();
+querySnapshot.forEach((doc) => {
+  Posts.push({...doc});
+
+});
+
+
+async function fetchPosts(limitCount = 20) {
+  if (filterBtns[0] === true) {
+    const favoriteSnapshots = await Promise.all(
+      favorites.map(favorite => getDoc(doc(db, "posts", favorite)))
+    );
+    const sortedFavoriteSnapshots = sortData(favoriteSnapshots.map(e => ({ id: e.id, ...e.data()})));
+    originalData = [...sortedFavoriteSnapshots];
+    return sortedFavoriteSnapshots;
+  }
+  let q;
+  let sortQuery;
+  switch (sort) {
+    case "unsorted":
+      sortQuery = orderBy("display", "asc");
+      break;
+    case "subject":
+      sortQuery = orderBy('subject', "asc");
+      break;
+    default:
+      sortQuery = orderBy(sort, "desc");
+      break;
+  }
+  if (lastDoc) {
+    q = query(
+      collection(db, "posts"),
+      where("display", "==", "normal"),
+      sortQuery,
+      startAfter(lastDoc),
+      limit(limitCount)
+    );
+  } else {
+    q = query(
+      collection(db, "posts"),
+      where("display", "==", "normal"),
+      sortQuery,
+      limit(limitCount)
+    );
+  }
+  const snapshot = await getDocs(q);
+  if (snapshot.docs.length > 0) {
+    lastDoc = snapshot.docs[snapshot.docs.length - 1];
+  }
+  originalData = [...snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }))];
+  return snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+}
+
+function createContainer(docSnap, id, fragment = false) {
   const container = document.createElement('div');
   container.addEventListener('click', () => window.location.href = `/study/test.html?f=user&id=${id}`);
   container.id = id;
@@ -189,7 +240,11 @@ function createContainer(docSnap, id) {
   </div>
   <p class="id">#${id}</p>
   `;
-  main.appendChild(container);
+  if (fragment === false) {
+    main.appendChild(container);
+  } else {
+    fragment.appendChild(container);
+  }
   const star = container.getElementsByClassName('star')[0];
   const gLabel = container.getElementsByClassName('goodLabel')[0];
   if (favorites.includes(id)) {
@@ -224,6 +279,7 @@ function createContainer(docSnap, id) {
           Posts[i].good++;
           gLabel.textContent = String(Posts[i].good);
           favorites.push(id);
+          favorites.sort();
         } catch(e) {
           console.error(e);
         }
@@ -231,7 +287,7 @@ function createContainer(docSnap, id) {
       isProcessing = false;
       localStorage.setItem('favorites', JSON.stringify(favorites));
     });
-    const editBtn = document.getElementById(`edit-${id}`);
+    const editBtn = fragment == false ? document.getElementById(`edit-${id}`) : fragment.querySelector(`#edit-${id}`);
     editBtn.addEventListener('click', (e) => {
       e.stopPropagation();
       let contents = [];
@@ -247,7 +303,7 @@ function createContainer(docSnap, id) {
       window.location.href = `/study/make.html?c=edit`;
     });
     if (docSnap.history != undefined && docSnap.history.length != 0) {
-      const btn = document.getElementById(`history-${id}`);
+      const btn = fragment == false ? document.getElementById(`history-${id}`) :  fragment.querySelector(`#history-${id}`);
       btn.style.display = 'flex';
       btn.addEventListener('click', async (e) => {
         e.stopPropagation();
@@ -311,15 +367,17 @@ function createContainer(docSnap, id) {
       });
     }
   }
-  insertRows(docSnap.contents, id);
+  insertRows(docSnap.contents, id, fragment);
   container.style.animationDelay = `${Math.random() * 0.4}s`;
 }
 fin = true;
 currentBoxes = [...Posts];
+main.appendChild(firstFrgment);
 setContainers(judgeBtns(currentBoxes));
+document.getElementById('search-modal').style.display = 'none';
 
-function insertRows(contents, targetID) {
-  const target = document.getElementById(targetID);
+function insertRows(contents, targetID, fragment = false) {
+  const target = fragment === false ? document.getElementById(targetID) : fragment.querySelector(`#${CSS.escape(targetID)}`);
   const tbody = target.getElementsByTagName('tbody')[0];
   const length = contents.question.length > 5 ? 5 : contents.question.length;
   for (let i = 0; i < length; i++) {
@@ -339,48 +397,24 @@ function insertRows(contents, targetID) {
 
 function setContainers(users = false) {
   const unfixedContainers = document.querySelectorAll('div.container:not(.fixed)');
+  const fragment = document.createDocumentFragment();
   for (const d of unfixedContainers) {
     main.removeChild(d);
   }
   if (users === false) {
     for (const element of Posts) {
       //usersがfalseのときは、全削除からの全追加
-      createContainer(element, element.id);
+      createContainer(element, element.id, fragment);
     }
     return;
   }
   for (const element of users) {
-    const createBox = Posts.filter((box) => box.id == element)[0];
-    createContainer(createBox, createBox.id);
+    createContainer(element, element.id, fragment);
   }
+  main.appendChild(fragment);
   MathJax.typeset();
 }
 
-input.addEventListener('input', async () => {
-  const value = input.value;
-  if (value[0] == '#') {
-    if (value.length == 1) {
-      currentBoxes = [...Posts];
-      setContainers(judgeBtns(currentBoxes));
-      return;
-    }
-    const id = value.slice(1, value.length);
-    const idHit = Posts
-      .filter(box => box.id.includes(id));
-    currentBoxes = [...idHit];
-    setContainers(judgeBtns(idHit));
-  } else if (value.length) {
-    // valueにデータがある
-    // titleから検索
-    const titleHit = Posts
-      .filter(box => box.title.toLowerCase().includes(value.toLowerCase()));
-    currentBoxes = [...titleHit];
-    setContainers(judgeBtns(titleHit));
-  } else {
-    currentBoxes = [...Posts];
-    setContainers(judgeBtns(currentBoxes));
-  }
-});
 
 function judgeBtns(arr = Posts) {
   for (const element of Fixed) {
@@ -400,15 +434,50 @@ function judgeBtns(arr = Posts) {
   if (filterBtns[0]) {
     data = [...arr.filter(e => favorites.includes(e.id))];
   }
+
+  return data;
+}
+
+document.getElementById('search-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const value = input.value;
+    if (value[0] == '#') {
+      if (value.length == 1) {
+        currentBoxes = [...originalData];
+        setContainers(judgeBtns(currentBoxes));
+        return;
+      }
+      document.getElementById('search-modal').style.display = 'block';
+      const id = value.slice(1, value.length);
+      const idHit = await getDocs(query(collection(db, "posts"), orderBy("__name__"), startAt(id), endAt((id + "\uf8ff"))));
+      currentBoxes = [...idHit.docs.map(e => ({id: e.id, ...e.data()}))];
+      setContainers(judgeBtns(currentBoxes));
+      document.getElementById('search-modal').style.display = 'none';
+    } else if (value.length) {
+      // valueにデータがある
+      // titleから検索
+      document.getElementById('search-modal').style.display = 'block';
+      const titleHit = await getDocs(query(collection(db, "posts"), orderBy("title"), startAt(value), endAt((value + "\uf8ff"))));
+      currentBoxes = [...titleHit.docs.map(e => ({id: e.id, ...e.data()}))];
+      setContainers(judgeBtns(currentBoxes));
+      document.getElementById('search-modal').style.display = 'none';
+    } else {
+      currentBoxes = [...originalData];
+      setContainers(judgeBtns(currentBoxes));
+  }
+});
+
+function sortData(arr) {
+  let data = [...arr];
   if (filterBtns[1]) {
     data.sort((a, b) => b.good - a.good);
   } else if (filterBtns[2]) {
     data.sort((a, b) => a.subject - b.subject);
   } else if (filterBtns[3]) {
     data.sort((a, b) => b.createdAt - a.createdAt);
-  } else if (!filterBtns[0]) {
-    return arr.map(e => e.id);
   }
-
-  return data.map(e => e.id);
+  if (filterBtns[0]) {
+    data = data.filter(e => favorites.includes(e.id));
+  }
+  return data;
 }

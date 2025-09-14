@@ -260,7 +260,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
       },
       history: histories,
       good: 0,
-      createdAt: Timestamp.now()
+      createdAt: Timestamp.now(),
+      display: "normal"
     }).then(ref => {
         clearInterval(interval);
         document.getElementById('spinner').style.display = 'none';
