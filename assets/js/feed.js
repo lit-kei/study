@@ -424,25 +424,45 @@ function setContainers(users = false, localLoadMore) {
     loadMoreLabel.textContent = 'もっと見る';
     loadMoreDiv.appendChild(loadMoreLabel);
     loadMoreDiv.addEventListener('click', async () => {
-      document.getElementById('search-modal').style.display = 'block';
-      const newPosts = await fetchPosts();
-      newPosts.forEach(post => {
-        Posts.push({...post});
-        currentBoxes.push({...post});
-      });
-      Posts = [...Posts];
-      setContainers(judgeBtns(currentBoxes), loadMore);
-      originalData = [...currentBoxes];
-
-      document.getElementById('search-modal').style.display = 'none';
+      await loadMoreClick();
+      main.removeChild(loadMoreDiv);
     });
 
-    fragment.appendChild(loadMoreDiv)
+    fragment.appendChild(loadMoreDiv);
   }
   main.appendChild(fragment);
   MathJax.typeset();
 }
 
+async function loadMoreClick() {
+  
+      document.getElementById('search-modal').style.display = 'block';
+      const newPosts = await fetchPosts();
+      newPosts.forEach(post => {
+        Posts.push({...post});
+        currentBoxes.push({...post});
+        createContainer(post, post.id, false);
+      });
+      Posts = [...Posts];
+      //setContainers(judgeBtns(currentBoxes), loadMore);
+      if (loadMore) {
+        const loadMoreDiv = document.createElement('div');
+        loadMoreDiv.className = 'container available';
+        const loadMoreLabel = document.createElement('h2');
+        loadMoreLabel.className = 'load-more-label';
+        loadMoreLabel.textContent = 'もっと見る';
+        loadMoreDiv.appendChild(loadMoreLabel);
+        loadMoreDiv.addEventListener('click', async () => {
+          await loadMoreClick();
+          main.removeChild(loadMoreDiv);
+        });
+
+        main.appendChild(loadMoreClick);
+      }
+      originalData = [...currentBoxes];
+
+      document.getElementById('search-modal').style.display = 'none';
+}
 
 function judgeBtns(arr = Posts) {
   for (const element of Fixed) {
