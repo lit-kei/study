@@ -7,7 +7,7 @@
     "summary": "予習と復習、どちらがより重要かについて考察します。<br>効果的な学習方法を見つけるためのヒントを提供します。",
     "tags": ["授業", "勉強法"],
     "thumbnail": "./thumbnails/class.jpg",
-    "recommendations": ["recommended-youtubers"]
+    "recommendations": ["recommended-youtubers", "study-routine"]
   },
   {
     "id": "recommended-youtubers",
@@ -38,5 +38,15 @@
     "tags": ["因数分解", "応用", "数学", "中3"],
     "thumbnail": "./thumbnails/math-board.jpg",
     "recommendations": []
+  },
+  {
+    "id": "study-routine",
+    "title": "中高生向けの勉強ルーティン",
+    "date": "2025-09-15",
+    "readTime": "5 min",
+    "summary": "勉強のモチベーションが沸かない学生へ。<br>効率的な勉強法を紹介します。",
+    "tags": ["中高生", "勉強法"],
+    "thumbnail": "./thumbnails/study-routine.jpg",
+    "recommendations": ["preparation-vs-review"]
   }
 ]

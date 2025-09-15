@@ -411,6 +411,44 @@ mjx-mtr {
     padding-bottom: 8px;
 }
 
+.schedule {
+    max-width: 500px; 
+    margin: 40px 0 60px; 
+    background: #fff; 
+    overflow: hidden; 
+    border: 1px solid #aaa; 
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+.time-slot { 
+    display: flex; 
+    position: relative; 
+}
+.time { 
+    width: 60px; 
+    padding: 5px; 
+    font-weight: bold; 
+    color: #555; 
+}
+.event { 
+    flex: 1;
+    background: #c0ffd0; 
+    border-radius: 8px; 
+    padding: 5px 10px; 
+    position: absolute; 
+    left: 85px; 
+    font-size: 18px;
+    right: 10px; 
+}
+.slot-container { 
+    position: relative; 
+}
+.time-block { 
+    height: 60px; 
+    font-size: 18px;
+    padding: 2px 5px;
+    border-bottom: 1px solid #dddd;
+}
 
 @media (max-width: 768px) {
     main {

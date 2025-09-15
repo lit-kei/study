@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>中高生向けの勉強ルーティン | 勉強ブログ - 暗記の小屋</title>
+    <meta name="title" content="勉強ブログ">
+    <meta name="hierarchy" content="1">
+    <link rel="stylesheet" href="../assets/css/blog.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32x32.png" sizes="32x32">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="勉強のモチベーションが沸かない学生を対象に、効率的な日々のルーティンを紹介します。これを参考に、日々の学習を見直してみてください。">
+    <meta name="robots" content="index, follow">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84CG30Z7N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-P84CG30Z7N');
+    </script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/blog/study-routine.html/",
+        "description": "勉強のモチベーションが沸かない学生を対象に、効率的な日々のルーティンを紹介します。これを参考に、日々の学習を見直してみてください。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+    <script src="../assets/js/style.js" defer></script>
+    <style>
+        #alert *, #alert {
+            transition: all 1s ease;
+        }
+        #alert {
+            padding: 25px;
+            background-color: #c0ffd0;
+            border-radius: 10px;
+            border: #2b9c2e 1px solid;
+            text-align: center;
+            margin-bottom: 60px;
+        }
+        #alert.study {
+            background-color: #f14668;
+            border: #7e191d 1px solid;
+        }
+        #alert #alert-label {
+            display: block;
+            font-size: 20px;
+            color: #222;
+            font-weight: bold;
+        }
+        #alert.study #alert-label {
+            display: none;
+        }
+        #alert.study #alert-study {
+            display: block;
+            font-weight: bold;
+            font-size: 20px;
+            color: white;
+        }
+        #alert #alert-study {
+            display: none;
+        }
+        #alert #alert-timer {
+            display: inline-block;
+            font-size: 20px;
+            margin: 20px 0 0;
+            font-weight: bold;
+            color: #222;
+        }
+        #alert.study #alert-timer {
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header></header>
+    <div class="main-content" style="min-height: 100vh;">
+        <main>
+            <div id="top-content" style="background: linear-gradient(rgba(255,255,255,0.8), rgba(255,255,255,0.8)), url('./thumbnails/study-routine.jpg') center/cover no-repeat;">
+                <div class="back-links">
+                    <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> >
+                </div>
+                <h1 class="title">中高生向けの勉強ルーティン</h1>
+                <div class="tags">
+                    <span class="tag"># 中高生</span>
+                    <span class="tag"># 勉強法</span>
+                </div>
+                <div class="date">
+                    <img src="../assets/images/calendar.svg" alt="最終更新日: " class="svg-icon"><span>2025-09-15</span>
+                    <img src="../assets/images/clock.svg" alt="所要時間: " class="svg-icon" style="margin-left: 15px;"><span>5 min</span>
+                </div>
+                <div class="share-links">
+                    <span class="share-label">ぜひこの記事をシェアしてください！</span>
+                    <div class="share-icons">
+                        <a href="https://twitter.com/intent/tweet?text=中高生向けの勉強ルーティン&url=https://lit-kei.github.io/study/blog/study-routine.html&hashtags=暗記の小屋" target="_blank">
+                            <img src="../assets/images/x-icon.png" alt="Xでシェア" class="share-icon">
+                        </a>
+                        <a href="https://www.facebook.com/sharer/sharer.php?u=https://lit-kei.github.io/study/blog/study-routine.html" target="_blank">
+                            <img src="../assets/images/fb-icon.png" alt="Facebookでシェア" class="share-icon">
+                        </a>
+                        <a href="https://social-plugins.line.me/lineit/share?url=https://lit-kei.github.io/study/blog/study-routine.html&text=中高生向けの勉強ルーティン" target="_blank">
+                            <img src="../assets/images/line-icon.png" alt="LINEでシェア" class="share-icon">
+                        </a>
+
+                    </div>
+                </div>
+            </div>
+            <div class="blog-content">
+                <h2 class="avoid">「勉強しなさい！」</h2>
+                <p>この言葉は耳にタコができるほど聞いたと思います。</p>
+                <p>しかしそう言う人たちに限って、なぜか勉強法は伝えず「勉強しろ」の一点張りです。</p>
+                <p>そのためこの記事では、モチベーションが沸かない中高生におすすめの勉強ルーティンを紹介します。</p>
+                <p class="point">この記事の目次</p>
+                <div class="ul-box">
+                    <ul>
+                        <li><a href="#section1">平日の勉強ルーティン</a></li>
+                        <li><a href="#section2">休日の勉強ルーティン</a></li>
+                        <li><a href="#section3">モチベーションを維持するために</a></li>
+                    </ul>
+                </div>
+                
+                <h2 id="section1">平日の勉強ルーティン</h2>
+                <p>これが平日の無理のない勉強ルーティンです。</p>
+                <div class="schedule">
+                    <div class="slot-container">
+                        <div class="time-block"><div class="time">7:00</div></div>
+                        <div class="time-block"><div class="time">8:00</div></div>
+                        <div class="time-block"><div class="time">9:00</div></div>
+                        <div class="time-block"><div class="time">10:00</div></div>
+                        <div class="time-block"><div class="time">11:00</div></div>
+                        <div class="time-block"><div class="time">12:00</div></div>
+                        <div class="time-block"><div class="time">13:00</div></div>
+                        <div class="time-block"><div class="time">14:00</div></div>
+                        <div class="time-block"><div class="time">15:00</div></div>
+                        <div class="time-block"><div class="time">16:00</div></div>
+                        <div class="time-block"><div class="time">17:00</div></div>
+                        <div class="time-block"><div class="time">18:00</div></div>
+                        <div class="time-block"><div class="time">19:00</div></div>
+                        <div class="time-block"><div class="time">20:00</div></div>
+
+                        <div class="event" style="top:4px; height:52px;">予習（時間があれば）</div>
+                        <div class="event" style="top:64px; height:532px;">学校</div>
+                        <div class="event" style="top:664px; height:40px;">復習</div>
+                    </div>
+                </div>
+                <p>無理に思えるかもしれませんが、そこまで難易度は高くないので実践してみましょう。</p>
+                <p>平日の勉強時間は主に3つに分けられます。</p>
+                <p>それは朝、学校、夕方で、それぞれ個別に詳しく解説します。</p>
+                <p class="point">平日のルーティン</p>
+                <div class="ul-box">
+                    <ul>
+                        <li><a href="#section1-1">朝</a></li>
+                        <li><a href="#section1-2">学校</a></li>
+                        <li><a href="#section1-3">夕方</a></li>
+                    </ul>
+                </div>
+                <h3 id="section1-1">朝</h3>
+                <p>朝は人によって時間がある人とない人にわかれると思います。</p>
+                <p>もし出発する前に時間があるなら、家で教科書を開いて <span class="color-marker">授業の予習</span> をすると良いでしょう。</p>
+                <p>バスや電車通学で教科書を開けない場合は、単語帳や <a href="/study/feed.html">みんなの問題集</a> がおすすめです。</p>
+                <p>優先順位は低いので、どうしても時間が取れない人は無理に取り入れなくても良いです。</p>
+                <p>代わりに夕方の勉強時間を増やしましょう。</p>
+
+                <h3 id="section1-2">学校</h3>
+                <p>上のタイムスケジュールを見るとわかりますが、私たちは平日の活動時間のほとんどを学校で過ごします。</p>
+                <p>このことから学校の授業がいかに大事かが読み取れます。</p>
+                <p>学校の勉強で意識することは特にありませんが、授業はしっかり受けましょう。<p>
+                <p>授業をさぼると、貴重な勉強時間が失われるからです。</p>
+                <p>周りに先生がいる唯一の時間なので、授業で理解できなかったら <span class="color-marker">積極的に質問</span> しましょう。</p>
+
+                <h3 id="section1-3">夕方</h3>
+                <p>朝に勉強できる時間なんてたかが知れているので、夕方の勉強時間が最も大事だと思っています。</p>
+                <p>時間を決めて毎日やることが大切です。</p>
+                <p>1日に30分でいいので勉強しましょう。</p>
+                <p>私も毎日6時からやっているので、あなたも一緒に勉強しましょう。</p>
+
+                <div id="alert">
+                    <span id="alert-label">夕方の勉強開始まであと</span>
+                    <span id="alert-study">夕方の勉強時間です！残り</span>
+                    <span id="alert-timer">HH時間MM分SS秒</span>
+                </div>
+
+
+
+                <h2 id="section2">休日の勉強ルーティン</h2>
+                <p>休日の勉強ルーティンはこちらです。</p>
+                <div class="schedule">
+                    <div class="slot-container">
+                        <div class="time-block"><div class="time">7:00</div></div>
+                        <div class="time-block"><div class="time">8:00</div></div>
+                        <div class="time-block"><div class="time">9:00</div></div>
+                        <div class="time-block"><div class="time">10:00</div></div>
+                        <div class="time-block"><div class="time">11:00</div></div>
+                        <div class="time-block"><div class="time">12:00</div></div>
+                        <div class="time-block"><div class="time">13:00</div></div>
+                        <div class="time-block"><div class="time">14:00</div></div>
+                        <div class="time-block"><div class="time">15:00</div></div>
+                        <div class="time-block"><div class="time">16:00</div></div>
+                        <div class="time-block"><div class="time">17:00</div></div>
+                        <div class="time-block"><div class="time">18:00</div></div>
+                        <div class="time-block"><div class="time">19:00</div></div>
+                        <div class="time-block"><div class="time">20:00</div></div>
+
+                        <div class="event" style="top:184px; height:112px;">勉強（午前の部）</div>
+                        <div class="event" style="top:484px; height:112px;">勉強（午後の部）</div>
+                    </div>
+                </div>
+                <p>もちろんこれは例なので、この通りに勉強する必要はありません。</p>
+                <p>勉強開始を遅らせて夜からにしてもいいですが、時間は必ず確保しましょう。</p>
+                <p>予習復習をこれだけこなせば、テストで困ることはなくなります。</p>
+                <p>ただ一つ伝えたいのは、机に向かう時間は勉強の時間ではないということです。</p>
+                <p>勉強時間を無意味な時間にしないようにしましょう。</p>
+
+                <h2 id="section3">モチベーションを維持するために</h2>
+                <p>最後にモチベーションを保つ方法を説明します。</p>
+                <p>それは <b class="big">具体的な目標を設定する</b> ということです。</p>
+                <p>おすすめの目標を3つ紹介します。</p>
+                <div class="ul-box">
+                    <ul>
+                        <li>テストで N 点を取る</li>
+                        <li>偏差値を N にする</li>
+                        <li>今日 N 時間勉強する</li>
+                    </ul>
+                </div>
+                <p>目標の適用期間は1日でも1週間でも1カ月でも構いません。</p>
+                <p>大事なのは「 <span class="color-marker">具体的な目標</span> 」であることです。</p>
+                <p>「国語を頑張る」などの抽象的な目標はいつ達成されたかわかりづらく、モチベーションの維持が困難になります。</p>
+                <p>目標に届いときのご褒美を用意するのも良い手です。</p>
+
+                <h2>まとめ</h2>
+                <p>以上、この記事では中高生向けの勉強ルーティンとモチベーションの管理法について紹介しました。</p>
+                <p>繰り返しになりますが、 <span class="color-marker">毎日勉強を続けること</span> が一番大事です。</p>
+                <p>そのことを念頭に置いて日々の勉学に励んでください。</p>
+
+
+                <div class="blog-box"></div>
+            </div>
+            
+            <div class="back-links">
+                <u><span class="back-link" onclick="window.location.href='./blog-index.html'">ブログ一覧</span></u> > 
+                <span>中高生向けの勉強ルーティン</span>
+            </div>
+        </main>
+        <div class="container recommendation">
+            <h2>この記事を読んだあなたにおすすめ</h2>
+            <div class="recommendation-box">
+                <!-- JavaScriptでおすすめブログがここに挿入される -->
+            </div>
+        </div>
+    </div>
+    <footer></footer>
+    <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
+    <script src="../assets/js/blog.js"></script>
+    <script>
+        function formatTime(ms, flag) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            if (flag) { return `${String(minutes).padStart(2, '0')}分 ${String(seconds).padStart(2, '0')}秒` }
+            else { return `${hours}時間 ${String(minutes).padStart(2, '0')}分 ${String(seconds).padStart(2, '0')}秒` };
+        }
+        function timer() {
+            if (gap < -(30*60*1000)) {
+                document.getElementById('alert').classList.remove('study');
+                document.getElementById('alert-label').textContent = '今日の勉強終わり！';
+                document.getElementById('alert-timer').style.display = 'none';
+            } else if (gap < 0) {
+                gap = (new Date()) - (new Date()).setHours(18, 30, 0, 0);
+                document.getElementById('alert').classList.add('study');
+                document.getElementById('alert-timer').style.display = 'inline-block';
+                document.getElementById('alert-timer').textContent = formatTime(gap * -1, true);
+            } else {
+                gap = (new Date()).setHours(18, 0, 0, 0) - (new Date());
+                document.getElementById('alert').classList.remove('study');
+                document.getElementById('alert-label').textContent = '夕方の勉強開始まであと';
+                document.getElementById('alert-timer').style.display = 'inline-block';
+                document.getElementById('alert-timer').textContent = formatTime(gap, false);
+            }
+        }
+        if ((new Date()).setHours(18, 0, 0, 0) < (new Date()) && (new Date()) < (new Date()).setHours(18, 30, 0, 0)) {
+            gap = (new Date()) - (new Date()).setHours(18, 30, 0, 0);
+        } else {
+            gap = (new Date()).setHours(18, 0, 0, 0) - (new Date());
+        }
+        timer();
+        setInterval(timer, 1000);
+    </script>
+</body>
+</html>

@@ -29,7 +29,7 @@ Promise.all([mapping, blogFile])
         }
         const recommendation = document.querySelector('.recommendation-box');
         if (blogData[index].recommendations && blogData[index].recommendations.length > 0) {
-            blogData[index].recommendations.forEach(recId => {
+            blogData[index].recommendations.reverse().forEach(recId => {
                 const recBlog = blogData.find(blog => blog.id === recId);
                 if (recBlog) {
                     document.querySelector('.recommendation').style.display = 'block';

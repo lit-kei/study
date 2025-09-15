@@ -1,11 +1,12 @@
 {
-    "授業": "class",
-    "勉強法": "study-tips",
-    "教材": "materials",
     "因数分解": "factorization",
-    "基礎": "basics",
-    "数学": "math",
-    "中3": "grade-9",
     "応用": "advanced",
+    "基礎": "basics",
+    "教材": "materials",
+    "授業": "class",
+    "数学": "math",
+    "中高生": "students",
+    "中3": "grade-9",
+    "勉強法": "study-tips",
     "ユーチューバー": "youtubers"
 }
