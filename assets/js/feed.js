@@ -443,6 +443,7 @@ async function loadMoreClick() {
         currentBoxes.push({...post});
         createContainer(post, post.id, false);
       });
+      MathJax.typeset();
       Posts = [...Posts];
       //setContainers(judgeBtns(currentBoxes), loadMore);
       if (loadMore) {
