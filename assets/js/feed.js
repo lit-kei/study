@@ -120,10 +120,10 @@ for (let i = 0; i < 4; i++) {
       }
     }
     filterBtns[i] = !filterBtns[i];
+    localStorage.setItem('setting', JSON.stringify(filterBtns));
     if (document.getElementById('input').value.length == 0 || 
        (document.getElementById('input').value.length == 1 && document.getElementById('input').value[0] == "#")) {
       document.getElementById('search-modal').style.display = 'block';
-      localStorage.setItem('setting', JSON.stringify(filterBtns));
       currentBoxes = [...(await fetchPosts())];
       originalData = [...currentBoxes];
       currentBoxes.forEach(doc => {
@@ -133,7 +133,7 @@ for (let i = 0; i < 4; i++) {
       document.getElementById('search-modal').style.display = 'none';
       setContainers(judgeBtns(currentBoxes), loadMore);
     } else {
-      setContainers(sortData(currentBoxes), loadMore);
+      setContainers(sortData(currentBoxes), false);
     }
   });
 }
@@ -492,11 +492,16 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
     const value = input.value;
     if (value[0] == '#') {
       if (value.length == 1) {
+        document.getElementById('search-modal').style.display = 'block';
+        lastDoc = null;
+        originalData = [...await fetchPosts()];
         currentBoxes = [...originalData];
         setContainers(judgeBtns(currentBoxes), loadMore);
+        ocument.getElementById('search-modal').style.display = 'none';
         return;
       }
       document.getElementById('search-modal').style.display = 'block';
+      loadMore = false;
       const id = value.slice(1, value.length);
       const idHit = await getDocs(query(collection(db, "posts"), orderBy("__name__"), startAt(id), endAt((id + "\uf8ff"))));
       currentBoxes = [...idHit.docs.map(e => ({id: e.id, ...e.data()}))];
@@ -506,13 +511,18 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
       // valueにデータがある
       // titleから検索
       document.getElementById('search-modal').style.display = 'block';
+      loadMore = false;
       const titleHit = await getDocs(query(collection(db, "posts"), orderBy("title"), startAt(value), endAt((value + "\uf8ff"))));
       currentBoxes = [...titleHit.docs.map(e => ({id: e.id, ...e.data()}))];
       setContainers(judgeBtns(currentBoxes), false);
       document.getElementById('search-modal').style.display = 'none';
     } else {
+      document.getElementById('search-modal').style.display = 'block';
+      lastDoc = null;
+      originalData = [...await fetchPosts()];
       currentBoxes = [...originalData];
       setContainers(judgeBtns(currentBoxes), loadMore);
+      document.getElementById('search-modal').style.display = 'none';
   }
 });
 
