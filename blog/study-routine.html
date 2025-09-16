@@ -155,7 +155,7 @@
 
                         <div class="event" style="top:4px; height:52px;">予習（時間があれば）</div>
                         <div class="event" style="top:64px; height:532px;">学校</div>
-                        <div class="event" style="top:664px; height:28px; padding: 0 10px;">復習</div>
+                        <div class="event" style="top:628px; height:28px; padding: 0 10px;">復習</div>
                     </div>
                 </div>
                 <p>無理に思えるかもしれませんが、そこまで難易度は高くないので実践してみましょう。</p>
@@ -187,7 +187,7 @@
                 <p>朝に勉強できる時間なんてたかが知れているので、夕方の勉強時間が最も大事だと思っています。</p>
                 <p>時間を決めて毎日やることが大切です。</p>
                 <p>1日に30分でいいので勉強しましょう。</p>
-                <p>私も毎日6時からやっているので、あなたも一緒に勉強しましょう。</p>
+                <p>私も毎日17時30分からやっているので、あなたも一緒に勉強しましょう。</p>
 
                 <div id="alert">
                     <span id="alert-label">夕方の勉強開始まであと</span>
@@ -267,6 +267,7 @@
     <script src="https://www.line-website.com/social-plugins/js/thirdparty/loader.min.js" async="async" defer="defer"></script>
     <script src="../assets/js/blog.js"></script>
     <script>
+        let gap;
         function formatTime(ms, flag) {
             const totalSeconds = Math.floor(ms / 1000);
             const hours = Math.floor(totalSeconds / 3600);
@@ -282,22 +283,22 @@
                 document.getElementById('alert-label').textContent = '今日の勉強終わり！';
                 document.getElementById('alert-timer').style.display = 'none';
             } else if (gap < 0) {
-                gap = (new Date()) - (new Date()).setHours(18, 30, 0, 0);
+                gap = (new Date()) - (new Date()).setHours(18, 0, 0, 0);
                 document.getElementById('alert').classList.add('study');
                 document.getElementById('alert-timer').style.display = 'inline-block';
                 document.getElementById('alert-timer').textContent = formatTime(gap * -1, true);
             } else {
-                gap = (new Date()).setHours(18, 0, 0, 0) - (new Date());
+                gap = (new Date()).setHours(17, 30, 0, 0) - (new Date());
                 document.getElementById('alert').classList.remove('study');
                 document.getElementById('alert-label').textContent = '夕方の勉強開始まであと';
                 document.getElementById('alert-timer').style.display = 'inline-block';
                 document.getElementById('alert-timer').textContent = formatTime(gap, false);
             }
         }
-        if ((new Date()).setHours(18, 0, 0, 0) < (new Date()) && (new Date()) < (new Date()).setHours(18, 30, 0, 0)) {
-            gap = (new Date()) - (new Date()).setHours(18, 30, 0, 0);
+        if ((new Date()).setHours(17, 30, 0, 0) < (new Date()) && (new Date()) < (new Date()).setHours(18, 0, 0, 0)) {
+            gap = (new Date()) - (new Date()).setHours(18, 0, 0, 0);
         } else {
-            gap = (new Date()).setHours(18, 0, 0, 0) - (new Date());
+            gap = (new Date()).setHours(17, 30, 0, 0) - (new Date());
         }
         timer();
         setInterval(timer, 1000);
