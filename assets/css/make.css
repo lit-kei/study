@@ -126,7 +126,8 @@ th {
   border: none;
   outline: none;
   font-size: 30px;
-  background-color: white;
+  padding: 20px 0;
+  background-color: transparent;
   cursor: pointer;
 }
 .menu {
