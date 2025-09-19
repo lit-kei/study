@@ -1,6 +1,5 @@
 User-agent: *
-Disallow: /study/sitemap_study.xml
-Disallow: /study/sitemap.xml
+Disallow: 
 Sitemap: https://lit-kei.github.io/study/sitemap_index.xml
 Sitemap: https://lit-kei.github.io/study/general-sitemap.xml
 Sitemap: https://lit-kei.github.io/study/blog-sitemap.xml
