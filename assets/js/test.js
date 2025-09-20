@@ -601,6 +601,8 @@ document
           // JSONとしてパースして配列に変換
           dataArray = JSON.parse(fileContent);
           question = JSON.parse(fileContent);
+          problemID = fileName;
+
           shuffleArray(question);
           init();
         } catch (error) {
