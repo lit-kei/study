@@ -126,7 +126,7 @@ async function rec(structure, folderDoc, s, depth, parent, progress, now, max) {
               e.stopPropagation();
               if (s == "math" && fileID == 0) {
                 window.open('https://lit-kei.github.io/prime/');
-              } else if (s == "math" && fileID == 0) {
+              } else if (s == "math" && fileID == 1) {
                 window.open('https://lit-kei.github.io/equation/');
               } else {
                 const url = `/study/test.html?f=official&subject=${s}&index=${fileID}`;
