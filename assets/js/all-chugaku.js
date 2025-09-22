@@ -118,11 +118,16 @@ async function rec(structure, folderDoc, s, depth, parent, progress, now, max) {
             const unitDiv = document.createElement("div");
             unitDiv.className = "unit";
             unitDiv.textContent = subjectData[s].contents.docs.find(d => d.data().index === fileID).data().title;
-            if (s == "math" && fileID == 0) { unitDiv.classList.add('fake') }
+            if ((s == "math" && fileID == 0)
+             || (s == "math" && fileID == 1)) { 
+              unitDiv.classList.add('fake'); 
+            }
             unitDiv.addEventListener("click", (e) => {
               e.stopPropagation();
               if (s == "math" && fileID == 0) {
                 window.open('https://lit-kei.github.io/prime/');
+              } else if (s == "math" && fileID == 0) {
+                window.open('https://lit-kei.github.io/equation/');
               } else {
                 const url = `/study/test.html?f=official&subject=${s}&index=${fileID}`;
                 window.location.href = url;
