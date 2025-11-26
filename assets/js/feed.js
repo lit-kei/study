@@ -424,8 +424,8 @@ function setContainers(users = false, localLoadMore) {
     loadMoreLabel.textContent = 'もっと見る';
     loadMoreDiv.appendChild(loadMoreLabel);
     loadMoreDiv.addEventListener('click', async () => {
-      await loadMoreClick();
       main.removeChild(loadMoreDiv);
+      await loadMoreClick();
     });
 
     fragment.appendChild(loadMoreDiv);
@@ -458,7 +458,7 @@ async function loadMoreClick() {
           main.removeChild(loadMoreDiv);
         });
 
-        main.appendChild(loadMoreClick);
+        main.appendChild(loadMoreDiv);
       }
       originalData = [...currentBoxes];
 
