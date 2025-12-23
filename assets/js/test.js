@@ -50,6 +50,11 @@ let urls = [];
 let user = false
 try {
   await setArray();
+  
+  if (dataArray == null || dataArray.length == 0) {
+    throw new Error('no');
+  }
+
   checks = (originalData.find(e => e.id === problemID) ?? {contents: []}).contents;
   if (user == false) {
     if (dataArray.shuffle === undefined) {
@@ -83,8 +88,16 @@ try {
   }
   shuffleArray(question);
   init();
-} catch (error) {
-  console.error("ファイルの内容がJSONとしてパースできません:", error);
+} catch (e) {
+  switch (e.message) {
+    case "no":
+      appearModal('no-content');
+      break;
+    default:
+      appearModal('broken-content');
+      break;
+  }
+    
 }
 function preloadImages(urls) {
   const promises = urls.map(url => {;
@@ -504,6 +517,11 @@ async function setArray() {
       document.getElementById("fileName").textContent = "問題集: " + fileName;
       break;
   }
+}
+
+function appearModal(id) {
+  document.getElementById('modal').style.display = 'flex';
+  document.getElementById(id).style.display = 'flex';
 }
 
 function init() {

@@ -94,6 +94,21 @@
                 <label class="advice" for="checkbox">チェックを入れるとシャッフルを防ぎます</label>
             </div>
         </main>
+        <div id="modal" class="modal">
+            <div class="modal-content" style="display: none;" id="no-content">
+                <h3 id="label" style="font-size: 24px;">問題集が設定されていません。</h3>
+                <div style="margin: 20px 0;">
+                    <a style="font-size: 20px;" href="/study/feed.html">みんなの問題集から選ぶ</a>
+                </div>
+            </div>
+            <div class="modal-content" style="display: none;" id="broken-content">
+                <h3 id="label" style="font-size: 24px;">問題集の構造が壊れています。</h3>
+                <div style="margin: 20px 0;">
+                    <a style="font-size: 20px; display: block;" href="/study/menu.html">あなたの問題集</a>
+                    <a style="font-size: 20px; display: block; margin-top: 20px;" href="/study/howto.html">問題集のつくり方</a>
+                </div>
+            </div>
+        </div>
     </div>
     <footer></footer>
     <script src="assets/js/test.js" type="module"></script>
