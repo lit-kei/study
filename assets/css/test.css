@@ -1,17 +1,7 @@
 main {
     padding: 20px;
 }
-/* フォーム */
-#myForm {
-    margin-bottom: 20px;
-}
 
-#fileInput {
-    padding: 10px;
-    background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-}
 
 /* 問題・答えのセクション */
 #que, #ans {
@@ -101,49 +91,16 @@ tr:hover {
 button:hover {
     background-color: #45a049;
 }
-/* ファイル入力のカスタマイズ */
-#fileInput {
-    display: none; /* デフォルトのファイル入力を非表示にする */
-}
-
-#fileInputLabel {
-    text-align: center;
-    width: 200px;
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: #2B9C2E;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background-color 0.3s;
-}
-
-#fileInputLabel:hover {
-    background-color: #45a049;
-    transform: translateY(-2px);
-}
-
-#fileInputLabel:active {
-    background-color: #388e3c;
-    transform: translateY(0); /* 押した感覚を出す */
-}
-
 #fileName {
     display: inline-block;
     margin-left: 10px;
-    font-size: 16px;
+    font-size: 24px;
     color: #555;
     line-height: 30px;
     vertical-align: middle;
+    margin-bottom: 30px;
 }
 
-/* ファイル選択後にファイル名を表示するため */
-#fileInput:focus + #fileInputLabel,
-#fileInput:active + #fileInputLabel {
-    background-color: #45a049;
-}
 
 #button {
     width: 200px;

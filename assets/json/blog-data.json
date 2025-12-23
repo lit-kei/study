@@ -48,5 +48,15 @@
     "tags": ["中高生", "勉強法"],
     "thumbnail": "./thumbnails/study-routine.jpg",
     "recommendations": ["preparation-vs-review"]
+  },
+  {
+    "id": "careless-mistake-prevention",
+    "title": "STOP！ケアレスミス",
+    "date": "2025-12-23",
+    "readTime": "8 min",
+    "summary": "ケアレスミスで悔しい思いをしないために。<br>テスト中にできる対策法を紹介します。",
+    "tags": ["テスト"],
+    "thumbnail": "./thumbnails/careless-mistake-prevention.jpg",
+    "recommendations": ["preparation-vs-review","study-routine"]
   }
 ]

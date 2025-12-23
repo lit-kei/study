@@ -200,7 +200,7 @@ async function setArray() {
   ["勝つ win", "win - won - won"],
   ["書く write", "write - wrote - written"]
 ];
-      document.getElementById("fileName").textContent = "過去分詞";
+      document.getElementById("fileName").textContent = "問題集: 過去分詞";
       break;
     case "morse":
       problemID = "morse";
@@ -247,7 +247,7 @@ async function setArray() {
           ["9", "ーーーー・"]
         ],
       };
-      document.getElementById("fileName").textContent = "モールス信号";
+      document.getElementById("fileName").textContent = "問題集: モールス信号";
       break;
     case "goro":
       problemID = "goro";
@@ -461,7 +461,7 @@ async function setArray() {
         ],
         shuffle: true,
       };
-      document.getElementById("fileName").textContent = "語呂合わせ";
+      document.getElementById("fileName").textContent = "問題集: 語呂合わせ";
       break;
 
     case "user":
@@ -472,7 +472,7 @@ async function setArray() {
           for (let i = 0; i < doc.data().contents.question.length; i++) {
             dataArray.push([doc.data().contents.question[i], doc.data().contents.answer[i]]);
           }
-          document.getElementById("fileName").textContent = doc.data().title;
+          document.getElementById("fileName").textContent = "問題集: " + doc.data().title;
         } else {
           console.log("そのようなIDのドキュメントは存在しません。");
           dataArray = JSON.parse(fileContent);
@@ -490,7 +490,7 @@ async function setArray() {
           for (let i = 0; i < doc.data().contents.question.length; i++) {
             dataArray.push([doc.data().contents.question[i], doc.data().contents.answer[i]]);
           }
-          document.getElementById("fileName").textContent = doc.data().title;
+          document.getElementById("fileName").textContent = "問題集: " + doc.data().title;
         } else {
           console.log("そのようなIDの問題集は存在しません。");
           dataArray = JSON.parse(fileContent);  
@@ -501,7 +501,7 @@ async function setArray() {
     default:
       problemID = fileName;
       dataArray = JSON.parse(fileContent);
-      document.getElementById("fileName").textContent = fileName;
+      document.getElementById("fileName").textContent = "問題集: " + fileName;
       break;
   }
 }
@@ -585,33 +585,6 @@ function init() {
     return;
   }
 }
-
-document
-  .getElementById("fileInput")
-  .addEventListener("change", function (event) {
-    var fileName = this.files.length > 0 ? this.files[0].name : "";
-    document.getElementById("fileName").textContent = fileName;
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        // ファイルの内容を取得
-        const fileContent = e.target.result;
-        try {
-          // JSONとしてパースして配列に変換
-          dataArray = JSON.parse(fileContent);
-          question = JSON.parse(fileContent);
-          problemID = fileName;
-
-          shuffleArray(question);
-          init();
-        } catch (error) {
-          console.error("ファイルの内容がJSONとしてパースできません:", error);
-        }
-      };
-      reader.readAsText(file);
-    }
-  });
 
 document.onkeydown = hoge;
 
