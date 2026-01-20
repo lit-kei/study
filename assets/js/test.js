@@ -50,10 +50,6 @@ let urls = [];
 let user = false
 try {
   await setArray();
-  
-  if (dataArray == null || dataArray.length == 0) {
-    throw new Error('no');
-  }
 
   checks = (originalData.find(e => e.id === problemID) ?? {contents: []}).contents;
   if (user == false) {
@@ -487,8 +483,9 @@ async function setArray() {
           }
           document.getElementById("fileName").textContent = "問題集: " + doc.data().title;
         } else {
+          
           console.log("そのようなIDのドキュメントは存在しません。");
-          dataArray = JSON.parse(fileContent);
+          throw new Error('no');
         }
       });
 
@@ -506,7 +503,7 @@ async function setArray() {
           document.getElementById("fileName").textContent = "問題集: " + doc.data().title;
         } else {
           console.log("そのようなIDの問題集は存在しません。");
-          dataArray = JSON.parse(fileContent);  
+          throw new Error('no');
         }
       });
       problemID = `${subject}&${unit}`;
