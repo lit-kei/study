@@ -85,6 +85,7 @@ try {
   shuffleArray(question);
   init();
 } catch (e) {
+  console.log(e);
   switch (e.message) {
     case "no":
       appearModal('no-content');
@@ -592,7 +593,10 @@ function init() {
       localStorage.setItem('checked', JSON.stringify(originalData));
     });
   }
-  MathJax.typeset();
+  
+    if (window.MathJax?.typesetPromise) {
+      MathJax.typesetPromise();
+    }
   
   
   if (len == 0) {
@@ -624,7 +628,10 @@ function next(a) {
       document.getElementById("question").innerHTML = imageOld ? problem[0][0] : problem[0][0].text;
       document.getElementById("button").textContent = "答えを見る";
       loadAndCacheImages(problem[0][0].images, "queImages");
-      MathJax.typeset();
+      
+      if (window.MathJax?.typesetPromise) {
+        MathJax.typesetPromise();
+      }
     } else {
       document.getElementById("answer").innerHTML = problem[0][1].text;
       document.getElementById("button").textContent = "次の問題へ";
@@ -685,7 +692,9 @@ function next(a) {
       }
     }
     answer = !answer;
-    MathJax.typeset();
+    if (window.MathJax?.typesetPromise) {
+      MathJax.typesetPromise();
+    }
   } else {
     if (a) {
       shuffleArray(question);

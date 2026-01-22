@@ -73,7 +73,7 @@ window.onload = function () {
   const footerInfo = document.createElement('div');
   footerInfo.className = "footer-info";
   footerInfo.innerHTML = `
-  <small>&copy; 2025 暗記の小屋 | <a href="/study/privacy.html">プライバシーポリシー</a></small>
+  <small>&copy; 2025-2026 暗記の小屋 | <a href="/study/privacy.html">プライバシーポリシー</a></small>
   `;
   footerLinks.forEach( ({ href, title }) => {
     const a = document.createElement('a');

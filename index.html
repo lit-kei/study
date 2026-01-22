@@ -64,16 +64,34 @@
             <div class="two-column main">
                 <div class="left-containers">
         
-                    <div class="main-container" data-href="/study/feed.html">
-                        <h1 class="title"><span class="color-marker">みんなの問題集</span></h1>
+                    
+                    <div class="main-container not-available" data-href="/study/study-room.html">
+                        <h1 class="title">開発中 - <span class="color-marker">リアルタイム勉強部屋</span></h1>
+                        <h1 class="title" style="margin-top: 30px;">
+                            coming soon...
+                        </h1>
+                        <!--
                         <div class="main-text">
-                            <p>このページでは、みんなが作成した問題集で勉強することが出来ます。</p>
-                            <p>ぜひ、このプラットフォームを利用して学びを深めてください。</p>
+                            <p>リアルタイムで、見ず知らずの誰かと共に勉強することができます。</p>
+                            <p>心を一つにして、みんなと一緒に勉強に向き合ってみませんか？</p>
                         </div>
                     <picture>
                         <source srcset="assets/images/feed.webp" type="image/webp">
                         <img src="assets/images/feed.png" alt="問題集の画像" class="main-image" fetchpriority="high">
-                    </picture>
+                    </picture> 
+                    -->
+                    </div>
+                    
+                    <div class="main-container" data-href="/study/blog/blog-index.html">
+                        <h1 class="title">不定期更新 - <span class="color-marker">勉強ブログ</span></h1>
+                        <div class="main-text">
+                            <p>私が暇なときに書いた、勉強に関する豆知識がまとめられています。</p>
+                            <p>時間があれば、ぜひ一度読んでみてください。</p>
+                        </div>
+                        <picture>
+                            <source srcset="assets/images/blog.webp" type="image/webp">
+                            <img src="assets/images/blog.png" alt="中学全範囲の画像" class="main-image" fetchpriority="high">
+                        </picture>
                     </div>
                     <div class="main-container" data-href="/study/all-chugaku.html">
                         <h1 class="title">随時更新 - <span class="color-marker">中学全範囲問題集</span></h1>
@@ -86,26 +104,27 @@
                             <img src="assets/images/all-chugaku.png" alt="中学全範囲の画像" class="main-image" fetchpriority="high">
                         </picture>
                     </div>
+        
+                </div>
+                <div class="right-containers">
+                    
+                    <div class="main-container" data-href="/study/feed.html">
+                        <h1 class="title"><span class="color-marker">みんなの問題集</span></h1>
+                        <div class="main-text">
+                            <p>このページでは、みんなが作成した問題集で勉強することが出来ます。</p>
+                            <p>ぜひ、このプラットフォームを利用して学びを深めてください。</p>
+                        </div>
+                    <picture>
+                        <source srcset="assets/images/feed.webp" type="image/webp">
+                        <img src="assets/images/feed.png" alt="問題集の画像" class="main-image" fetchpriority="high">
+                    </picture>
+                    </div>
                     <div class="main-container" data-href="/study/howto.html">
                         <h1 class="title"><span class="color-marker">使い方ガイド</span></h1>
                         <div class="main-text">
                             <p>これは「暗記の小屋」の使い方についてのガイドページです。</p>
                             <p>このページの中で全てのページの使い方をわかりやすく解説しています。</p>
                         </div>
-                    </div>
-        
-                </div>
-                <div class="right-containers">
-                    <div class="main-container" data-href="/study/blog/blog-index.html">
-                        <h1 class="title">不定期更新 - <span class="color-marker">勉強ブログ</span></h1>
-                        <div class="main-text">
-                            <p>私が暇なときに書いた、勉強に関する豆知識がまとめられています。</p>
-                            <p>時間があれば、ぜひ一度読んでみてください。</p>
-                        </div>
-                        <picture>
-                            <source srcset="assets/images/blog.webp" type="image/webp">
-                            <img src="assets/images/blog.png" alt="中学全範囲の画像" class="main-image" fetchpriority="high">
-                        </picture>
                     </div>
                     <div class="main-container" data-href="/study/menu.html">
                         <h1 class="title"><span class="color-marker">フォルダ選択</span></h1>
@@ -125,7 +144,7 @@
     <footer></footer>
     <script>
         document.addEventListener('DOMContentLoaded', function () {
-            document.querySelectorAll('.main-container').forEach(function (element) {
+            document.querySelectorAll('.main-container:not(.not-available)').forEach(function (element) {
                 element.addEventListener('click', function () {
                     const url = element.getAttribute('data-href');
                     if (url) {

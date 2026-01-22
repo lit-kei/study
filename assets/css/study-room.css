@@ -1,0 +1,25 @@
+
+main {
+    padding: 20px;
+    text-align: center;
+}
+.container {
+    background-color: #fff;
+    margin: 30px auto 30px auto;
+    min-width: 1000px;
+    height: 800px;
+    width: 50%;
+
+    border-radius: 10px;
+    border: #777 solid 1px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+
+@media (max-width: 1000px) {
+    .container {
+        min-width: 100%;
+        width: 100%;
+    }
+}

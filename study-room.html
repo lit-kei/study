@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>リアルタイム勉強部屋 - 暗記の小屋</title>
+    <meta name="title" content="みんなの問題集">
+    <link rel="stylesheet" href="assets/css/study-room.css">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48">
+    <link rel="icon" type="image/png" href="/favicon-512x512.png" sizes="512x512">
+    <meta name="google-site-verification" content="DvfNFjAlVr4_8kpecRR6ogaB1fDBn8mpAIOWpMKggLE" />
+    <meta name="description" content="リアルタイムで見ず知らずの誰かと共に勉強することができます。">
+    <meta name="robots" content="index, follow">
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P84CG30Z7N"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+
+        gtag('config', 'G-P84CG30Z7N');
+    </script>
+    
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: []
+        },
+        options: {
+            enableMenu: false
+        }
+    };
+    </script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "暗記の小屋",
+        "operatingSystem": "WEB",
+        "applicationCategory": "EducationApplication",
+        "url": "https://lit-kei.github.io/study/study-room.html",
+        "description": "リアルタイムで見ず知らずの誰かと共に勉強することができます。",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "JPY",
+            "availability": "https://schema.org/InStock"
+        }
+    }
+    </script>
+    <script async src="assets/js/style.js"></script>
+</head>
+
+<body>
+    <header></header>
+    <div class="main-content" style="min-height: 100vh;">
+        <main>
+            <h1 class="title">リアルタイム勉強部屋へようこそ！</h1>
+            <div class="container" id="container">
+
+
+                <canvas width="1000" height="800" id="canvas">
+
+                </canvas>
+            </div>
+            
+        </main>
+    </div>
+    <footer></footer>
+    <script src="assets/js/study-room.js" type="module"></script>
+</body>
+</html>
