@@ -5,7 +5,25 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+const learningCountLabel = {
+  x: 20,
+  y: 20,
+  value: 0,
 
+  draw(ctx) {
+    ctx.save();
+    ctx.fillStyle = "#333";
+    ctx.font = "20px sans-serif";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    ctx.fillText(
+      `学習中：${this.value}人`,
+      this.x,
+      this.y
+    );
+    ctx.restore();
+  }
+};
 
 const userId =
   localStorage.getItem("study_user_id") ??
@@ -27,18 +45,21 @@ await supabase
     learning: false
   });
 
-window.createOneDot = createOneDot;
 
 const dots = new Map(); // userId => dot
 let lastLearningUserIds = new Set();
 
 channel.on("presence", { event: "sync" }, () => {
   const currentIds = getLearningUserIds();
+  
+  learningCountLabel.value = currentIds.size;
 
   // 追加
   for (const id of currentIds) {
     if (!lastLearningUserIds.has(id)) {
-      const dot = createOneDot(true);
+      if (dots.size >= MAX_DOTS) break; // ★ 制限
+
+      const dot = createOneDot(true, id == userId);
       dots.set(id, dot);
     }
   }
@@ -79,9 +100,6 @@ async function startLearning() {
     learning: true
   });
   
-  setTimeout(() => {
-    console.log("after learning=true:", channel.presenceState());
-  }, 500);
 }
 
 async function stopLearning() {
@@ -125,6 +143,7 @@ function getLearningUserIds() {
 
 
 
+const MAX_DOTS = 30;
 
 let learning = false;
 
@@ -213,10 +232,7 @@ const circle = {
   
   
 
-  // 現在の色（RGB）
-  color: { r: 116, g: 185, b: 255 }, // 青
-  // 目標の色
-  target: { r: 116, g: 185, b: 255 },
+  color: randomPastelColor(),
 
   draw(ctx) {
     ctx.beginPath();
@@ -224,23 +240,15 @@ const circle = {
 
     if (learning) {
         // 枠線だけ
-        ctx.strokeStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+        ctx.strokeStyle = this.color;
         ctx.lineWidth = 6; // お好みで
         ctx.stroke();
     } else {
         // 塗りつぶし
-        ctx.fillStyle = `rgb(${this.color.r}, ${this.color.g}, ${this.color.b})`;
+        ctx.fillStyle = `rgb(116, 185, 255)`;
         ctx.fill();
     }
     },
-
-  update() {
-    const speed = 0.15; // 小さいほどゆっくり
-
-    this.color.r = lerp(this.color.r, this.target.r, speed);
-    this.color.g = lerp(this.color.g, this.target.g, speed);
-    this.color.b = lerp(this.color.b, this.target.b, speed);
-  },
 
   contains(x, y) {
     const dx = x - this.x;
@@ -261,12 +269,11 @@ canvas.addEventListener("click", (e) => {
   if (circle.contains(x, y)) {
     if (learning) {
         stopLearning();
-        circle.target = { r: 116, g: 185, b: 255 };
         text_s.target = 1;
         text_t.target = 0;
     } else {
         startLearning();
-        circle.target = { r: 255, g: 118, b: 117 };
+        circle.color = randomPastelColor();
         text_s.target = 0;
         text_t.target = 1;
         text_t.startTime = performance.now();
@@ -278,23 +285,25 @@ canvas.addEventListener("click", (e) => {
 
 
 function randomPastelColor() {
-  const r = Math.floor(180 + Math.random() * 60);
-  const g = Math.floor(180 + Math.random() * 60);
-  const b = Math.floor(180 + Math.random() * 60);
-  return `rgb(${r}, ${g}, ${b})`;
+  const h = Math.random() * 360;          // 色相：完全ランダム
+  const s = 50 + Math.random() * 20;      // 彩度：50–70%
+  const l = 70 + Math.random() * 10;      // 明度：70–80%（白飛び防止）
+
+  return `hsl(${h}, ${s}%, ${l}%)`;
 }
-function createOneDot(popping = true) {
-  const baseR = 6 + Math.random() * 14;
+function createOneDot(popping = true, isMine = false) {
+  const baseR = 20 + Math.random() * 25;
 
   return {
     x: Math.random() * canvas.width,
     y: Math.random() * canvas.height,
 
+
     baseR,
-    r: popping ? 0 : baseR,
+    r: isMine ? circle.r : popping ? 0 : baseR,
     scale: popping ? 0 : 1,
     alpha: 0.8 + Math.random() * 0.2,
-    color: randomPastelColor(),
+    color: isMine ? circle.color : randomPastelColor(),
 
     vx: (Math.random() - 0.5) * 0.3,
     vy: (Math.random() - 0.5) * 0.3,
@@ -302,6 +311,7 @@ function createOneDot(popping = true) {
     phase: Math.random() * Math.PI * 2,
     bornAt: performance.now(),
     popping,
+    isMine,
 
     removing: false
   };
@@ -311,7 +321,9 @@ function easeOutBack(t) {
   const c3 = c1 + 1;
   return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
 }
-
+function easeOutSine(start, end, x) {
+return start + (end - start) * Math.sin((x * Math.PI) / 2);;
+}
 
 
 function drawDots(ctx) {
@@ -331,17 +343,29 @@ function drawDots(ctx) {
 function updateDots() {
   dots.forEach((dot, id) => {
     dot.phase += 0.02;
-
+    const dvx = (Math.random() - 0.5) * 0.1;
+    const dvy = (Math.random() - 0.5) * 0.1;
+    if (Math.abs(dot.vx + dvx) <= 0.5) dot.vx += dvx;
+    if (Math.abs(dot.vy + dvy) <= 0.5) dot.vy += dvy;
     dot.x += dot.vx;
     dot.y += dot.vy;
     dot.y += Math.sin(dot.phase) * 0.2;
 
     if (dot.popping) {
-      const t = (performance.now() - dot.bornAt) / 500;
-      const clamped = Math.min(t, 1);
-      dot.scale = easeOutBack(clamped);
-      dot.r = dot.baseR * dot.scale;
-      if (clamped >= 1) dot.popping = false;
+      if (!dot.isMine) { 
+        const t = (performance.now() - dot.bornAt) / 500;
+        const clamped = Math.min(t, 1);
+        dot.scale = easeOutBack(clamped);
+        dot.r = dot.baseR * dot.scale;
+        if (clamped >= 1) dot.popping = false;
+      } else {
+        dot.x = canvas.width / 2;
+        dot.y = canvas.height / 2 - 50;
+        const t = (performance.now() - dot.bornAt) / 1500;
+        const clamped = Math.min(t, 1);
+        dot.r = easeOutSine(circle.r, dot.baseR, t);
+        if (clamped >= 1) dot.popping = false;
+      }
     }
 
     // ★ フェードアウト処理
@@ -405,7 +429,6 @@ resizeCanvas(); // 最初に必ず呼ぶ
 // 更新
 function update() {
   updateDots();
-  circle.update();
   text_s.update();
   text_t.update();
 }
@@ -419,6 +442,9 @@ function draw() {
   circle.draw(ctx);
   text_s.draw(ctx);
   text_t.draw(ctx);
+
+  
+  learningCountLabel.draw(ctx);
 }
 
 // 30fps ループ
