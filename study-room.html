@@ -71,6 +71,25 @@
             
         </main>
     </div>
+    <!-- 終了確認モーダル -->
+    <div id="endModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-content">
+        <h2>学習を終了しますか？</h2>
+        <p id="studyTimeText"></p>
+
+        <div class="modal-buttons">
+        <button id="cancelEnd" class="btn cancel">続ける</button>
+        <button id="confirmEnd" class="btn confirm">終了する</button>
+        </div>
+    </div>
+    </div>
+    <div id="toast" class="toast hidden">
+    <div class="toast-title">お疲れさまでした</div>
+    <div id="toast-text" class="toast-text"></div>
+    </div>
+
     <footer></footer>
     <script src="assets/js/study-room.js" type="module"></script>
 </body>

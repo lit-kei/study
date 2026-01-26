@@ -261,28 +261,33 @@ const circle = {
 
 
 // クリックで目標色を切り替える
-canvas.addEventListener("click", (e) => {
+canvas.addEventListener("click", async (e) => {
   const rect = canvas.getBoundingClientRect();
   const x = e.clientX - rect.left;
   const y = e.clientY - rect.top;
 
-  if (circle.contains(x, y)) {
-    if (learning) {
-        stopLearning();
-        text_s.target = 1;
-        text_t.target = 0;
-    } else {
-        startLearning();
-        circle.color = randomPastelColor();
-        text_s.target = 0;
-        text_t.target = 1;
-        text_t.startTime = performance.now();
-    }
-    learning = !learning;
+  if (!circle.contains(x, y)) return;
 
+  if (learning) {
+    const ok = await requestEndStudy(); // ← ここで停止！
+
+    if (!ok) return; // キャンセルされたら何もしない
+    endStudyConfirmed();
+
+    stopLearning();
+    text_s.target = 1;
+    text_t.target = 0;
+    learning = false;
+
+  } else {
+    startLearning();
+    circle.color = randomPastelColor();
+    text_s.target = 0;
+    text_t.target = 1;
+    text_t.startTime = performance.now();
+    learning = true;
   }
 });
-
 
 function randomPastelColor() {
   const h = Math.random() * 360;          // 色相：完全ランダム
@@ -376,12 +381,26 @@ function updateDots() {
         dots.delete(id);
       }
     }
+    // 壁で反射
+    if (dot.x - dot.r < 0) {
+      dot.x = dot.r;
+      dot.vx = 0.5;
+    }
 
-    // 画面外ループ
-    if (dot.x < -dot.r) dot.x = canvas.width + dot.r;
-    if (dot.x > canvas.width + dot.r) dot.x = -dot.r;
-    if (dot.y < -dot.r) dot.y = canvas.height + dot.r;
-    if (dot.y > canvas.height + dot.r) dot.y = -dot.r;
+    if (dot.x + dot.r > canvas.width) {
+      dot.x = canvas.width - dot.r;
+      dot.vx = -0.5;
+    }
+
+    if (dot.y - dot.r < 0) {
+      dot.y = dot.r;
+      dot.vy = 0.5;
+    }
+
+    if (dot.y + dot.r > canvas.height) {
+      dot.y = canvas.height - dot.r;
+      dot.vy = -0.5;
+    }
   });
 }
 function removeDotWithFade(dot) {
@@ -452,3 +471,70 @@ setInterval(() => {
   update();
   draw();
 }, 1000 / 30);
+
+const endModal = document.getElementById("endModal");function requestEndStudy() {
+  return new Promise((resolve) => {
+    const modal = document.getElementById("endModal");
+
+    modal.classList.remove("hidden");
+
+    const confirmBtn = document.getElementById("confirmEnd");
+    const cancelBtn = document.getElementById("cancelEnd");
+
+    const cleanup = () => {
+      modal.classList.add("hidden");
+      confirmBtn.removeEventListener("click", onConfirm);
+      cancelBtn.removeEventListener("click", onCancel);
+    };
+
+    const onConfirm = () => {
+      cleanup();
+      resolve(true);
+    };
+
+    const onCancel = () => {
+      cleanup();
+      resolve(false);
+    };
+
+    confirmBtn.addEventListener("click", onConfirm);
+    cancelBtn.addEventListener("click", onCancel);
+  });
+}
+function formatStudyTime(ms) {
+  const totalSeconds = Math.floor(ms / 1000);
+  const minutes = Math.floor(totalSeconds / 60);
+  const seconds = totalSeconds % 60;
+
+  return `${minutes}分${seconds}秒`;
+}
+function showToast(message, duration = 3000) {
+  const toast = document.getElementById("toast");
+  const text = document.getElementById("toast-text");
+
+  text.textContent = message;
+
+  toast.classList.remove("hidden");
+  requestAnimationFrame(() => {
+    toast.classList.add("show");
+  });
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+    setTimeout(() => {
+      toast.classList.add("hidden");
+    }, 400);
+  }, duration);
+}
+async function endStudyConfirmed() {
+  const elapsed = performance.now() - text_t.startTime;
+
+  stopLearning();
+
+  showToast(
+    `あなたは ${formatStudyTime(elapsed)} 勉強しました`
+  );
+}
+document.getElementById("cancelEnd").addEventListener("click", () => {
+  endModal.classList.add("hidden");
+});

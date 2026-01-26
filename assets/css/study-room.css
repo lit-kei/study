@@ -15,7 +15,103 @@ main {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+}
 
+.modal.hidden {
+  display: none;
+}
+
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.95);
+  background: white;
+  border-radius: 16px;
+  padding: 24px 28px;
+  width: 320px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+  animation: pop 0.25s ease forwards;
+}
+
+@keyframes pop {
+  to {
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+.modal-content h2 {
+  margin: 0 0 12px;
+  font-size: 18px;
+}
+
+.modal-content p {
+  margin: 0 0 20px;
+  font-size: 14px;
+  color: #555;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.btn.cancel {
+  background: #44c944fd;
+  color: white;
+}
+
+.btn.confirm {
+  background: #ff6b6b;
+  color: white;
+}
+
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+
+  transform: translate(-50%, 20px);
+  background: rgba(30, 30, 30, 0.9);
+  color: white;
+  padding: 14px 20px;
+  border-radius: 14px;
+  font-family: sans-serif;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  opacity: 0;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  pointer-events: none;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.hidden {
+  display: none;
+}
 
 @media (max-width: 1000px) {
     .container {
