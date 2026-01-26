@@ -29,7 +29,12 @@ const userId =
   localStorage.getItem("study_user_id") ??
   crypto.randomUUID();
 
+  
 localStorage.setItem("study_user_id", userId);
+
+let viewWidth = 0;
+let viewHeight = 0;
+
 
 const channel = supabase.channel("study-room", {
   config: {
@@ -364,8 +369,8 @@ function updateDots() {
         dot.r = dot.baseR * dot.scale;
         if (clamped >= 1) dot.popping = false;
       } else {
-        dot.x = canvas.width / 2;
-        dot.y = canvas.height / 2 - 50;
+        dot.x = circle.x;
+        dot.y = circle.y
         const t = (performance.now() - dot.bornAt) / 1500;
         const clamped = Math.min(t, 1);
         dot.r = easeOutSine(circle.r, dot.baseR, t);
@@ -381,25 +386,28 @@ function updateDots() {
         dots.delete(id);
       }
     }
-    // 壁で反射
+    // 壁で反射// 左
     if (dot.x - dot.r < 0) {
       dot.x = dot.r;
-      dot.vx = 0.5;
+      dot.vx *= -1;
     }
 
-    if (dot.x + dot.r > canvas.width) {
-      dot.x = canvas.width - dot.r;
-      dot.vx = -0.5;
+    // 右
+    if (dot.x + dot.r > viewWidth) {
+      dot.x = viewWidth - dot.r;
+      dot.vx *= -1;
     }
 
+    // 上
     if (dot.y - dot.r < 0) {
       dot.y = dot.r;
-      dot.vy = 0.5;
+      dot.vy *= -1;
     }
 
-    if (dot.y + dot.r > canvas.height) {
-      dot.y = canvas.height - dot.r;
-      dot.vy = -0.5;
+    // 下
+    if (dot.y + dot.r > viewHeight) {
+      dot.y = viewHeight - dot.r;
+      dot.vy *= -1;
     }
   });
 }
@@ -410,38 +418,31 @@ function removeDotWithFade(dot) {
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
 
-  const cssWidth = container.clientWidth;
-  const cssHeight = container.clientHeight;
+  viewWidth = container.clientWidth;
+  viewHeight = container.clientHeight;
 
-  // 見た目サイズ（CSS）
-  canvas.style.width = cssWidth + "px";
-  canvas.style.height = cssHeight + "px";
+  canvas.style.width = viewWidth + "px";
+  canvas.style.height = viewHeight + "px";
 
-  // 実解像度
-  canvas.width = Math.floor(cssWidth * dpr);
-  canvas.height = Math.floor(cssHeight * dpr);
+  canvas.width = Math.floor(viewWidth * dpr);
+  canvas.height = Math.floor(viewHeight * dpr);
 
-  // 以降の描画は「CSSピクセル」で行う
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-  // 中心・半径（CSS基準）
-  circle.x = cssWidth / 2;
-  circle.y = cssHeight / 2 - 50;
+  circle.x = viewWidth / 2;
+  circle.y = viewHeight / 2 - 50;
 
   // ★ モバイル暴走を防ぐポイント
-  const minSize = Math.min(cssWidth, cssHeight);
+  const minSize = Math.min(viewWidth, viewHeight);
   circle.r = minSize * 0.3;
 
   // 最大半径を制限（これが効く）
   circle.r = Math.min(circle.r, 220);
-
   text_s.x = circle.x;
   text_s.y = circle.y;
   text_t.x = circle.x;
   text_t.y = circle.y;
-
 }
-
 window.addEventListener("resize", resizeCanvas);
 resizeCanvas(); // 最初に必ず呼ぶ
 
