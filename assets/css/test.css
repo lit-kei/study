@@ -32,10 +32,16 @@ main {
     padding: 10px 0;
 }
 .images {
-    max-height: 300px;
-    max-width: 300px;
-}
+    display: block;
 
+    max-width: 300px;
+    max-height: 300px;
+
+    width: auto;
+    height: auto;
+
+    object-fit: contain;
+}
 .table-container {
     height: 338px;
     overflow: auto;       /* コンテンツがあふれる場合にスクロールバーを表示 */

@@ -63,8 +63,8 @@ let originalData = [];
 let Fixed = [];
 let sort = "unsorted";
 let filterBtns = JSON.parse(localStorage.getItem('setting')) ?? [false, false, false, false];
-if (filterBtns.length == 3) {
-  filterBtns.push(false);
+if (filterBtns.length <= 3) {
+  filterBtns = [false, false, false, false];
   localStorage.setItem('setting', JSON.stringify(filterBtns));
 }
 let fixedFil = true;
@@ -297,7 +297,7 @@ function createContainer(docSnap, id, fragment = false) {
       e.stopPropagation();
       let contents = [];
       for (let i = 0; i < docSnap.contents.question.length; i++) {
-        contents.push([docSnap.contents.question[i].text, docSnap.contents.answer[i].text]);
+        contents.push([{text: docSnap.contents.question[i].text, images: docSnap.contents.question[i].images}, {text: docSnap.contents.answer[i].text, images: docSnap.contents.answer[i].images}]);
       }
       localStorage.setItem('edit', JSON.stringify({
         contents: contents,
@@ -491,37 +491,41 @@ document.getElementById('search-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     const value = input.value;
     if (value[0] == '#') {
+      document.getElementById('search-modal').style.display = 'block';
       if (value.length == 1) {
-        document.getElementById('search-modal').style.display = 'block';
         lastDoc = null;
         originalData = [...await fetchPosts()];
         currentBoxes = [...originalData];
-        setContainers(judgeBtns(currentBoxes), loadMore);
-        ocument.getElementById('search-modal').style.display = 'none';
+        setContainers(sortData(currentBoxes), loadMore);
+        document.getElementById('search-modal').style.display = 'none';
         return;
       }
-      document.getElementById('search-modal').style.display = 'block';
       loadMore = false;
       const id = value.slice(1, value.length);
       const idHit = await getDocs(query(collection(db, "posts"), orderBy("__name__"), startAt(id), endAt((id + "\uf8ff"))));
       currentBoxes = [...idHit.docs.map(e => ({id: e.id, ...e.data()}))];
-      setContainers(judgeBtns(currentBoxes), false);
+      setContainers(sortData(currentBoxes), false);
       document.getElementById('search-modal').style.display = 'none';
     } else if (value.length) {
       // valueにデータがある
       // titleから検索
       document.getElementById('search-modal').style.display = 'block';
       loadMore = false;
-      const titleHit = await getDocs(query(collection(db, "posts"), orderBy("title"), startAt(value), endAt((value + "\uf8ff"))));
+      const snapshot = await getDocs(query(collection(db, "posts")));
+      const titleHit = snapshot.docs.filter(doc => doc.data().title.includes(value));
+      currentBoxes = [...titleHit.map(e => ({id: e.id, ...e.data()}))];
+      setContainers(sortData(currentBoxes), false);
+      /*const titleHit = await getDocs(query(collection(db, "posts"), orderBy("title"), startAt(value), endAt((value + "\uf8ff"))));
       currentBoxes = [...titleHit.docs.map(e => ({id: e.id, ...e.data()}))];
-      setContainers(judgeBtns(currentBoxes), false);
+      setContainers(judgeBtns(currentBoxes), false);*/
       document.getElementById('search-modal').style.display = 'none';
+
     } else {
       document.getElementById('search-modal').style.display = 'block';
       lastDoc = null;
       originalData = [...await fetchPosts()];
       currentBoxes = [...originalData];
-      setContainers(judgeBtns(currentBoxes), loadMore);
+      setContainers(sortData(currentBoxes), loadMore);
       document.getElementById('search-modal').style.display = 'none';
   }
 });

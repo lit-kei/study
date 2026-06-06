@@ -38,11 +38,22 @@ let id = '';
 let histories = [];
 let timeoutId;
 
-function addRow({ i = -1, q = "", a = "" } = {}) {
+function addRow({ i = -1, q = "", a = "" } = {}, {qImages = [], aImages = []} = {}) {
   index++;
   const table = document.getElementById("mainTable");
   
   const newRow = table.querySelector("tbody").insertRow(i); // -1 は最後に挿入
+
+  newRow.data = {
+    qImages: qImages.map(url => ({
+      url,
+      deleted: false
+    })),
+    aImages: aImages.map(url => ({
+      url,
+      deleted: false
+    }))
+  };
 
   const idCell = newRow.insertCell(0);
   const queCell = newRow.insertCell(1);
@@ -56,12 +67,46 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
 
   const que = document.createElement('textarea');
   const ans = document.createElement('textarea');
-  const queAdd = document.createElement('input');
-  const ansAdd = document.createElement('input');
+  //const queAdd = document.createElement('input');
+  //const ansAdd = document.createElement('input');
   const queImagePreview = document.createElement('div');
-  queImagePreview.className = 'image-preview';
+  queImagePreview.className = 'image-preview user';
+  const queExsitingPreview = document.createElement('div');
+  queExsitingPreview.className = "imame-preview original";
   const ansImagePreview = document.createElement('div');
-  ansImagePreview.className = 'image-preview';
+  ansImagePreview.className = 'image-preview user';
+  const ansExsitingPreview = document.createElement('div');
+  ansExsitingPreview.className = "image-preview original";
+  
+  const queAdd = document.createElement('input');
+  queAdd.type = 'file';
+  queAdd.className = 'qFile hidden-file';
+
+  const queAddLabel = document.createElement('label');
+  queAddLabel.className = 'file-btn';
+  queAddLabel.textContent = '画像ファイルを追加';
+
+  queAdd.style.display = 'none';
+
+  queAddLabel.addEventListener('click', () => {
+      queAdd.click();
+  });
+  
+  
+  const ansAdd = document.createElement('input');
+  ansAdd.type = 'file';
+  ansAdd.className = 'aFile hidden-file';
+
+  const ansAddLabel = document.createElement('label');
+  ansAddLabel.className = 'file-btn';
+  ansAddLabel.textContent = '画像ファイルを追加';
+
+  ansAdd.style.display = 'none';
+
+  ansAddLabel.addEventListener('click', () => {
+      ansAdd.click();
+  });
+
   queAdd.type = 'file';
   ansAdd.type = 'file';
   queAdd.className = 'qFile';
@@ -74,25 +119,81 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
   ansAdd.tabIndex = -1;
   queAdd.addEventListener('change', () => {
     queImagePreview.innerHTML = '';
+    queImagePreview.style.borderBottom = "none";
     Array.from(queAdd.files).forEach(file => {
       const img = document.createElement('img');
       img.src = URL.createObjectURL(file);
-      img.style.maxWidth = '100px';
-      img.style.marginRight = '5px';
+      img.className = "preview-image";
       queImagePreview.appendChild(img);
     });
+    if (queAdd.files.length > 0 && qImages.length > 0) {
+      queImagePreview.style.borderBottom = "2px dashed black";
+    }
   });
   ansAdd.addEventListener('change', () => {
     ansImagePreview.innerHTML = '';
+    ansImagePreview.style.borderBottom = "none";
     Array.from(ansAdd.files).forEach(file => {
       const img = document.createElement('img');
       img.src = URL.createObjectURL(file);
-      img.style.maxWidth = '100px';
-      img.style.marginRight = '5px';
+      img.className = "preview-image";
       ansImagePreview.appendChild(img);
     });
+    if (ansAdd.files.length > 0 && aImages.length > 0) {
+      ansImagePreview.style.borderBottom = "2px dashed black";
+    }
   });
+  
+  newRow.data.qImages.forEach(image => {
+      const wrapper = document.createElement('div');
+      wrapper.className = "image-wrapper";
 
+      const img = document.createElement('img');
+      img.src = image.url;
+      img.className = "preview-image original-image";
+
+      const removeBtn = document.createElement('button');
+      removeBtn.className = "removeBtn";
+      removeBtn.textContent = '×';
+      removeBtn.type = 'button';
+
+      removeBtn.addEventListener('click', () => {
+        image.deleted = !image.deleted;
+        
+        removeBtn.textContent = image.deleted ? '↺' : '×';
+        removeBtn.classList.toggle('restore');
+
+        wrapper.classList.toggle('deleted');
+      });
+
+      wrapper.append(img, removeBtn);
+      queExsitingPreview.appendChild(wrapper);
+  });
+  aImages.forEach(url => {
+    const wrapper = document.createElement('div');
+    wrapper.className = "image-wrapper";
+
+    const img = document.createElement('img');
+    img.src = url;
+    img.className = "preview-image original-image";
+
+    const removeBtn = document.createElement('button');
+    removeBtn.className = "removeBtn";
+    removeBtn.textContent = '×';
+    removeBtn.type = 'button';
+
+    removeBtn.addEventListener('click', () => {
+      image.deleted = !image.deleted;
+      
+      removeBtn.textContent = image.deleted ? '↺' : '×';
+      removeBtn.classList.toggle('restore');
+
+      wrapper.classList.toggle('deleted');
+    });
+
+    wrapper.append(img, removeBtn);
+    ansExsitingPreview.appendChild(wrapper);
+});
   que.required = true;
   ans.required = true;
   que.className = 'question';
@@ -115,8 +216,12 @@ function addRow({ i = -1, q = "", a = "" } = {}) {
   ansCell.appendChild(ans);
   queCell.appendChild(queAdd);
   ansCell.appendChild(ansAdd);
+  queCell.appendChild(queAddLabel);
+  ansCell.appendChild(ansAddLabel);
   queCell.appendChild(queImagePreview);
+  queCell.appendChild(queExsitingPreview);
   ansCell.appendChild(ansImagePreview);
+  ansCell.appendChild(ansExsitingPreview);
   const dropBtn = document.createElement('button');
   dropBtn.type = 'button';
   dropBtn.className = 'dropBtn';
@@ -198,7 +303,7 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
       dots += ".";
       if (dots.length >= 4) dots = "";
       document.getElementById('label').innerHTML = `${text}<span style="font-size: 25px">${dots}</span>`;
-    }, 300);
+    }, 300);  
     modal.style.display = 'flex';
     document.getElementById('spinner').style.display = 'block';
     document.getElementById('buttons').style.display = 'none';
@@ -223,8 +328,8 @@ document.getElementById('mainForm').addEventListener('submit', async e => {
       const qImages = e.querySelector('input.qFile').files;
       const aImages = e.querySelector('input.aFile').files;
     
-      const qImageURLs = [];
-      const aImageURLs = [];
+      const qImageURLs = e.data.qImages.filter(el => !el.deleted).map(el => el.url);
+      const aImageURLs = e.data.aImages.filter(el => !el.deleted).map(el => el.url);
     
       for (let file of qImages) {
         console.log("que");
@@ -282,7 +387,7 @@ document.addEventListener('DOMContentLoaded', function () {
       document.getElementById('subject').value = data.subject;
       document.getElementById('subject').className = subjects[data.subject];
       for (let i = 0; i < data.contents.length; i++) {
-        addRow({q: data.contents[i][0], a: data.contents[i][1]});
+        addRow({q: data.contents[i][0].text, a: data.contents[i][1].text}, {qImages: data.contents[i][0].images, aImages: data.contents[i][1].images});
       }
       histories = [...data.history];
       break;
