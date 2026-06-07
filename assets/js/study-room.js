@@ -28,6 +28,9 @@ const learningCountLabel = {
 const userId =
   localStorage.getItem("study_user_id") ??
   crypto.randomUUID();
+let userName =
+  localStorage.getItem("study_user_name") ?? null;
+let myColor = randomPastelColor();
 
   
 localStorage.setItem("study_user_id", userId);
@@ -35,57 +38,114 @@ localStorage.setItem("study_user_id", userId);
 let viewWidth = 0;
 let viewHeight = 0;
 
+const channel = supabase.channel("study-users-changes");
 
-const channel = supabase.channel("study-room", {
-  config: {
-    presence: {
-      key: userId
-    }
-  }
-});
-await supabase
-  .from("study-users")
-  .upsert({
-    id: userId,
-    learning: false
-  });
-
+const nameModal = document.getElementById("nameModal");
+const nameInput = document.getElementById("nameInput");
+const nameError = document.getElementById("nameError");
+const nameCount = document.getElementById("nameCount");
+const confirmBtn = document.getElementById("nameConfirm");
+const cancelBtn = document.getElementById("nameCancel");
+const spinner = document.getElementById("spinner");
+const modalMain = document.getElementById("modalMain");
 
 const dots = new Map(); // userId => dot
 let lastLearningUserIds = new Set();
+let learningUsers = new Map();
 
-channel.on("presence", { event: "sync" }, () => {
-  const currentIds = getLearningUserIds();
-  
-  learningCountLabel.value = currentIds.size;
+async function initUser() {
+  if (!userName) {
+    cancelBtn.style.display = "none";
+    nameModal.style.display = "block";
+  } else {
 
-  // 追加
-  for (const id of currentIds) {
-    if (!lastLearningUserIds.has(id)) {
-      if (dots.size >= MAX_DOTS) break; // ★ 制限
-
-      const dot = createOneDot(true, id == userId);
-      dots.set(id, dot);
+    await supabase
+      .from("study-users")
+      .upsert({
+        id: userId,
+        name: userName,
+        learning: false,
+        last_seen: new Date()
+      });
     }
-  }
+}
 
-  // 削除
-  for (const id of lastLearningUserIds) {
-    if (!currentIds.has(id)) {
-      const dot = dots.get(id);
+initUser();
+
+getLearningUserIds().then(users => {
+  learningUsers = users;
+  console.log("学習中：", users);
+  learningCountLabel.value = users.size;
+});
+
+channel.on(
+  "postgres_changes",
+  {
+    event: "*",
+    schema: "public",
+    table: "study-users"
+  },
+  async (payload) => {
+      const row = payload.new;
+      console.log(row);
+
+    const isLearning =
+      row.learning && isOnline(row.last_seen);
+
+    if (isLearning) {
+      learningUsers.set(row.id, {last_seen: new Date(row.last_seen), color: row.color, name: row.name});
+      const dot = dots.get(row.id);
+      if (dot) {
+        dot.color = row.color;
+        dot.name = row.name ?? "匿名";
+      }
+    } else {
+      learningUsers.delete(row.id);
+      const dot = dots.get(row.id);
       if (dot) removeDotWithFade(dot);
     }
-  }
 
-  lastLearningUserIds = new Set(currentIds);
-});
+    learningCountLabel.value = learningUsers.size;
+
+    
+    // 追加
+    for (const [id, user] of learningUsers) {
+      if (!lastLearningUserIds.has(id)) {
+        if (dots.size >= MAX_DOTS) break; // ★ 制限
+
+        const dot = createOneDot(true, id == userId, user.color ?? randomPastelColor(), user.name ?? "匿名");
+        dots.set(id, dot);
+      }
+    }
+
+    // 削除
+    for (const id of lastLearningUserIds) {
+      if (!learningUsers.has(id)) {
+        const dot = dots.get(id);
+        if (dot) removeDotWithFade(dot);
+      }
+    }
+
+    lastLearningUserIds = new Set(learningUsers.keys());
+
+  }
+).subscribe();
+/*await supabase
+  .from("study-users")
+  .upsert({
+    id: userId,
+    learning: false,
+    last_seen: new Date()
+  });*/
+
+
+
 
 channel.subscribe(async status => {
   console.log("presence status:", status);
   if (status === "SUBSCRIBED") {
     await channel.track({
-      userId,
-      learning: false
+      userId
     });
   }
 });
@@ -93,17 +153,15 @@ channel.subscribe(async status => {
 
 
 async function startLearning() {
+  myColor = randomPastelColor();
   await supabase
     .from("study-users")
     .update({
       learning: true,
-      started_at: new Date()
+      started_at: new Date(),
+      color: myColor
     })
-    .eq("id", userId);  
-  await channel.track({
-    userId,
-    learning: true
-  });
+    .eq("id", userId);
   
 }
 
@@ -114,39 +172,134 @@ async function stopLearning() {
       learning: false
     })
     .eq("id", userId);
-  await channel.track({
-    userId,
-    learning: false
-  });
 }
 
+function isOnline(lastSeen) {
+  return Date.now() - new Date(lastSeen).getTime() < 30000;
+}
 
-function getLearningUserIds() {
-  const state = channel.presenceState();
-  const ids = new Set();
+async function getLearningUserIds() {
+  const { data, error } = await supabase
+    .from("study-users")
+    .select("*");
 
-  Object.values(state).forEach(presences => {
-    presences.forEach(p => {
-      if (p.learning === true) {
-        ids.add(p.userId);
-      }
-    });
-  });
+  if (error) {
+    console.error(error);
+    return new Map();
+  }
+
+  const ids = new Map();
+
+  for (const user of data) {
+    if (user.learning && isOnline(user.last_seen)) {
+      ids.set(user.id, {last_seen: new Date(user.last_seen), color: user.color, name: user.name});
+    }
+  }
 
   return ids;
 }
 
+let updating = false;
 
+setInterval(async () => {
+  if (updating) return;
+  updating = true;
 
+  try {
+    await supabase
+      .from("study-users")
+      .update({
+        last_seen: new Date()
+      })
+      .eq("id", userId);
+  } finally {
+    updating = false;
+  }
+}, 15000);
 
+setInterval(() => {
+  const now = Date.now();
+  for (const [id, user] of learningUsers) {
+    if (now - user.last_seen > 30000) {
+      console.log(id);
+      learningUsers.delete(id); // ← 退出扱い
+      const dot = dots.get(id);
+      if (dot) removeDotWithFade(dot);
+    }
+  }
 
-
-
-
+  learningCountLabel.value = learningUsers.size;
+}, 5000);
 
 // MARK: 以下描画処理
 
 
+const MAX_NAME_LENGTH = 12;
+
+confirmBtn.addEventListener("click", async () => {
+  const value = nameInput.value.trim();
+
+  // 空はOK（名無し）
+  if (value.length === 0) {
+    submitName(null);
+    return;
+  }
+
+  // 長すぎる場合
+  if (value.length > MAX_NAME_LENGTH) {
+    nameError.textContent = `名前は${MAX_NAME_LENGTH}文字以内にしてください`;
+    nameError.style.display = "block";
+
+    // UX：入力欄にフォーカス戻す
+    nameInput.focus();
+    nameInput.select();
+    return;
+  }
+
+  // OK
+  submitName(value);
+});
+cancelBtn.addEventListener("click", () => {
+  nameModal.style.display = "none";
+})
+async function submitName(name) {
+  nameError.style.display = "none";
+  cancelBtn.style.display = "block";
+  modalMain.style.visibility = "hidden";
+  spinner.style.display = "block";
+
+  await supabase
+    .from("study-users")
+    .update({
+      name: name
+    })
+    .eq("id", userId);
+  spinner.style.display = "none";
+  modalMain.style.visibility = "visible";
+  nameModal.style.display = "none";
+  userName = name ?? "匿名";
+  localStorage.setItem("study_user_name", userName);
+}
+nameInput.addEventListener("input", () => {
+  const l = nameInput.value.length;
+  if (l <= 12) {
+    nameCount.innerHTML = `${l} / <strong>12</strong>`;
+  } else {
+    nameCount.innerHTML = `<span style="color: red;">${l}</span> / <strong>12</strong>`;
+  }
+});
+nameInput.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    confirmBtn.click();
+  }
+});
+
+document.getElementById("settingsBtn").addEventListener("click", async () => {
+    nameModal.style.display = "block";
+    nameInput.value = userName;
+    nameInput.focus();
+    nameInput.select();
+});
 
 const MAX_DOTS = 30;
 
@@ -237,7 +390,6 @@ const circle = {
   
   
 
-  color: randomPastelColor(),
 
   draw(ctx) {
     ctx.beginPath();
@@ -245,7 +397,7 @@ const circle = {
 
     if (learning) {
         // 枠線だけ
-        ctx.strokeStyle = this.color;
+        ctx.strokeStyle = myColor;
         ctx.lineWidth = 6; // お好みで
         ctx.stroke();
     } else {
@@ -286,7 +438,6 @@ canvas.addEventListener("click", async (e) => {
 
   } else {
     startLearning();
-    circle.color = randomPastelColor();
     text_s.target = 0;
     text_t.target = 1;
     text_t.startTime = performance.now();
@@ -301,7 +452,7 @@ function randomPastelColor() {
 
   return `hsl(${h}, ${s}%, ${l}%)`;
 }
-function createOneDot(popping = true, isMine = false) {
+function createOneDot(popping = true, isMine = false, color, name) {
   const baseR = 20 + Math.random() * 25;
 
   return {
@@ -313,7 +464,8 @@ function createOneDot(popping = true, isMine = false) {
     r: isMine ? circle.r : popping ? 0 : baseR,
     scale: popping ? 0 : 1,
     alpha: 0.8 + Math.random() * 0.2,
-    color: isMine ? circle.color : randomPastelColor(),
+    color,
+    name,
 
     vx: (Math.random() - 0.5) * 0.3,
     vy: (Math.random() - 0.5) * 0.3,
@@ -342,6 +494,11 @@ function drawDots(ctx) {
   dots.forEach(dot => {
     ctx.globalAlpha = dot.alpha;
     ctx.fillStyle = dot.color;
+
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '18px Arial';
+    ctx.fillText(dot.name, dot.x, dot.y - dot.r - 14);
 
     ctx.beginPath();
     ctx.arc(dot.x, dot.y, dot.r, 0, Math.PI * 2);

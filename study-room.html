@@ -60,7 +60,14 @@
     <header></header>
     <div class="main-content" style="min-height: 100vh;">
         <main>
+            <div class="title-wrapper">
+
             <h1 class="title">リアルタイム勉強部屋へようこそ！</h1>
+
+            <button id="settingsBtn" class="settings-btn" aria-label="設定">
+                <img src="assets/images/setting.svg" alt="設定のアイコン" class="image" height="30px" width="30px">
+            </button>
+            </div>
             <div class="container" id="container">
 
 
@@ -71,6 +78,30 @@
             
         </main>
     </div>
+    <div id="nameModal" class="modal hidden">
+    <div class="modal-backdrop"></div>
+
+    <div class="modal-content">
+        <div id="modalMain" class="modal-main">
+            <h2>名前を入力してください（任意）</h2>
+            <input
+            id="nameInput"
+            type="text"
+            placeholder="例：Kei"
+            autocomplete="off"
+            />
+            <p id="nameCount">0 / <strong>12</strong></p>
+            <p id="nameError"></p>
+            <div class="modal-buttons">
+            <button id="nameCancel" class="btn red small">cancel</button>
+            <button id="nameConfirm" class="btn green small">OK</button>
+            </div>
+        </div>
+        <div class="spinner" id="spinner"></div>
+
+    </div>
+    </div>
+
     <!-- 終了確認モーダル -->
     <div id="endModal" class="modal hidden">
     <div class="modal-backdrop"></div>
@@ -80,11 +111,12 @@
         <p id="studyTimeText"></p>
 
         <div class="modal-buttons">
-        <button id="cancelEnd" class="btn cancel">続ける</button>
-        <button id="confirmEnd" class="btn confirm">終了する</button>
+        <button id="confirmEnd" class="btn red">終了する</button>
+        <button id="cancelEnd" class="btn green">続ける</button>
         </div>
     </div>
     </div>
+
     <div id="toast" class="toast hidden">
     <div class="toast-title">お疲れさまでした</div>
     <div id="toast-text" class="toast-text"></div>
