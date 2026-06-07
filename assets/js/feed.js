@@ -67,7 +67,8 @@ if (filterBtns.length <= 3) {
   filterBtns = [false, false, false, false];
   localStorage.setItem('setting', JSON.stringify(filterBtns));
 }
-let fixedFil = true;
+let fixedFil = false;
+document.getElementById("fixed-fil").classList.remove("focus");
 let currentBoxes = [];
 const btns = ["favorite-fil", "good-fil", "subject-fil", "createdAt-fil"];
 const sorts = ["good", "subject", "createdAt"];
