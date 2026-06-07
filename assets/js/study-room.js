@@ -238,7 +238,7 @@ setInterval(() => {
 // MARK: 以下描画処理
 
 
-const MAX_NAME_LENGTH = 12;
+const MAX_NAME_LENGTH = 10;
 
 confirmBtn.addEventListener("click", async () => {
   const value = nameInput.value.trim();
@@ -286,10 +286,10 @@ async function submitName(name) {
 }
 nameInput.addEventListener("input", () => {
   const l = nameInput.value.length;
-  if (l <= 12) {
-    nameCount.innerHTML = `${l} / <strong>12</strong>`;
+  if (l <= MAX_NAME_LENGTH) {
+    nameCount.innerHTML = `${l} / <strong>${MAX_NAME_LENGTH}</strong>`;
   } else {
-    nameCount.innerHTML = `<span style="color: red;">${l}</span> / <strong>12</strong>`;
+    nameCount.innerHTML = `<span style="color: red;">${l}</span> / <strong>${MAX_NAME_LENGTH}</strong>`;
   }
 });
 nameInput.addEventListener("keydown", (e) => {
