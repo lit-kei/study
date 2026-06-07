@@ -303,6 +303,7 @@ document.getElementById("settingsBtn").addEventListener("click", async () => {
     nameInput.value = userName;
     nameInput.focus();
     nameInput.select();
+    nameCount.innerHTML = `${userName.length} / <strong>${MAX_NAME_LENGTH}</strong>`;
 });
 
 const MAX_DOTS = 30;
