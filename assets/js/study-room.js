@@ -572,11 +572,20 @@ function removeDotWithFade(dot) {
   dot.removing = true;
 }
 
+let lastWidth = 0;
+let lastHeight = 0;
 function resizeCanvas() {
   const dpr = window.devicePixelRatio || 1;
 
   viewWidth = container.clientWidth;
   viewHeight = container.clientHeight;
+
+  if (viewWidth === lastWidth && viewHeight === lastHeight) {
+    return;
+  }
+
+  lastWidth = viewWidth;
+  lastHeight = viewHeight;
 
   canvas.style.width = viewWidth + "px";
   canvas.style.height = viewHeight + "px";
