@@ -238,7 +238,7 @@ setInterval(() => {
 // MARK: 以下描画処理
 
 
-const MAX_NAME_LENGTH = 10;
+const MAX_LENGTH = 10;
 
 confirmBtn.addEventListener("click", async () => {
   const value = nameInput.value.trim();
@@ -250,8 +250,8 @@ confirmBtn.addEventListener("click", async () => {
   }
 
   // 長すぎる場合
-  if (value.length > MAX_NAME_LENGTH) {
-    nameError.textContent = `名前は${MAX_NAME_LENGTH}文字以内にしてください`;
+  if (value.length > MAX_LENGTH) {
+    nameError.textContent = `名前は${MAX_LENGTH}文字以内にしてください`;
     nameError.style.display = "block";
 
     // UX：入力欄にフォーカス戻す
@@ -286,10 +286,10 @@ async function submitName(name) {
 }
 nameInput.addEventListener("input", () => {
   const l = nameInput.value.length;
-  if (l <= MAX_NAME_LENGTH) {
-    nameCount.innerHTML = `${l} / <strong>${MAX_NAME_LENGTH}</strong>`;
+  if (l <= MAX_LENGTH) {
+    nameCount.innerHTML = `${l} / <strong>${MAX_LENGTH}</strong>`;
   } else {
-    nameCount.innerHTML = `<span style="color: red;">${l}</span> / <strong>${MAX_NAME_LENGTH}</strong>`;
+    nameCount.innerHTML = `<span style="color: red;">${l}</span> / <strong>${MAX_LENGTH}</strong>`;
   }
 });
 nameInput.addEventListener("keydown", (e) => {
@@ -303,7 +303,7 @@ document.getElementById("settingsBtn").addEventListener("click", async () => {
     nameInput.value = userName;
     nameInput.focus();
     nameInput.select();
-    nameCount.innerHTML = `${userName.length} / <strong>${MAX_NAME_LENGTH}</strong>`;
+    nameCount.innerHTML = `${userName.length} / <strong>${MAX_LENGTH}</strong>`;
 });
 
 const MAX_DOTS = 30;
