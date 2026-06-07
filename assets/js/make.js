@@ -72,7 +72,7 @@ function addRow({ i = -1, q = "", a = "" } = {}, {qImages = [], aImages = []} = 
   const queImagePreview = document.createElement('div');
   queImagePreview.className = 'image-preview user';
   const queExsitingPreview = document.createElement('div');
-  queExsitingPreview.className = "imame-preview original";
+  queExsitingPreview.className = "image-preview original";
   const ansImagePreview = document.createElement('div');
   ansImagePreview.className = 'image-preview user';
   const ansExsitingPreview = document.createElement('div');
