@@ -98,6 +98,9 @@ channel.on(
       if (dot) {
         dot.color = row.color;
         dot.name = row.name ?? "匿名";
+      } else {
+          const newDot = createOneDot(true, row.id == userId, row.color ?? randomPastelColor(), row.name ?? "匿名");
+          dots.set(row.id, newDot);
       }
     } else {
       learningUsers.delete(row.id);
@@ -107,14 +110,15 @@ channel.on(
 
     learningCountLabel.value = learningUsers.size;
 
-    
+    /*
     // 追加
     for (const [id, user] of learningUsers) {
       if (!lastLearningUserIds.has(id)) {
         if (dots.size >= MAX_DOTS) break; // ★ 制限
-
-        const dot = createOneDot(true, id == userId, user.color ?? randomPastelColor(), user.name ?? "匿名");
-        dots.set(id, dot);
+        if (!dots.get(id)) {
+          const dot = createOneDot(true, id == userId, user.color ?? randomPastelColor(), user.name ?? "匿名");
+          dots.set(id, dot);
+        }
       }
     }
 
@@ -126,7 +130,7 @@ channel.on(
       }
     }
 
-    lastLearningUserIds = new Set(learningUsers.keys());
+    lastLearningUserIds = new Set(learningUsers.keys());*/
 
   }
 ).subscribe();
