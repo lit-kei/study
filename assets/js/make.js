@@ -256,7 +256,7 @@ function addRow({ i = -1, q = "", a = "" } = {}, {qImages = [], aImages = []} = 
 
   btnCell.appendChild(drop);
   newRow.getElementsByTagName('textarea')[0].focus();
-  window.scrollBy(0, 62);
+  window.scrollBy(0, 144);
 }
 
 function reset() {
