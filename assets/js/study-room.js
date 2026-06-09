@@ -5,6 +5,8 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 export const supabase = createClient(supabaseUrl, supabaseKey);
 
+let learning = false;
+
 const learningCountLabel = {
   x: 20,
   y: 20,
@@ -133,7 +135,13 @@ channel.on(
     lastLearningUserIds = new Set(learningUsers.keys());*/
 
   }
-).subscribe();
+).subscribe((status) => {
+    console.log("channel status:", status);
+
+    if (status === "SUBSCRIBED") {
+      console.log("SUBSCRIBED");
+    }
+  });
 /*await supabase
   .from("study-users")
   .upsert({
@@ -145,17 +153,6 @@ channel.on(
 
 
 
-channel.subscribe(async status => {
-  console.log("presence status:", status);
-  if (status === "SUBSCRIBED") {
-    await channel.track({
-      userId
-    });
-  }
-});
-
-
-
 async function startLearning() {
   myColor = randomPastelColor();
   await supabase
@@ -163,6 +160,7 @@ async function startLearning() {
     .update({
       learning: true,
       started_at: new Date(),
+      last_seen: new Date(),
       color: myColor
     })
     .eq("id", userId);
@@ -308,7 +306,7 @@ document.getElementById("settingsBtn").addEventListener("click", async () => {
 
 const MAX_DOTS = 30;
 
-let learning = false;
+
 
 
 const container = document.getElementById('container');
