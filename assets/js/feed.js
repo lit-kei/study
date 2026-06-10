@@ -147,6 +147,39 @@ document.getElementById('fixed-fil').addEventListener('click', async () => {
   }
   setContainers(judgeBtns(currentBoxes), loadMore);
 });
+
+
+const params = new URLSearchParams(window.location.search);
+if (params.has("f")) {
+    document.getElementById(btns[1]).className = '';
+    document.getElementById(btns[2]).className = '';
+    document.getElementById(btns[3]).className = '';
+    filterBtns = [false, false, false, false];
+
+  switch (params.get("f")) {
+    case "1":
+      sort = 'good';
+      document.getElementById(btns[1]).className = 'focus';
+      filterBtns[1] = true;
+      break;
+    case "2":
+      sort = 'subject';
+      document.getElementById(btns[2]).className = 'focus';
+      filterBtns[2] = true;
+      break;
+    case "3":
+      sort = 'createdAt';
+      document.getElementById(btns[3]).className = 'focus';
+      filterBtns[3] = true;
+      break;
+  
+    default:
+      sort = "unsorted";
+      break;
+  }
+}
+
+
 document.getElementById('search-modal').style.display = 'block';
 const firstFrgment = document.createDocumentFragment();
 const fixedSnapshot = await getDocs(query(collection(db, "posts"), where("display", "==", "fixed")));
